@@ -117,37 +117,34 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6 col-6">
-                                <label class="form-label">Drop a valid Image here</label>
+                                <label class="form-label">Drop a valid image here</label>
                                 <div class="col-lg-12 col-sm-12">
-                                    <input type="file" name="image" class="dropify @error('image') is-invalid @enderror" data-height="180"/>
-                                    @error('image')
+                                    <input type="file" name="images[]" class="dropify @error('images') is-invalid @enderror" 
+                                    data-height="180" multiple/>
+                                    @error('images')
                                         {{-- <span class="invalid-feedback" role="alert"> --}}
                                             <code style="color:red">{{ $message }}</code style="color:red">
                                         {{-- </span> --}}
                                     @enderror
-                                    <div class="card item-card">
-                                        <div class="card-body">
-                                            <div class="border p-0">
-                                                <div class="row">
-                                                    <div class="col-md-6 pr-0">
-                                                        <div class="text-center bg-gray">
-                                                            @if($item->image)
-                                                                <img src="/{{ $item->image->thumbnail }}" alt="img" class="img-fluid">
-                                                            @else
-                                                                <img src="/assets/images/no-image.jpg" alt="img" class="img-fluid">
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 pl-0">
-                                                        <div class="card-body cardbody ">
-                                                            <div class="cardtitle">
-                                                                <a class="card-title">{{ ucfirst($item->name) }}</a>
-                                                                <span>{{ $item->description }}</span>
-                                                            </div>
-                                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card item-card">
+                                <div class="card-body">
+                                    <div class="border p-0">
+                                        <div class="row">
+                                            @if($item->images)
+                                                @foreach($item->images as $image)
+                                                <div class="col-3">
+                                                    <div class="text-center bg-gray">
+                                                        <img src="/{{ $image->thumbnail }}" alt="img" class="img-fluid">
                                                     </div>
                                                 </div>
-                                            </div>
+                                                @endforeach
+                                            @else
+                                                <img src="/assets/images/no-image.jpg" alt="img" class="img-fluid">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

@@ -35,10 +35,13 @@ trait UploadTrait
 
     public function uploadImage($model, UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null, $thumb)
     {
-        if($model->image)
+        if($model->images)
         {
-            $this->checkImage($model->image->image, $model);
-            $this->checkImage($model->image->thumbnail, $model);
+            foreach($model->images as $image)
+            {
+                $this->checkImage($image->image, $model);
+                $this->checkImage($image->thumbnail, $model);
+            }
         }
         $imageFolder = $folder.'image/';
         $file = $uploadedFile->storeAs($imageFolder, $filename.'.'.$uploadedFile->getClientOriginalExtension(), $disk);

@@ -22,7 +22,7 @@
                             <thead>
                                 <tr>
                                     <th class="wd-10p">Brand</th>
-                                    <th class="wd-10p">Name</th>
+                                    <th class="wd-10p">Model</th>
                                     <th class="wd-15p">Description</th>
                                     <th class="wd-10p">Category</th>
                                     <th class="wd-10p">Srp</th>

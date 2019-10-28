@@ -17,9 +17,9 @@ class ItemsController extends Controller
      */
     public function index()
     {
-        $models = Item::paginate(15);
+        $items = Item::with('brand','type', 'images')->paginate(15);
 
-        return new ItemsResource($models);
+        return new ItemsResource($items);
     }
 
     /**
@@ -49,11 +49,11 @@ class ItemsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Item $model)
+    public function show(Item $item)
     {
         ItemResource::withoutWrapping();
 
-        return new ItemResource($model);
+        return new ItemResource($item);
     }
 
     /**

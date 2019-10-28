@@ -18,7 +18,7 @@ class BrandsRelationships extends JsonResource
         // return parent::toArray($request);
 
         return [
-            'models' => [
+            'items' => [
                 'data' => ItemResource::collection($this->items)
             ]
         ];

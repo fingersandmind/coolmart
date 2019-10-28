@@ -46,7 +46,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="example-Modal3">New Tyoe</h5>
+                    <h5 class="modal-title" id="example-Modal3">New Type</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

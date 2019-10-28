@@ -17,23 +17,22 @@
                 </div>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link {{ Request::routeIs('brands*') ? 'active' : '' }}" href="{{ route('brands.index') }}"><i class="fa fa-steam"></i> <span>Brands</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link {{ Request::routeIs('models*') ? 'active' : '' }}" href="{{ route('models.index') }}"><i class="fa fa-snowflake-o"></i> <span>Model</span></a>
-            </li>
-
             <li class="nav-item with-sub">
-                <a class="nav-link {{ Request::routeIs(['categories*','types*']) ? 'active' : '' }}" href="#"><i class="fa fa-cogs"></i> <span>Settings</span></a>
+                <a class="nav-link {{ Request::routeIs(['brands*', 'items*', 'categories*', 'types*']) ? 'active' : '' }}" href="#"><i class="fa fa-snowflake-o"></i> <span>Air-Conditioning</span></a>
                 <div class="sub-item">
                     <ul>
                         <li>
-                            <a href="{{ route('categories.index') }}">Categories</a>
+                            <a href="{{ route('brands.index') }}">Brands</a>
                         </li>
                         <li>
-                            <a href="{{ route('types.index') }}">Types</a>
+                            <a href="{{ route('items.index') }}">Items</a>
+                        </li>
+                        <li class="sub-with-sub">
+                            <a href="#">Settings <i class="fa fa-cogs"></i></a>
+                            <ul>
+                                <li><a href="{{ route('categories.index') }}">Categories</a></li>
+                                <li><a href="{{ route('types.index') }}">Types</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

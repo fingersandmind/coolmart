@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth'], function(){
         return view('pages.index');
     })->name('dashboard');
 
-    Route::resource('items', 'UnitModelController');
+    Route::resource('items', 'ItemController');
     Route::resource('brands', 'BrandsController');
     Route::resource('categories', 'CategoryController');
     Route::resource('types', 'TypeController');
@@ -31,9 +31,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/transaction-history', function(){
         return view('pages.history.index');
     })->name('transaction.history');
-    // Route::get('/transaction/create', function(){
-    //     return view('pages.transactions.create');
-    // });
+    Route::get('forms/create', function(){
+        return view('pages.forms.create');
+    });
 
     Route::get('invoice', function () {
         return view('invoice.orders');

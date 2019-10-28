@@ -17,9 +17,9 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $models = Item::get();
+        $items = Item::get();
 
-        return view('pages.models.index', compact('models'));
+        return view('pages.items.index', compact('items'));
     }
 
     /**
@@ -32,7 +32,7 @@ class ItemController extends Controller
         $brands = Brand::pluck('name', 'id');
         $types = Type::pluck('name', 'id');
         $categories = Category::pluck('name', 'id');
-        return view('pages.models.create', compact('brands', 'types', 'categories'));
+        return view('pages.items.create', compact('brands', 'types', 'categories'));
     }
 
     /**
@@ -46,8 +46,8 @@ class ItemController extends Controller
         // dd($request->all());
         $request->validated();
 
-        $model = new Item();
-        $model->persists($request);
+        $item = new Item();
+        $item->persists($request);
 
         return redirect()->route('items.index')->withSuccess('Successfully created!');
     }

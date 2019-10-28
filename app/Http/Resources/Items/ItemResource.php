@@ -23,6 +23,8 @@ class ItemResource extends JsonResource
                 'name'  => $this->name,
                 'slug'  => $this->slug,
                 'description'   => $this->description,
+                'images' => $this->images->pluck('image'),
+                'thumbnails' => $this->images->pluck('thumbnail'),
                 'srp'   => number_format($this->srp),
                 'qty'   => (string)$this->qty,
                 'brand_id'  => (string)$this->brand_id,

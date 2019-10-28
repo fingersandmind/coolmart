@@ -30,31 +30,16 @@ class Item extends Model
         return 'slug';   
     }
 
-    public function image()
+    public function images()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 
     
 
     public function persists($request)
     {
-        $img_arr = [];
-
-        if($request->has('image'))
-        {
-            $file = $request->file('image');
-            $filename = $request->slug.'_'.time();
-            $folder = 'uploads/model/';
-            $imageFilepath = $folder.'image/'.$filename.'.'.$file->getClientOriginalExtension();
-            $thumbnailFilepath = $folder.'thumbnail/'.$filename.'.'.$file->getClientOriginalExtension();
-            
-            $this->uploadImage($this,$file,$folder,'public', $filename, $thumbnailFilepath);
-            array_push($img_arr, ['image' => $imageFilepath]);
-            array_push($img_arr, ['thumbnail' => $thumbnailFilepath]);
-        }
-
-        $this->updateOrCreate(
+        $item = $this->updateOrCreate(
             ['id' => $this->id],
             [
                 'brand_id'      => $request->brand,
@@ -67,18 +52,57 @@ class Item extends Model
                 'cost'          => $request->cost,
                 'qty'           => $request->qty
             ],
-        )->image()->updateOrCreate(
-            ['imageable_id' => $this->id],
-            array_merge(
-                $img_arr[0] ?? [], 
-                $img_arr[1] ?? []
-            )
         );
 
+        $this->upload($item,$request);
     }
     
     public function deleteImage()
     {
-        $this->checkImage($this->logo, $this);
+        if($this->images)
+        {
+            foreach($this->images as $image)
+            {
+                $this->checkImage($image->image, $this);
+                $this->checkImage($image->thumbnail, $this);
+            }
+        }
+    }
+
+    public function upload($item, $request)
+    {
+        $images_urls = [];
+        if($request->has('images'))
+        {
+            $img_arr = [];
+            foreach($request->images as $image)
+            {
+                $file = $image;
+                $filename = str_random(5).'_'.time();
+                $folder = 'uploads/model/';
+                $imageFilepath = $folder.'image/'.$filename.'.'.$file->getClientOriginalExtension();
+                $thumbnailFilepath = $folder.'thumbnail/'.$filename.'.'.$file->getClientOriginalExtension();
+                
+                $this->uploadImage($this,$file,$folder,'public', $filename, $thumbnailFilepath);
+                $img_arr['image'] = ['image' => $imageFilepath];
+                $img_arr['thumbnail'] = ['thumbnail' => $thumbnailFilepath];
+                array_push($images_urls,$img_arr);
+            }
+            if($request->method() == 'PUT' || $request->method() == 'PATCH')
+            {
+                $this->images()->delete();
+                $this->deleteImage();
+            }
+        }
+        foreach($images_urls as $url)
+        {
+            $item->images()->create(
+                array_merge(
+                    $url['image'] ?? [],
+                    $url['thumbnail'] ?? []
+                )
+            );
+        }
+
     }
 }

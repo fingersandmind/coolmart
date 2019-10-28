@@ -6,7 +6,7 @@
         <div class="page-header">
             <h4 class="page-title">Unit Model Types</h4>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('models.index') }}">Types</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('types.index') }}">Types</a></li>
             </ol>
             {{-- <a href="{{ route('models.create') }}" class="btn btn-outline-primary"><i class="fa fa-plus mr-2"></i>Add Types</a> --}}
         </div>

@@ -57,11 +57,30 @@
             <div class="card">
                 <div class="row">
                     <div class="col-md-12 col-lg-6 pr-0 d-none d-lg-block">
-                        @if($item->image)
-                            <img src="/{{ $item->image->image }}" alt="img" class="br-tl-7">
+                        {{-- @if($item->images->count() > 0)
+                            @foreach($item->images->take(1) as $image)
+                                <img src="/{{ $image->image }}" alt="img" class="br-tl-7">
+                            @endforeach
                         @else
                             <img src="/assets/images/no-image.jpg" alt="img" class="br-tl-7">
-                        @endif
+                        @endif --}}
+                        <div id="carousel-controls" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach($item->images as $image)
+                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                        <img src="/{{ $image->image }}" alt="img" class="d-block w-100" data-holder-rendered="true">
+                                    </div>
+                                @endforeach
+                            </div>
+                            <a class="carousel-control-prev" href="#carousel-controls" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-controls" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
                     </div>
                     <div class="col-md-12 col-lg-6  pl-0 ">
                         <div class="card-body p-8 about-con pabout">
@@ -78,20 +97,24 @@
             <h1>Other unit items of the same brand</h1>
         </div>
         <div class="row">
-            @foreach($item->brand->items->take(4) as $item)
-                @if($item->slug === $item->slug)
+            @foreach($item->brand->items->take(4) as $unit)
+                @if($item->slug === $unit->slug)
                 @else
                 <div class="col-md-6 cols-ms-12 col-lg-4">
                     <div class="card text-center">
-                        @if($item->image)
-                        <img src="/{{ $item->image->thumbnail }}" alt="img" class="br-tl-7 br-tr-7" >
+                        @if($unit->images->count() > 0)
+                            @if($unit->images)
+                                @foreach ($unit->images->take(1) as $image)
+                                    <img src="/{{ $image->thumbnail }}" alt="img" class="br-tl-7 br-tr-7" >
+                                @endforeach
+                            @endif
                         @else
                         <img src="/assets/images/no-image.jpg" alt="img" class="br-tl-7 br-tr-7" >
                         @endif
                         <div class="card-body">
-                            <h3 class="mb-3">{{ $item->name }}</h3>
+                            <h3 class="mb-3">{{ $unit->name }}</h3>
                             <p>I must explain to you how all this mistaken idea of denouncing pleasure and you a complete account of the system</p>
-                            <a href="{{ route('items.show',$item->slug) }}" class="btn btn-primary">View More</a>
+                            <a href="{{ route('items.show',$unit->slug) }}" class="btn btn-primary">View More</a>
                         </div>
                     </div>
                 </div>

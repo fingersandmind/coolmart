@@ -104,10 +104,11 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-6 col-6">
-                                <label class="form-label">Drop a valid Logo here</label>
+                                <label class="form-label">Drop a valid image here</label>
                                 <div class="col-lg-12 col-sm-12">
-                                    <input type="file" name="image" class="dropify @error('image') is-invalid @enderror" data-height="180"/>
-                                    @error('image')
+                                    <input type="file" name="images[]" class="dropify @error('images') is-invalid @enderror" 
+                                    data-height="180" multiple/>
+                                    @error('images')
                                         {{-- <span class="invalid-feedback" role="alert"> --}}
                                             <code style="color:red">{{ $message }}</code style="color:red">
                                         {{-- </span> --}}
