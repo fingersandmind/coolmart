@@ -10,16 +10,16 @@ class BrandRequest extends FormRequest
         'POST'  =>  [
             'name'          =>  'required|unique:brands|min:2:max:30',
             'description'   =>  '',
-            'logo'          =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=400, max_height=400',
+            'logo'          =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=500',
         ],
         'PUT'   =>  [
             // 'name'          =>  'required|unique:brands|min:2:max:30',
             'description'   =>  '',
-            'logo'          =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=400, max_height=400',
+            'logo'          =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=500',
         ],
         'PATCH' =>  [
             'description'   =>  '',
-            'logo'          =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=400, max_height=400',
+            'logo'          =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=500',
         ],
         'DELETE' => [],
     ];

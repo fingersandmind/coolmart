@@ -47,7 +47,13 @@ class BrandsController extends Controller
 
         $brand->persists($request);
 
-        return redirect()->route('brands.index')->withSuccess('Succesfully added!');
+        if($request->action == 'save')
+        {
+            return redirect()->route('brands.index')->withSuccess('Succesfully added!');
+        }elseif($request->action == 'continue')
+        {
+            return redirect()->route('brands.create')->withSuccess('Succesfully added!');
+        }
 
     }
 

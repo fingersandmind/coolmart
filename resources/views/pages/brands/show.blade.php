@@ -11,12 +11,20 @@
             </ol>
         </div>
         <div class="row row-cards">
+            <div class="col-md-12">
+                <div class="card"  style="background-image: url(/{{ $brand->logo }});    background-position: center; background-size:cover;">
+                    <div class="card-body text-center">
+                        <h1 class="mb-3 text-white heading-success"><strong>{{ ucfirst($brand->name) }}</strong></h1>
+                        <p class="mb-4 text-white">Air Conditioning</p>
+                    </div>
+                </div>
+            </div>
             <div class="col-lg-3">
                 <div class="row">
                     <div class="col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title"><h2 class="text-info"><strong>{{ ucfirst($brand->name) }}</strong></h2></div>
+                                <div class="card-title"><img src="/{{ $brand->logo }}" alt=""></div>
                             </div>
                             <div class="card-body">
                                 <small>Description:</small> <br>

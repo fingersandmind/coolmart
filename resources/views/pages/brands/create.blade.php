@@ -68,7 +68,8 @@
                     <div class="card-footer text-right">
                         <div class="flex">
                             <a href="javascript:void(0)" class="btn btn-link">Cancel</a>
-                            <button type="submit" class="btn btn-primary ml-auto">Send data</button>
+                            <button type="submit" name="action" value="save" class="btn btn-primary ml-auto">Submit</button>
+                            <button type="submit" name="action" value="continue" class="btn btn-info ml-auto">Save & Continue</button>
                         </div>
                     </div>
                 </form>

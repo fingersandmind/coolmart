@@ -17,9 +17,9 @@ trait UploadTrait
         }
     }
 
-    public function resizeImage($image, $height, $width)
+    public function resizeImage($image, $width, $height)
     {
-        Image::make(public_path($image))->fit($height, $width)->save();
+        Image::make(public_path($image))->fit($width, $height)->save();
     }
 
     public function uploadLogo($model, UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null)
@@ -28,7 +28,7 @@ trait UploadTrait
 
         $file = $uploadedFile->storeAs($folder, $filename.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
 
-        $this->resizeImage($file,250,250);
+        // $this->resizeImage($file,800,400);
 
         return $file;
     }

@@ -7,6 +7,7 @@ use App\Brand;
 use App\Type;
 use App\Category;
 use App\Http\Requests\ItemRequest;
+use App\Detail;
 
 class ItemController extends Controller
 {
@@ -17,7 +18,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::get();
+        $items = Item::with('details')->paginate(15);
 
         return view('pages.items.index', compact('items'));
     }
@@ -43,7 +44,6 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
-        // dd($request->all());
         $request->validated();
 
         $item = new Item();
@@ -86,6 +86,7 @@ class ItemController extends Controller
      */
     public function update(ItemRequest $request, Item $item)
     {
+        // dd($request->all());
         $request->validated();
 
         $item->persists($request);
@@ -102,6 +103,7 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         $item->deleteImage();
+        $item->details()->delete();
         $item->delete();
 
         return redirect()->route('items.index')->withSuccess('Successfully deleted!');

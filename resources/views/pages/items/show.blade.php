@@ -66,11 +66,15 @@
                         @endif --}}
                         <div id="carousel-controls" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
-                                @foreach($item->images as $image)
-                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                        <img src="/{{ $image->image }}" alt="img" class="d-block w-100" data-holder-rendered="true">
-                                    </div>
-                                @endforeach
+                                @if($item->images->count() > 0)
+                                    @foreach($item->images as $image)
+                                        <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                            <img src="/{{ $image->image }}" alt="img" class="d-block w-100" data-holder-rendered="true">
+                                        </div>
+                                    @endforeach
+                                @else   
+                                    <img src="/assets/images/no-image.jpg" alt="img" class="br-tl-7">
+                                @endif
                             </div>
                             <a class="carousel-control-prev" href="#carousel-controls" role="button" data-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -86,10 +90,40 @@
                         <div class="card-body p-8 about-con pabout">
                             <h2 class="mb-4 font-weight-semibold">{{ ucfirst($item->name) }}</h2>
                             <h4 class="leading-normal">majority have suffered alteration in some form, by injected humour</h4>
-                            <p class="leading-normal">{{ ucfirst($item->description) }}</p>
+                            {{-- <p class="leading-normal">{{ ucfirst($item->description) }}</p> --}}
                             <small><strong>Types: </strong></small><span class="tag tag-cyan">{{ $item->type->name }}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Details and Specifications</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap table-primary" >
+                            <thead  class="bg-primary text-white">
+                                <tr >
+                                    <th class="text-white">Name</th>
+                                    <th class="text-white">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($item->details)
+                                    @foreach($item->details as $detail)
+                                        <tr>
+                                            <td>{{ $detail->name }}</td>
+                                            <td>{{ $detail->description }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table-responsive -->
                 </div>
             </div>
         </div>

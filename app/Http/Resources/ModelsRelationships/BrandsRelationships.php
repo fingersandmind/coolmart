@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class BrandsRelationships extends JsonResource
 {
     /**
+     * Create a relationship of a Model.
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -15,8 +16,6 @@ class BrandsRelationships extends JsonResource
      */
     public function toArray($request)
     {
-        // return parent::toArray($request);
-
         return [
             'items' => [
                 'data' => ItemResource::collection($this->items)

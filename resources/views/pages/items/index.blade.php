@@ -40,7 +40,7 @@
                                             </a>
                                         </td>
                                         <td>{{ ucfirst($item->name) }}</td>
-                                        <td>{{ str_limit($item->description, $limit=30, $end='..') }}</td>
+                                        <td>{{ strip_tags(str_limit($item->description, $limit=30, $end='..')) }}</td>
                                         <td>{{ ucfirst($item->category->name) }}</td>
                                         <td>&#8369; {{ number_format($item->srp,2) }}</td>
                                         <td>&#8369; {{ number_format($item->cost,2) }}</td>

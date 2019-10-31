@@ -20,9 +20,19 @@ class Item extends Model
         return $this->belongsTo(Type::class);
     }
 
+    public function details()
+    {
+        return $this->belongsToMany(Detail::class);
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
     }
 
     public function getRouteKeyName()
@@ -34,9 +44,13 @@ class Item extends Model
     {
         return $this->morphMany(Image::class, 'imageable');
     }
-
     
-
+    /**
+     * function to persist item to create or update 
+     *
+     * 
+     * 
+     */
     public function persists($request)
     {
         $item = $this->updateOrCreate(
@@ -53,8 +67,10 @@ class Item extends Model
                 'qty'           => $request->qty
             ],
         );
-
+        //calls function to upload images
         $this->upload($item,$request);
+
+        $this->persistsDetails($item,$request);
     }
     
     public function deleteImage()
@@ -104,5 +120,26 @@ class Item extends Model
             );
         }
 
+    }
+
+    //Many to many relationship persists to create or update via $requests method
+
+    public function persistsDetails($item, $request)
+    {
+        if($request->method() == 'POST')
+        {
+            foreach(array_combine($request->names, $request->descriptions) as $name => $desc)
+            {
+                $item->details()->create(['name'=>$name, 'description' => $desc]);
+            }
+        }elseif($request->method() == 'PUT' || $request->method() == 'PATCH')
+        {
+            $item->details()->delete();
+            foreach(array_combine($request->names, $request->descriptions) as $name => $desc)
+            {
+                $item->details()->create(['name'=>$name, 'description' => $desc]);
+            }
+        }
+        
     }
 }

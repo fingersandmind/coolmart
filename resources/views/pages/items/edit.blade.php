@@ -83,17 +83,6 @@
                                     placeholder="name" value="{{ $item->slug }}" readonly disabled>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="6" 
-                                    placeholder="text here..">{{ old('description') ?? $item->description }}</textarea>
-                                    @error('description')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6 col-lg-6 col-6">
                                         <div class="form-group">
@@ -130,6 +119,18 @@
                             </div>
                         </div>
                         <div class="col-12">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="description @error('description') is-invalid @enderror" name="description" rows="6" 
+                                placeholder="text here..">{{ old('description') ?? $item->description }}</textarea>
+                                @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="card item-card">
                                 <div class="card-body">
                                     <div class="border p-0">
@@ -145,6 +146,58 @@
                                             @else
                                                 <img src="/assets/images/no-image.jpg" alt="img" class="img-fluid">
                                             @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-header justify-content-between">
+                                    <h2 class="card-title"><strong>Update Details and Specifications</strong></h2>
+                                    <div class="d-flex">
+                                        <button id="add" type="button" class="btn btn-primary">More <i class="fa fa-plus fa-spin ml-2"></i></button>
+                                        <button id="remove" type="button" class="btn btn-danger">Delete <i class="fa fa-trash fa-spin ml-2"></i></button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-4 col-md-4">
+                                            <h4>Name</h4>
+                                            <div class="form-group"  id="details">
+                                                @php
+                                                    $index_name = 1;
+                                                    $index_desc = 1;
+                                                @endphp
+                                                @if($item->details)
+                                                    @foreach($item->details as $detail)
+                                                        {{-- <label id="lname_{{ $index_name }}" class="form-label">Name</label> --}}
+                                                        <input type="text" id="name_{{ $index_name }}" value="{{ $detail->name }}" class="form-control" name="names[]" minlength="2" maxlength="30" placeholder="Name">
+                                                        @php
+                                                            $index_name++;
+                                                        @endphp
+                                                    @endforeach
+                                                @endif
+                                                <div id="name_input"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-8 col-md-8">
+                                            <h4>Description</h4>
+                                            <div class="form-group">
+                                                @if($item->details)
+                                                    @foreach($item->details as $detail)
+                                                        {{-- <label id="ldesc_{{ $index_desc }}" class="form-label">Description</label> --}}
+                                                        <div class="justify-content-between d-flex">
+                                                            <input id="desc_{{ $index_desc }}" value="{{ $detail->description }}" type="text" class="form-control" name="descriptions[]" minlength="2" maxlength="40" placeholder="Description">
+                                                            <button id="removeCol" onclick="javascript:removeColumn({{ $index_desc }});"type="button" class="btn btn-danger btn_{{ $index_desc }}"><i class="fa fa-trash"></i></button>
+                                                        </div>
+                                                        @php
+                                                            $index_desc++;
+                                                        @endphp
+                                                    @endforeach
+                                                @endif
+                                                <div id="desc_input"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -166,8 +219,16 @@
 
 @push('additionalCSS')
     <link href="{{ asset('assets/plugins/fileuploads/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/wysiwyag/richtext.css') }}" rel="stylesheet" />
 @endpush
 
 @push('additionalJS')
+    <script src="{{ asset('assets/plugins/wysiwyag/jquery.richtext.js') }}"></script>
     @include('pages.page-partials.dropify')
+    <script>
+        $(function(e) {
+            $('.description').richText();
+        });
+    </script>
+    @include('pages.items.item-partials.editDetailsScripts')
 @endpush

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Items;
 
+use App\Http\Resources\ModelsRelationships\ItemsRelationship;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ItemResource extends JsonResource
@@ -30,6 +31,7 @@ class ItemResource extends JsonResource
                 'brand_id'  => (string)$this->brand_id,
                 'type_id'  => (string)$this->type_id
             ],
+            'relationships' => new ItemsRelationship($this),
             'links' => [
                 'self' => url('/api/items',$this->slug)
             ]

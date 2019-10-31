@@ -70,17 +70,6 @@
                                     placeholder="name" readonly disabled>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" rows="6" 
-                                    placeholder="text here..">{{ old('description') }}</textarea>
-                                    @error('description')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-
                                 <div class="row">
                                     <div class="col-md-6 col-sm-6 col-lg-6 col-6">
                                         <div class="form-group">
@@ -115,6 +104,47 @@
                                     @enderror
                                 </div>
                             </div>
+                            
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="description @error('description') is-invalid @enderror" name="description" rows="6" 
+                                    placeholder="text here..">{{ old('description') }}</textarea>
+                                    @error('description')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-12">
+                                <div class="card">
+                                    <div class="card-header justify-content-between">
+                                        <h2 class="card-title"><strong>Add Details and Specifications</strong></h2>
+                                        <div class="d-flex">
+                                            <button id="add" type="button" class="btn btn-primary">More <i class="fa fa-plus fa-spin ml-2"></i></button>
+                                            <button id="remove" type="button" class="btn btn-danger">Delete <i class="fa fa-trash fa-spin ml-2"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6 col-md-6">
+                                                <h4>Name</h4>
+                                                <div class="form-group"  id="details">
+                                                    <div id="name_input"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 col-md-6">
+                                                <h4>Description</h4>
+                                                <div class="form-group">
+                                                    <div id="desc_input"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-footer text-right">
@@ -132,8 +162,17 @@
 
 @push('additionalCSS')
     <link href="{{ asset('assets/plugins/fileuploads/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/wysiwyag/richtext.css') }}" rel="stylesheet" />
 @endpush
 
 @push('additionalJS')
+    <script src="{{ asset('assets/plugins/wysiwyag/jquery.richtext.js') }}"></script>
     @include('pages.page-partials.dropify')
+    @include('pages.items.item-partials.addDetailsScripts')
+
+    <script>
+        $(function(e) {
+            $('.description').richText();
+        });
+    </script>
 @endpush

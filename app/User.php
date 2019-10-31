@@ -26,6 +26,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *

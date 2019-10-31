@@ -30,6 +30,11 @@ class AuthController extends Controller
         return $response;
     }
 
+    public function checkEmailIfExists($email)
+    {
+        return User::whereEmail($email)->exists();
+    }
+
     /**
      * Get a JWT via given credentials.
      *
@@ -38,9 +43,19 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
+        $email = request('email');
 
-        if (! $token = $this->guard()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        
+        try {
+            if (!$token = $this->guard()->attempt($credentials)) {
+                if($this->checkEmailIfExists($email))
+                {
+                    return response()->json(['error' => 'The Password you\'ve entered is incorrect! '], 400);
+                }
+                return response()->json(['error' => 'Email doesn\'t match any account!'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Could not create token'], 500);
         }
 
         return $this->respondWithToken($token);
