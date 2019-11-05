@@ -61,7 +61,7 @@ class Item extends Model
     }
 
     /**
-     * @return if has discount, discountedPrice : originalPrice
+     * @return discountedPrice if has discount : originalPrice
      */
     public function accuratePrice()
     {
@@ -78,7 +78,6 @@ class Item extends Model
             }
         }
 
-        // return $price;
         return $this->discount ? $price : $this->srp;
     }
 
@@ -95,14 +94,10 @@ class Item extends Model
     {
         return $this->morphOne(Discount::class, 'discountable');
     }
-
-    public function addDiscount()
-    {
-
-    }
     
     /**
      * function to persist item to create or update 
+     * @param   Request $request
      * 
      */
     public function persists($request)
@@ -183,7 +178,6 @@ class Item extends Model
      * @param App/Item $item
      * @param Request $request
      * 
-     * return
      */
 
     public function persistsDetails($item, $request)
