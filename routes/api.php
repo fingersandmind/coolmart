@@ -19,20 +19,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController');
+
     Route::resource('items', 'Api\ItemsController');
+
     Route::resource('types', 'Api\TypesController');
+
     Route::resource('details', 'Api\DetailController');
 
-    Route::post('test', 'Api\CartController@store');
-    
-    // Route::group(['middleware' => ['auth:api']], function () {
-        Route::resource('cart', 'Api\CartController');
-    // });
+    Route::resource('categories', 'Api\CategoriesController');
 
+    Route::get('terms', 'Api\TermsController@index');
+
+    Route::get('faqs', 'Api\FaqsController@index');
 
     Route::post('register', 'Api\AuthController@register');
     Route::post('login', 'Api\AuthController@login');
     Route::post('logout', 'Api\AuthController@logout');
+    
+    Route::resource('cart', 'Api\CartController');
 });
 
 Route::fallback(function(){

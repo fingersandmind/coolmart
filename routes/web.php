@@ -16,15 +16,16 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth'], function(){
-    Route::get('/', function () {
-        return view('pages.index');
-    })->name('dashboard');
-
+    Route::get('/','AdminController@index')->name('dashboard');
     Route::resource('items', 'ItemController');
     Route::resource('brands', 'BrandsController');
     Route::resource('categories', 'CategoryController');
     Route::resource('types', 'TypeController');
     Route::resource('transactions', 'TransactionController');
+    Route::resource('faqs', 'FaqController');
+    Route::resource('terms', 'TermController');
+    Route::post('items/{item}', 'ItemController@applyDiscount')->name('item.discount');
+    Route::delete('items/{item}', 'ItemController@removeDiscount')->name('discount.destroy');
 
 
 

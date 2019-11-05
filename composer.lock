@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3bd073174cca41f8464bacde2629985f",
+    "content-hash": "332cf5cd2de6fbaac8f72d5a7e7e15a9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3590,6 +3590,66 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2017-11-27T11:13:29+00:00"
+        },
+        {
+            "name": "tucker-eric/eloquentfilter",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tucker-Eric/EloquentFilter.git",
+                "reference": "7a66e33355857ae001c3e7e17db0f76d13667532"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tucker-Eric/EloquentFilter/zipball/7a66e33355857ae001c3e7e17db0f76d13667532",
+                "reference": "7a66e33355857ae001c3e7e17db0f76d13667532",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "^6.0",
+                "illuminate/console": "^6.0",
+                "illuminate/database": "^6.0",
+                "illuminate/filesystem": "^6.0",
+                "illuminate/pagination": "^6.0",
+                "illuminate/support": "^6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.5",
+                "phpunit/phpunit": "~5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "EloquentFilter\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EloquentFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Tucker",
+                    "email": "tucker.ericm@gmail.com"
+                }
+            ],
+            "description": "An Eloquent way to filter Eloquent Models",
+            "keywords": [
+                "eloquent",
+                "filter",
+                "laravel",
+                "model",
+                "query",
+                "search"
+            ],
+            "time": "2019-09-05T16:11:55+00:00"
         },
         {
             "name": "tymon/jwt-auth",

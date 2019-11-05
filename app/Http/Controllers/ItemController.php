@@ -6,8 +6,8 @@ use App\Item;
 use App\Brand;
 use App\Type;
 use App\Category;
+use Illuminate\Http\Request;
 use App\Http\Requests\ItemRequest;
-use App\Detail;
 
 class ItemController extends Controller
 {
@@ -91,7 +91,44 @@ class ItemController extends Controller
 
         $item->persists($request);
         
-        return redirect()->route('items.show',$item->slug)->withSuccess('Successfully updated!');
+        return redirect()->route('items.show', $request->slug)->withSuccess('Successfully updated!');
+    }
+    /**
+     * Applying Discount for Items
+     * @param Request $request
+     * @param App\Item $item
+     * 
+     * @return \Illuminate\Http\Response
+     */
+
+    public function applyDiscount(Request $request, Item $item)
+    {
+        $request->validate([
+            'name' => 'required|min:2|max:20',
+            'type' => 'required',
+            'percent_off' => 'sometimes:required:numeric|between:1,100',
+            'amount' => 'sometimes:required:numeric',
+        ]);
+        $amount = $request->type == 'cash_off' ? $request->amount : 0;
+        $percentage = $request->type == 'percentage' ? $request->percent_off : 0;
+
+        $item->discount()->updateOrCreate(
+            ['discountable_id' => $item->id],
+            [
+                'name' => $request->name,
+                'type' => $request->type,
+                'percent_off' => $percentage,
+                'amount' => $amount
+            ]
+        );
+
+        return redirect()->route('items.show', $item->slug)->withSuccess('Discount applied!');
+    }
+
+    public function removeDiscount(Item $item)
+    {
+        $item->discount->delete();
+        return redirect()->route('items.show', $item->slug)->withSuccess('Discount deleted!');
     }
 
     /**

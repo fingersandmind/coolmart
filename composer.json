@@ -17,6 +17,7 @@
         "laravel/helpers": "^1.1",
         "laravel/tinker": "^1.0",
         "realrashid/sweet-alert": "^2.0",
+        "tucker-eric/eloquentfilter": "^2.0",
         "tymon/jwt-auth": "^1.0.0"
     },
     "require-dev": {

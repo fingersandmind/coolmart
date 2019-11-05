@@ -1,7 +1,7 @@
 <div class="header py-1">
     <div class="container">
         <div class="d-flex">
-            <a class="header-brand" href="index-2.html">
+            <a class="header-brand" href="{{ route('dashboard') }}">
                 <img src="{{ asset('assets/images/brand/logo.png') }}" class="header-brand-img" alt="Viboon logo">
             </a>
             <div class=" ">

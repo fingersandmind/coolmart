@@ -18,6 +18,8 @@ class ItemRequest extends FormRequest
             'cost'          =>  'required|numeric|min:2',
             'qty'           =>  'required|numeric',
             'images.*'      =>  'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=1000',
+            'names.*'       =>  'required',
+            'description.*' =>  'required'
         ],
         'PUT' => [
             'brand'         =>  'required',
@@ -29,6 +31,8 @@ class ItemRequest extends FormRequest
             'cost'          =>  'required|numeric|min:2',
             'qty'           =>  'required|numeric',
             'images.*'      =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=1000',
+            'names.*'       =>  'required',
+            'description.*' =>  'required'
         ],
         'PATCH' => [
             'brand'         =>  'required',
@@ -40,6 +44,8 @@ class ItemRequest extends FormRequest
             'cost'          =>  'required|numeric|min:2',
             'qty'           =>  'required|numeric',
             'images.*'      =>  'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:min_width=50, min_height=50, max_width=1000, max_height=1000',
+            'names.*'       =>  'required',
+            'description.*' =>  'required'
         ],
         'DELETE' => []
     ];

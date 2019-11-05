@@ -26,10 +26,13 @@ class ItemResource extends JsonResource
                 'description'   => $this->description,
                 'images' => $this->images->pluck('image'),
                 'thumbnails' => $this->images->pluck('thumbnail'),
+                'discountedSrp'   => number_format($this->accuratePrice()),
                 'srp'   => number_format($this->srp),
+                'discountType' => $this->discountType(),
                 'qty'   => (string)$this->qty,
                 'brand_id'  => (string)$this->brand_id,
-                'type_id'  => (string)$this->type_id
+                'type_id'  => (string)$this->type_id,
+                'category_id' => (string)$this->category_id,
             ],
             'relationships' => new ItemsRelationship($this),
             'links' => [

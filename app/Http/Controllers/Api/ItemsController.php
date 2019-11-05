@@ -15,13 +15,13 @@ class ItemsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::with('brand','type', 'images')->paginate(15);
+        $items = Item::filter($request->all())->with('brand','type', 'images')->paginate(15);
 
         return new ItemsResource($items);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *

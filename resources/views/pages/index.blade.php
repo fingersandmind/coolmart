@@ -6,10 +6,8 @@
         <div class="page-header">
             <h4 class="page-title">Dashboard</h4>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard 01</li>
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             </ol>
-            <button type="button" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Edit Page</button>
         </div>
 
         <div class="row row-cards">
@@ -18,9 +16,9 @@
                     <div class="card-body">
                         <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal  mb-3">Total Brands
-                            <i class="fa fa-user-o fs-30 float-right"></i>
+                            <i class="fa fa-steam-square fs-30 float-right"></i>
                         </h4>
-                        <h2 class="mb-0">9</h2>
+                        <h2 class="mb-0">{{ $brandCount }}</h2>
                     </div>
                 </div>
             </div>
@@ -28,10 +26,10 @@
                 <div class="card bg-warning card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal  mb-3">Unit Models
-                            <i class="fa fa-heart-o fs-30 float-right"></i>
+                        <h4 class="font-weight-normal  mb-3">Unit Models/Items
+                            <i class="fa fa-cubes fs-30 float-right"></i>
                         </h4>
-                        <h2 class="mb-0">187</h2>
+                        <h2 class="mb-0">{{ $itemCount }}</h2>
                     </div>
                 </div>
             </div>
@@ -39,10 +37,10 @@
                 <div class="card bg-info card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Comments
-                            <i class="fa fa-comment-o fs-30 float-right"></i>
+                        <h4 class="font-weight-normal mb-3">Reviews
+                            <i class="fa fa-spin fa-thumbs-o-down fs-30 float-right"></i>
                         </h4>
-                        <h2 class="mb-0">78</h2>
+                        <h2 class="mb-0">0</h2>
                     </div>
                 </div>
             </div>
@@ -50,10 +48,10 @@
                 <div class="card bg-success card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/circle.svg" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal  mb-3">Posts
-                            <i class="fa fa-paper-plane-o fs-30 float-right"></i>
+                        <h4 class="font-weight-normal  mb-3">Customers
+                            <i class="fa fa-group fs-30 float-right"></i>
                         </h4>
-                        <h2 class="mb-0">345</h2>
+                        <h2 class="mb-0">{{ $userCount }}</h2>
                     </div>
                 </div>
             </div>

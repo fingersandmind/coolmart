@@ -121,7 +121,7 @@
                             <div class="col-md-12 col-lg-12">
                                 <div class="card">
                                     <div class="card-header justify-content-between">
-                                        <h2 class="card-title"><strong>Add Details and Specifications</strong></h2>
+                                        <h4>Add Details and Specifications <small class="text-muted">(required*)</small></h4>
                                         <div class="d-flex">
                                             <button id="add" type="button" class="btn btn-primary">More <i class="fa fa-plus fa-spin ml-2"></i></button>
                                             <button id="remove" type="button" class="btn btn-danger">Delete <i class="fa fa-trash fa-spin ml-2"></i></button>
@@ -132,12 +132,16 @@
                                             <div class="col-6 col-md-6">
                                                 <h4>Name</h4>
                                                 <div class="form-group"  id="details">
+                                                        <input type="text" value="{{ old('name') }}" class="form-control" name="names[]" minlength="2" maxlength="50" placeholder="Name" required>
                                                     <div id="name_input"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6 col-md-6">
                                                 <h4>Description</h4>
                                                 <div class="form-group">
+                                                    <div class="justify-content-between d-flex">
+                                                        <input value="{{ old('description') }}" type="text" class="form-control" name="descriptions[]" minlength="2" maxlength="100" placeholder="Description" required>
+                                                    </div>
                                                     <div id="desc_input"></div>
                                                 </div>
                                             </div>

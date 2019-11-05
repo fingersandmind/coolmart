@@ -2,12 +2,19 @@
 
 namespace App;
 
+use App\ModelFilters\ItemFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UploadTrait;
+use EloquentFilter\Filterable;
 
 class Item extends Model
 {
-    use UploadTrait;
+    use UploadTrait, Filterable;
+
+    public function modelFilter()
+    {
+        return $this->provideFilter(ItemFilter::class);
+    }
     protected $fillable = ['brand_id', 'type_id', 'category_id', 'name', 'slug', 'description', 'srp', 'cost', 'qty'];
 
     public function brand()
@@ -39,16 +46,63 @@ class Item extends Model
     {
         return 'slug';   
     }
+    /**
+     * @return TypeOfDiscount and the value, if none, @return null.
+     */
+    public function discountType()
+    {
+        $type = '';
+        if($this->discount)
+        {
+            $type = $this->discount->type == 'cash_of' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
+        }
+
+        return $this->discount ? $type : null;
+    }
+
+    /**
+     * @return if has discount, discountedPrice : originalPrice
+     */
+    public function accuratePrice()
+    {
+        $price = 0;
+        if($this->discount)
+        {
+            if($this->discount->type == 'cash_off')
+            {
+                $price = $this->srp - $this->discount->amount;
+            }elseif($this->discount->type == 'percentage')
+            {
+                $discount = ($this->discount->percent_off / 100) * $this->srp;
+                $price = $this->srp - $discount;
+            }
+        }
+
+        // return $price;
+        return $this->discount ? $price : $this->srp;
+    }
+
+    /**
+     * Can have multiple images using polymorphic relations
+     */
 
     public function images()
     {
         return $this->morphMany(Image::class, 'imageable');
     }
+
+    public function discount()
+    {
+        return $this->morphOne(Discount::class, 'discountable');
+    }
+
+    public function addDiscount()
+    {
+
+    }
     
     /**
      * function to persist item to create or update 
-     *
-     * 
      * 
      */
     public function persists($request)
@@ -84,6 +138,9 @@ class Item extends Model
             }
         }
     }
+    /**
+     * upload or update multiple Images using Trait
+     */
 
     public function upload($item, $request)
     {
@@ -122,7 +179,12 @@ class Item extends Model
 
     }
 
-    //Many to many relationship persists to create or update via $requests method
+    /**
+     * @param App/Item $item
+     * @param Request $request
+     * 
+     * return
+     */
 
     public function persistsDetails($item, $request)
     {

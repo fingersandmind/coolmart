@@ -163,6 +163,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        EloquentFilter\ServiceProvider::class,
 
 
         /*

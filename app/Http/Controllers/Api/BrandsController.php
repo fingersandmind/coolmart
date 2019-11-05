@@ -17,7 +17,7 @@ class BrandsController extends Controller
      */
     public function index()
     {
-        $brands = Brand::with('items')->paginate(15);
+        $brands = Brand::with('items')->get();
 
         return new BrandsResource($brands);
     }

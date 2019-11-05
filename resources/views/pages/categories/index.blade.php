@@ -43,7 +43,7 @@
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown">
-                                                        <i class="fa fa-cogs mr-2"></i>Actions
+                                                        <i class="fa fa-spin fa-cogs mr-2"></i>Actions
                                                     </button>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" >View</a>

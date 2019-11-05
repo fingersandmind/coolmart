@@ -16,8 +16,14 @@
                 <li class="breadcrumb-item"><a href="{{ route('items.index') }}">items</a></li>
                 <li class="breadcrumb-item active" aria-current="page">View</li>
             </ol>
-            <a href="{{ route('items.edit',$item->slug) }}" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Edit</a>
+            <div class="text-right">
+                    <a href="#discount" data-toggle="modal" class="btn btn-outline-warning"><i class="fa fa-tags mr-2"></i>{{ $item->discount ? 'Update New Discount' : 'Apply Discount' }}</a>
+                <a href="{{ route('items.edit',$item->slug) }}" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Update Item</a>
+            </div>
         </div>
+
+        {{-- Modal for discount --}}
+        @include('pages.items.item-partials.discount-modal')
         <div class="row ">
             <div class="col-md-4 features">
                 <div class="card feature">
@@ -34,10 +40,17 @@
                 <div class="card feature">
                     <div class="card-body text-center">
                         <div class="fa-stack fa-lg fa-1x border bg-primary mb-3">
-                            <i class="fa fa-usd fa-stack-1x text-white"></i>
+                                ₱
                         </div>
-                        <h5>Suggested Retail Price</h5>
-                        <h2 class="counter"> {{ number_format($item->srp) }}</h2>
+                        <h5>Suggested Retail Price <small>{{ $item->discount ? '('.$item->discount->name . ')' : '' }}</small></h5>
+                        <div class="justify-content-between">
+                            @if($item->discount)
+                            <h6 class="counter" style="text-decoration:line-through;">{{ number_format($item->srp,2) }}</h6>
+                            <h2 class="counter">{{ number_format($item->accuratePrice(),2) }}</h2>
+                            @else
+                            <h2 class="counter">{{ number_format($item->accuratePrice(),2) }}</h2>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,7 +58,7 @@
                 <div class="card feature">
                     <div class="card-body text-center">
                         <div class="fa-stack fa-lg fa-1x border bg-primary mb-3">
-                            <i class="fa fa-usd fa-stack-1x text-white"></i>
+                                ₱
                         </div>
                         <h5>Cost</h5>
                         <h2 class="counter"> {{ number_format($item->cost) }}</h2>
@@ -53,17 +66,19 @@
                 </div>
             </div>
         </div>
+        @if($item->discount)
+            <div class="text-right">
+                <form action="{{ route('discount.destroy', $item->slug) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this?');" class="btn btn-outline-danger"><i class="fa fa-tags mr-2"></i>Remove Discount</button>
+                </form>
+            </div>
+        @endif
         <div class="">
             <div class="card">
                 <div class="row">
                     <div class="col-md-12 col-lg-6 pr-0 d-none d-lg-block">
-                        {{-- @if($item->images->count() > 0)
-                            @foreach($item->images->take(1) as $image)
-                                <img src="/{{ $image->image }}" alt="img" class="br-tl-7">
-                            @endforeach
-                        @else
-                            <img src="/assets/images/no-image.jpg" alt="img" class="br-tl-7">
-                        @endif --}}
                         <div id="carousel-controls" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
                                 @if($item->images->count() > 0)
@@ -165,4 +180,45 @@
     <script>
         $('.counter').countUp();
     </script>
+    <script>
+        function cash_off()
+        {
+            var $label = '<label id="modal-label" for="name" class="form-control-label @error("name") is-invalid @enderror">Cash Off</label>'
+            var $input = '<input id="modal-input" type="number" name="amount" class="form-control" value="{{ old("name") }}" id="cash_off" required>'
+            
+            $("#input-label").append($label);
+            $("#input-type").append($input);
+        }
+
+        function percentage()
+        {
+            var $label = '<label id="modal-label" for="name" class="form-control-label @error("name") is-invalid @enderror">Percentage</label>'
+            var $input = '<input id="modal-input" type="number" name="percent_off" class="form-control" value="{{ old("name") }}" id="percentage" required>'
+            
+            $("#input-label").append($label);
+            $("#input-type").append($input);
+        }
+
+        $(document).ready(function(){
+            $("#type").on('change', function(){
+                var val = $("#type").val();
+                $("#modal-label").remove();
+                $("#modal-input").remove();
+                if(val == 'cash_off')
+                {
+                    cash_off();
+                }else if(val == 'percentage')
+                {
+                    percentage();
+                }
+            });
+        });
+    </script>
+    @error('*')
+        <script>
+            $(function() {
+                $( "#discount" ).modal('show');
+            });
+        </script>
+    @enderror
 @endpush

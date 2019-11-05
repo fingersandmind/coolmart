@@ -172,7 +172,7 @@
                                                 @if($item->details)
                                                     @foreach($item->details as $detail)
                                                         {{-- <label id="lname_{{ $index_name }}" class="form-label">Name</label> --}}
-                                                        <input type="text" id="name_{{ $index_name }}" value="{{ $detail->name }}" class="form-control" name="names[]" minlength="2" maxlength="30" placeholder="Name">
+                                                        <input type="text" id="name_{{ $index_name }}" value="{{ $detail->name }}" class="form-control" name="names[]" minlength="2" maxlength="50" placeholder="Name">
                                                         @php
                                                             $index_name++;
                                                         @endphp
@@ -188,7 +188,7 @@
                                                     @foreach($item->details as $detail)
                                                         {{-- <label id="ldesc_{{ $index_desc }}" class="form-label">Description</label> --}}
                                                         <div class="justify-content-between d-flex">
-                                                            <input id="desc_{{ $index_desc }}" value="{{ $detail->description }}" type="text" class="form-control" name="descriptions[]" minlength="2" maxlength="40" placeholder="Description">
+                                                            <input id="desc_{{ $index_desc }}" value="{{ $detail->description }}" type="text" class="form-control" name="descriptions[]" minlength="2" maxlength="100" placeholder="Description">
                                                             <button id="removeCol" onclick="javascript:removeColumn({{ $index_desc }});"type="button" class="btn btn-danger btn_{{ $index_desc }}"><i class="fa fa-trash"></i></button>
                                                         </div>
                                                         @php
