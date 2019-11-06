@@ -54,7 +54,7 @@ class Item extends Model
         $type = '';
         if($this->discount)
         {
-            $type = $this->discount->type == 'cash_of' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
+            $type = $this->discount->type == 'cash_off' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
         }
 
         return $this->discount ? $type : null;

@@ -13,7 +13,7 @@
             
         </div>
         <div class="row">
-            <div class="col-md-8 col-lg-8">
+            <div class="col-md-12 col-lg-12">
                 <div class="card">
                     <div class="card-header justify-content-between">
                         <div class="card-title">Unit Categories</div>
@@ -39,7 +39,7 @@
                                             <td>{{ $category->id }}</td>
                                             <td>{{ ucfirst($category->name) }}</td>
                                             <td>{{ $category->slug }}</td>
-                                            <td>{{ $category->description }}</td>
+                                            <td>{{ str_limit($category->description, $limit=50, $end='...') }}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" class="btn btn-info dropdown-toggle btn-sm" data-toggle="dropdown">
@@ -66,26 +66,6 @@
                 </div>
             <!-- section-wrapper -->
 
-            </div>
-            <div class="col-4">
-                <div class="card">
-                    <div class="card-header justify-content-between">
-                        <h3 class="card-title">Unit Types</h3>
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#addType">
-                            <i class="fa fa-plus mr-2"></i>Add Type
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            @foreach ($types as $type)
-                                <li class="list-group-item justify-content-between d-flex align-items-center">
-                                    <button class="btn btn-info">{{ $type->name }}</button>
-                                    <span class="badgetext badge badge-primary badge-pill">14</span>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

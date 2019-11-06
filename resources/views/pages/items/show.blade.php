@@ -61,7 +61,7 @@
                                 ₱
                         </div>
                         <h5>Cost</h5>
-                        <h2 class="counter"> {{ number_format($item->cost) }}</h2>
+                        <h2 class="counter"> {{ number_format($item->cost,2) }}</h2>
                     </div>
                 </div>
             </div>

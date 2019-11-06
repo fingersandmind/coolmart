@@ -23,7 +23,6 @@
                                 <tr>
                                     <th class="wd-10p">Brand</th>
                                     <th class="wd-10p">Model</th>
-                                    <th class="wd-15p">Description</th>
                                     <th class="wd-10p">Category</th>
                                     <th class="wd-10p">Srp</th>
                                     <th class="wd-10p">Cost</th>
@@ -39,10 +38,15 @@
                                                 {{ ucfirst($item->brand->name) }}
                                             </a>
                                         </td>
-                                        <td>{{ ucfirst($item->name) }}</td>
-                                        <td>{{ strip_tags(str_limit($item->description, $limit=30, $end='..')) }}</td>
+                                        <td><a href="{{ route('items.show', $item->slug) }}">{{ ucfirst($item->name) }}</a></td>
+                                        {{-- <td>{{ strip_tags(str_limit($item->description, $limit=30, $end='..')) }}</td> --}}
                                         <td>{{ ucfirst($item->category->name) }}</td>
-                                        <td>&#8369; {{ number_format($item->srp,2) }}</td>
+                                        <td>&#8369; {{ number_format($item->accuratePrice(),2) }}
+                                            @if($item->discount)
+                                            - <small style="text-decoration:line-through">&#8369;{{ number_format($item->srp,2) }}</small>
+                                            <span class="tag {{ $item->discount->type == 'percentage' ? 'tag-orange' : 'tag-purple' }}"><small>{{ $item->discount->name }}</small></span>
+                                            @endif
+                                        </td>
                                         <td>&#8369; {{ number_format($item->cost,2) }}</td>
                                         <td>{{ $item->qty }}</td>
                                         <td>

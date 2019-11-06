@@ -31,6 +31,23 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Cart::class);
     }
 
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::created(function($user){
+    //         $user->profile()->create([
+    //             'about' =>  'Edit Me!',
+    //             'title' =>  'Member!',
+    //         ]);
+    //     });
+    // }
+
     /**
      * The attributes that are mass assignable.
      *

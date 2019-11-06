@@ -69,8 +69,10 @@
                                 <div class="card item-card">
                                     <div class="card-body pb-0">
                                         <div class="text-center">
-                                            @if($item->image)
-                                                <img src="/{{ $item->image->thumbnail }}" alt="img" class="img-fluid">
+                                            @if($item->images)
+                                                @foreach($item->images->take(1) as $itemImage)
+                                                    <img src="/{{ $itemImage->thumbnail }}" alt="img" class="img-fluid">
+                                                @endforeach
                                             @else
                                                 <img src="/assets/images/no-image.jpg" alt="img" class="img-fluid">
                                             @endif
@@ -78,15 +80,20 @@
                                         </div>
                                         <div class="card-body cardbody">
                                             <div class="cardtitle">
+                                                @if($item->discount)
+                                                <br>
+                                                @endif
                                                 <a><span>SRP:</span></a>
                                                 <a><span>Cost:</span></a>
                                                 <a>Quantity:</a>
                                             </div>
                                             <div class="cardprice">
-                                                {{-- <span class="type--strikethrough">$999</span> --}}
-                                                <span>${{ $item->srp }}</span>
-                                                <span>${{ $item->cost }}</span>
-                                                <span><small>{{ $item->qty }}</small></span>
+                                                @if($item->discount)
+                                                <span class="type--strikethrough"><small>₱{{ number_format($item->srp) }}</small></span>
+                                                @endif
+                                                <span>₱{{ number_format($item->accuratePrice()) }}</span>
+                                                <span>₱{{ number_format($item->cost) }}</span>
+                                                <span>{{ $item->qty }}</span>
                                             </div>
                                         </div>
                                         <a class="btn btn-link" href="{{ route('items.show', $item->slug) }}">View Details</a>

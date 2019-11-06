@@ -92,10 +92,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if($category->models->count() > 0)
+        if($category->items->count() > 0)
         {
             return redirect()->route('categories.index')->withError('Can\'t delete category associated by unit models');
         }
+
         $category->delete();
 
         return redirect()->route('categories.index')->withSuccess('Successfully deleted!');

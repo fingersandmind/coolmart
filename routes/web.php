@@ -1,19 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes([
+    'register' => false
+]);
 
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/','AdminController@index')->name('dashboard');
@@ -24,11 +15,17 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('transactions', 'TransactionController');
     Route::resource('faqs', 'FaqController');
     Route::resource('terms', 'TermController');
+    Route::resource('profile', 'ProfileController');
+
+    /**
+     * Route for item discounts
+     */
     Route::post('items/{item}', 'ItemController@applyDiscount')->name('item.discount');
     Route::delete('items/{item}', 'ItemController@removeDiscount')->name('discount.destroy');
 
-
-
+    /**
+     * Transactions
+     */
     Route::get('/transaction-history', function(){
         return view('pages.history.index');
     })->name('transaction.history');
@@ -36,6 +33,9 @@ Route::group(['middleware' => 'auth'], function(){
         return view('pages.forms.create');
     });
 
+    /**
+     * Invoice
+     */
     Route::get('invoice', function () {
         return view('invoice.orders');
     });

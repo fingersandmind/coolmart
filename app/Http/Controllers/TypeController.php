@@ -37,7 +37,13 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:2|max:25',
+            'description' => 'required|min:2|max:50'
+        ]);
+        Type::create($request->all());
+
+        return redirect()->route('types.index')->withSuccess('Successfully created!');
     }
 
     /**
@@ -59,7 +65,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        
     }
 
     /**
@@ -82,6 +88,12 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        if($type->items->count() > 0)
+        {
+            return redirect()->route('types.index')->withError('Can\'t delete type associated with Items!');
+        }
+        $type->delete();
+
+        return redirect()->route('types.index')->withSuccess('Successfully deleted!');
     }
 }

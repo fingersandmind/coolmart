@@ -10,13 +10,13 @@ class CategoryRequest extends FormRequest
         'POST' => [
             'name'          =>  'required|min:2,max:25|unique:categories',
             'slug'          =>  'unique:categories',
-            'description'   =>  ''
+            'description'   =>  'sometimes|max:255'
         ],
         'PUT' => [
-            'description'   =>  ''
+            'description'   =>  'sometimes|max:255'
         ],
         'PATCH' => [
-            'description'   =>  ''
+            'description'   =>  'sometimes|max:255'
         ],
         'DELETE' => []
     ];
