@@ -10,43 +10,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
-
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
-
-    public function carts()
-    {
-        return $this->hasMany(Cart::class);
-    }
-
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    // protected static function boot()
-    // {
-    //     parent::boot();
-
-    //     static::created(function($user){
-    //         $user->profile()->create([
-    //             'about' =>  'Edit Me!',
-    //             'title' =>  'Member!',
-    //         ]);
-    //     });
-    // }
+    const ADMIN = 1;
+    const USER = 0;
 
     /**
      * The attributes that are mass assignable.
@@ -74,4 +39,56 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return $this->is_admin === self::ADMIN;
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function isPurchased($item)
+    {
+        $purchased = 0;
+        if($this->carts)
+        {
+            foreach($this->carts as $cart)
+            {
+                if($cart->item->slug == $item && $cart->is_checkedout == true)
+                {
+                    $purchased = 1;
+                }
+            }
+        }
+        return $purchased;
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function image()
+    {
+        return $this->morphOne(Image::class, 'imageable');
+    }
+
 }

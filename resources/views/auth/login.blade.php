@@ -46,9 +46,9 @@
                         <div class="form-footer">
                             <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                         </div>
-                        <div class="text-center text-muted mt-3">
+                        {{-- <div class="text-center text-muted mt-3">
                             Don't have account yet? <a href="{{ route('register') }}">Sign up</a>
-                        </div>
+                        </div> --}}
                     </div>
                     
                 </form>

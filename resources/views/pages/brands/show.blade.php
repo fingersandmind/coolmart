@@ -69,7 +69,7 @@
                                 <div class="card item-card">
                                     <div class="card-body pb-0">
                                         <div class="text-center">
-                                            @if($item->images)
+                                            @if($item->images->count() > 0)
                                                 @foreach($item->images->take(1) as $itemImage)
                                                     <img src="/{{ $itemImage->thumbnail }}" alt="img" class="img-fluid">
                                                 @endforeach

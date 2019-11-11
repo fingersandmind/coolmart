@@ -46,18 +46,27 @@ class Item extends Model
     {
         return 'slug';   
     }
-    /**
-     * @return TypeOfDiscount and the value, if none, @return null.
-     */
-    public function discountType()
-    {
-        $type = '';
-        if($this->discount)
-        {
-            $type = $this->discount->type == 'cash_off' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
-        }
 
-        return $this->discount ? $type : null;
+    /**
+     * Function to check if a User can review or comment 
+     * to an Item in frontend if the User purchased the item.
+     * @return boolean $purchased
+     */
+    public function isPurchasedByAuth()
+    {
+        $user = auth()->user();
+        $purchased = 0;
+        if($user->carts)
+        {
+            foreach($user->carts as $cart)
+            {
+                if($cart->item == $this && $cart->is_checkedout == true)
+                {
+                    $purchased = 1;
+                }
+            }
+        }
+        return $purchased;
     }
 
     /**
@@ -79,6 +88,20 @@ class Item extends Model
         }
 
         return $this->discount ? $price : $this->srp;
+    }
+
+    /**
+     * @return TypeOfDiscount and the value, if none, @return null.
+     */
+    public function discountType()
+    {
+        $type = '';
+        if($this->discount)
+        {
+            $type = $this->discount->type == 'cash_off' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
+        }
+
+        return $this->discount ? $type : null;
     }
 
     /**
@@ -151,7 +174,7 @@ class Item extends Model
                 $imageFilepath = $folder.'image/'.$filename.'.'.$file->getClientOriginalExtension();
                 $thumbnailFilepath = $folder.'thumbnail/'.$filename.'.'.$file->getClientOriginalExtension();
                 
-                $this->uploadImage($this,$file,$folder,'public', $filename, $thumbnailFilepath);
+                $this->uploadImages($this,$file,$folder,'public', $filename, $thumbnailFilepath);
                 $img_arr['image'] = ['image' => $imageFilepath];
                 $img_arr['thumbnail'] = ['thumbnail' => $thumbnailFilepath];
                 array_push($images_urls,$img_arr);

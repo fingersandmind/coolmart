@@ -5,8 +5,15 @@
 Auth::routes([
     'register' => false
 ]);
+Route::get('test/{id}', function($id){
+    $user = auth()->user();
+    $item = App\Item::findOrFail($id);
+    return $item->isPurchasedByAuth();
+});
 
-Route::group(['middleware' => 'auth'], function(){
+Route::get('home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::get('/','AdminController@index')->name('dashboard');
     Route::resource('items', 'ItemController');
     Route::resource('brands', 'BrandsController');

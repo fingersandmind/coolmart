@@ -33,7 +33,43 @@ trait UploadTrait
         return $file;
     }
 
-    public function uploadImage($model, UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null, $thumb)
+
+    /**
+     * Trait for uploading single polymorphic Image
+     * have $option @param to check if there is additional image required to be resize
+     * 
+     */
+
+    public function uploadImage($model, UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null, $option = null)
+    {
+        if($this->user->image)
+        {
+            $this->checkImage($model->user->image->image, $model);
+        }
+        $this->checkImage($model->avatar, $model);
+
+        $imageFolder = $folder.'image/';
+        $file = $uploadedFile->storeAs($imageFolder, $filename.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
+
+        if(!$option == null)
+        {
+            $optionFolder = $folder.'optional/';
+            $option = $uploadedFile->storeAs($optionFolder, $filename.'.'.$uploadedFile->getClientOriginalExtension(), $disk);
+
+            $this->resizeImage($option, 255,255);
+        }
+        return $file;
+    }
+
+
+
+    /**
+     * 
+     * Trait for uploading multiple polymorphic images.
+     * 
+     */
+
+    public function uploadImages($model, UploadedFile $uploadedFile, $folder = null, $disk = 'public', $filename = null, $thumb)
     {
         if($model->images)
         {
