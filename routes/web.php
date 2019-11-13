@@ -1,14 +1,8 @@
 <?php
 
-
-
 Auth::routes([
     'register' => false
 ]);
-Route::get('test/{id}', function($id){
-    $item = App\Item::findOrFail($id);
-    return $item->isPurchasedByAuth();
-});
 
 Route::get('home', 'HomeController@index')->name('home');
 
@@ -30,9 +24,11 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::post('items/{item}', 'ItemController@applyDiscount')->name('item.discount');
     Route::delete('items/{item}', 'ItemController@removeDiscount')->name('discount.destroy');
 
-    
-    Route::get('orders/create','PurchaseOrder\PurchaseOrderController@create')->name('orders.create');
-    Route::post('orders','PurchaseOrder\PurchaseOrderController@store')->name('orders.store');
+
+    // Route::get('orders', 'PurchaseOrder\PurchaseOrderController@index')->name('orders.index');
+    // Route::get('orders/create','PurchaseOrder\PurchaseOrderController@create')->name('orders.create');
+    // Route::post('orders','PurchaseOrder\PurchaseOrderController@store')->name('orders.store');
+    Route::resource('orders','PurchaseOrder\PurchaseOrderController')->only(['index', 'create', 'store']);
     /**
      * Route for adding item template
      */
@@ -41,25 +37,14 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
      * Route for storing item
      */
     Route::get('order', 'PurchaseOrder\PurchaseOrderController@storeItems')->name('order.item');
+    /**
+     * Route for storing purchase order to database
+     */
+    Route::post('order', 'PurchaseOrder\PurchaseOrderController@storePurchaseOrder')->name('store.item');
+
+    Route::get('purchase-order/{purchase}', 'PurchaseOrder\PurchaseOrderController@showPurchaseOrder')->name('purchase.order');
 
     Route::get('show-session','PurchaseOrder\PurchaseOrderController@showSession');
-
-    /**
-     * Transactions
-     */
-    Route::get('/transaction-history', function(){
-        return view('pages.history.index');
-    })->name('transaction.history');
-    Route::get('forms/create', function(){
-        return view('pages.forms.create');
-    });
-
-    /**
-     * Invoice
-     */
-    Route::get('invoice', function () {
-        return view('invoice.orders');
-    });
     
 });
 

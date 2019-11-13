@@ -8,11 +8,11 @@
                 </a>
             </li>
             <li class="nav-item with-sub">
-                <a class="nav-link {{ Request::routeIs('transactions*') ? 'active' : '' }}" href="#"><i class="fa fa-spin fa-history"></i> <span>Transactions</span></a>
+                <a class="nav-link" href="#"><i class="fa fa-spin fa-history"></i> <span>Transactions</span></a>
                 <div class="sub-item">
                     <ul>
-                        <li><a href="#">Transaction</a></li>
-                        <li><a href="{{ route('transaction.history') }}">History</a></li>
+                        <li><a href="#">Purchase List</a></li>
+                        <li><a href="#">History</a></li>
                     </ul>
                 </div>
             </li>

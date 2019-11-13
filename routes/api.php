@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController');
@@ -39,7 +39,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('cart', 'Api\CartController');
 });
 
-Route::fallback(function(){
-    return response()->json([
-        'message' => 'Page Not Found. If error persists, contact info@coolmart.com'], 404);
-});
+// Route::fallback(function(){
+//     return response()->json([
+//         'message' => 'Page Not Found. If error persists, contact info@coolmart.com'], 404);
+// });

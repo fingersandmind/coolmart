@@ -190,110 +190,36 @@
             <div class="col-12 grid-margin">
                 <div class="card">
                     <div class="card-header ">
-                        <h3 class="card-title ">Projects</h3>
+                        <h3 class="card-title ">Purchase Orders</h3>
                     </div>
                     <div class="">
-                        <div class="d-flex table-responsive p-3">
-                            <div class="btn-group mr-2">
-                              <button class="btn btn-sm btn-primary"><i class="mdi mdi-plus-circle-outline"></i> Add</button>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="wd-10p">Purchase Code</th>
+                                            <th class="wd-10p">Issued By</th>
+                                            <th class="wd-10p">Date Issued</th>
+                                            <th class="wd-10p">Total Items</th>
+                                            <th class="wd-10p">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pos as $po)
+                                            <tr>
+                                                <td>{{ $po->PurchaseCode }}</td>
+                                                <td>{{ ucfirst($po->user->name) }}</td>
+                                                <td>{{ $po->created_at->toFormattedDateString() }}</td>
+                                                <td>{{ $po->totalItems() }}</td>
+                                                <td>
+                                                    <a href="{{ route('purchase.order', $po->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-print"></i> View</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="btn-group mr-2">
-                              <button type="button" class="btn btn-light mr-2"><i class="mdi mdi-alert-circle-outline"></i></button>
-                              <button type="button" class="btn btn-light"><i class="mdi mdi-delete-empty"></i></button>
-                            </div>
-                            <div class="btn-group mr-2">
-                              <button type="button" class="btn btn-light"><i class="mdi mdi-printer"></i></button>
-                            </div>
-                            <div class="btn-group ml-auto mr-2 mt-1 border-0 d-none d-md-block">
-                              <input type="text" class="form-control" placeholder="Search Here">
-                            </div>
-                            
-                        </div>
-                        <div class="table-responsive border-top">
-                            <table class="table card-table table-striped table-vcenter text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Project Name</th>
-                                        <th >Team</th>
-                                        <th>Feedback</th>
-                                        <th>Date</th>
-                                        <th>Preview</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>2345</td>
-                                        <td>Megan Peters</td>
-                                        <td><div class="avatar-list avatar-list-stacked">
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/12.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/21.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/29.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/2.jpg)"></span>
-                                            </div>
-                                        </td>
-                                        <td>please check pricing Info </td>
-                                        <td class="text-nowrap">July 13, 2018</td>
-                                        <td class="w-1"><a href="#" class="icon"><i class="fa fa-eye"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>4562</td>
-                                        <td>Phil Vance</td>
-                                        <td><div class="avatar-list avatar-list-stacked">
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/12.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/21.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/29.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/2.jpg)"></span>
-                                            </div>
-                                        </td>
-                                        <td>New stock</td>
-                                        <td class="text-nowrap">June 15, 2018</td>
-                                        <td><a href="#" class="icon"><i class="fa fa-eye"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>8765</td>
-                                        <td>Adam Sharp</td>
-                                        <td><div class="avatar-list avatar-list-stacked">
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/21.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/6.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/19.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/7.jpg)"></span>
-                                            </div>
-                                        </td>
-                                        <td>Daily updates</td>
-                                        <td class="text-nowrap">July 8, 2018</td>
-                                        <td><a href="#" class="icon"><i class="fa fa-eye"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2665</td>
-                                        <td>Samantha Slater</td>
-                                        <td><div class="avatar-list avatar-list-stacked">
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/2.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/1.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/9.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/2.jpg)"></span>
-                                            </div>
-                                        </td>
-                                        <td>available item list</td>
-                                        <td class="text-nowrap">June 28, 2018</td>
-                                        <td><a href="#" class="icon"><i class="fa fa-eye"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>1245</td>
-                                        <td>Joanne Nash</td>
-                                        <td><div class="avatar-list avatar-list-stacked">
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/male/7.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/1.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/9.jpg)"></span>
-                                              <span class="avatar brround" style="background-image: url(assets/images/faces/female/4.jpg)"></span>
-                                            </div>
-                                        </td>
-                                        <td>Provide Best Services</td>
-                                        <td class="text-nowrap">July 2, 2018</td>
-                                        <td><a href="#" class="icon"><i class="fa fa-eye"></i></a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -463,6 +389,7 @@
 @push('additionalCSS')
 <!-- c3.js Charts Plugin -->
 <link href="{{ asset('assets/plugins/charts-c3/c3-chart.css') }}" rel="stylesheet" />
+<link href="{{ asset('assets/plugins/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
 @endpush
 
 @push('additionalJS')
@@ -471,4 +398,5 @@
 <!--Morris.js Charts Plugin -->
 <script src="{{ asset('assets/plugins/am-chart/amcharts.js') }}"></script>
 <script src="{{ asset('assets/plugins/am-chart/serial.js') }}"></script>
+@include('pages.page-partials.datatables')
 @endpush

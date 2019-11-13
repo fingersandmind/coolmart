@@ -23,7 +23,7 @@
                                     <tr>
                                         <th class="wd-10p">Item Code</th>
                                         <th class="wd-10p">Brand</th>
-                                        <th class="wd-10p">Model</th>
+                                        <th class="wd-5p">Model</th>
                                         <th class="wd-10p">Category</th>
                                         <th class="wd-10p">Type</th>
                                         <th class="wd-10p">Srp</th>

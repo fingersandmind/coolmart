@@ -1,5 +1,7 @@
 <!-- Back to top -->
+@if(!Request::routeIs('purchase.order'))
 <a href="#top" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+@endif
 
 <!-- Dashboard Core -->
 <script src="{{ asset('assets/js/vendors/jquery-3.2.1.min.js') }}"></script>
