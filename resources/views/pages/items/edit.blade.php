@@ -100,8 +100,8 @@
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-lg-4 col-4">
                                         <label class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" min="0.00" max="100.00" 
-                                        step="0.01" name="qty" value="{{ old('qty') ?? $item->qty }}" required/>
+                                        <input type="number" class="form-control" min="0" max="100.00" 
+                                        step="1" name="qty" value="{{ old('qty') ?? $item->qty }}" required/>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +169,7 @@
                                                     $index_name = 1;
                                                     $index_desc = 1;
                                                 @endphp
-                                                @if($item->details)
+                                                @if($item->details->count() > 0)
                                                     @foreach($item->details as $detail)
                                                         {{-- <label id="lname_{{ $index_name }}" class="form-label">Name</label> --}}
                                                         <input type="text" id="name_{{ $index_name }}" value="{{ $detail->name }}" class="form-control" name="names[]" minlength="2" maxlength="50" placeholder="Name">
@@ -177,6 +177,8 @@
                                                             $index_name++;
                                                         @endphp
                                                     @endforeach
+                                                @else
+                                                    <input type="text" value="{{ old('name') }}" class="form-control" name="names[]" minlength="2" maxlength="50" placeholder="Name" required>
                                                 @endif
                                                 <div id="name_input"></div>
                                             </div>
@@ -184,7 +186,7 @@
                                         <div class="col-8 col-md-8">
                                             <h4>Description</h4>
                                             <div class="form-group">
-                                                @if($item->details)
+                                                @if($item->details->count() > 0)
                                                     @foreach($item->details as $detail)
                                                         {{-- <label id="ldesc_{{ $index_desc }}" class="form-label">Description</label> --}}
                                                         <div class="justify-content-between d-flex">
@@ -195,6 +197,8 @@
                                                             $index_desc++;
                                                         @endphp
                                                     @endforeach
+                                                @else
+                                                    <input value="{{ old('description') }}" type="text" class="form-control" name="descriptions[]" minlength="2" maxlength="100" placeholder="Description" required>
                                                 @endif
                                                 <div id="desc_input"></div>
                                             </div>

@@ -18,7 +18,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with('details')->paginate(15);
+        $items = Item::with('details')->get();
 
         return view('pages.items.index', compact('items'));
     }
@@ -130,7 +130,7 @@ class ItemController extends Controller
         $item->discount->delete();
         return redirect()->route('items.show', $item->slug)->withSuccess('Discount deleted!');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *

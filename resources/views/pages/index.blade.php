@@ -8,8 +8,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
             </ol>
+            <a href="{{ route('orders.create') }}" class="btn btn-outline-primary"><i class="fa fa-shopping-cart fa-spin"></i> New Purchase Order</a>
         </div>
-
         <div class="row row-cards">
             <div class="col-sm-12 col-lg-3">
                 <div class="card bg-primary card-img-holder text-white">

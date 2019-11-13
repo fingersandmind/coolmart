@@ -47,6 +47,11 @@ class Item extends Model
         return 'slug';   
     }
 
+    public function getItemCodeAttribute()
+    {
+        return str_pad($this->id, 6,'0', STR_PAD_LEFT);
+    }
+
     /**
      * Function to check if a User can review or comment 
      * to an Item in frontend if the User purchased the item.
@@ -56,17 +61,39 @@ class Item extends Model
     {
         $user = auth()->user();
         $purchased = 0;
-        if($user->carts)
+        if($user)
         {
-            foreach($user->carts as $cart)
+            if(!$user->carts)
             {
-                if($cart->item == $this && $cart->is_checkedout == true)
+                return $purchased;
+            }else{
+                foreach($user->carts as $cart)
                 {
-                    $purchased = 1;
+                    if($cart->item == $this && $cart->is_checkedout == true)
+                    {
+                        $purchased = 1;
+                    }
                 }
             }
+        }else{
+            // return $purchased;
+            return 'not authenticated!';
         }
         return $purchased;
+    }
+
+    /**
+     * @return TypeOfDiscount and the value, if none, @return null.
+     */
+    public function discountType()
+    {
+        $type = '';
+        if($this->discount)
+        {
+            $type = $this->discount->type == 'cash_off' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
+        }
+
+        return $this->discount ? $type : null;
     }
 
     /**
@@ -88,20 +115,6 @@ class Item extends Model
         }
 
         return $this->discount ? $price : $this->srp;
-    }
-
-    /**
-     * @return TypeOfDiscount and the value, if none, @return null.
-     */
-    public function discountType()
-    {
-        $type = '';
-        if($this->discount)
-        {
-            $type = $this->discount->type == 'cash_off' ? $this->discount->amount.' OFF' : $this->discount->percent_off.'% OFF';
-        }
-
-        return $this->discount ? $type : null;
     }
 
     /**

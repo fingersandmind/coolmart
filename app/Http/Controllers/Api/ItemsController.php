@@ -17,7 +17,9 @@ class ItemsController extends Controller
      */
     public function index(Request $request)
     {
-        $items = Item::filter($request->all())->with('brand','type', 'images')->paginate(15);
+        $items = Item::filter($request->all())->with('brand','type', 'images')
+        ->orderBy('created_at', 'DESC')
+        ->paginate(15);
 
         return new ItemsResource($items);
     }

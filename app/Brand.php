@@ -15,6 +15,11 @@ class Brand extends Model
         return $this->hasMany(Item::class);
     }
 
+    public function lists()
+    {
+        return $this->hasMany(AirconList::class);
+    }
+    
     public function getRouteKeyName()
     {
         return 'slug';

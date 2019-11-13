@@ -26,7 +26,7 @@ class CreateItemsTable extends Migration
             $table->integer('qty');
             $table->timestamps();
 
-            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+            $table->foreign('brand_id')->references('id')->on('brands');
             $table->foreign('type_id')->references('id')->on('types');
         });
     }

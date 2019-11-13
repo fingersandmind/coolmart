@@ -33,6 +33,7 @@ class ItemResource extends JsonResource
                 'brand_id'  => (string)$this->brand_id,
                 'type_id'  => (string)$this->type_id,
                 'category_id' => (string)$this->category_id,
+                'isPurchasedByAuth' => $this->isPurchasedByAuth(),
             ],
             'relationships' => new ItemsRelationship($this),
             'links' => [

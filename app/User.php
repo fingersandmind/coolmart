@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\PurchaseOrder\Purchase;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -89,6 +90,11 @@ class User extends Authenticatable implements JWTSubject
     public function image()
     {
         return $this->morphOne(Image::class, 'imageable');
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 
 }

@@ -82,12 +82,12 @@
                                         <div class="form-group">
                                             <label class="form-label">Cost &#8369;</label>
                                             <input type="number" class="form-control" min="0.00" max="100000.00" 
-                                            step="0.01" name="cost" value="{{ old('cost') }}" required/>
+                                            step="1" name="cost" value="{{ old('cost') }}" required/>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-lg-4 col-4">
                                         <label class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" min="0.00" max="100.00" 
+                                        <input type="number" class="form-control" min="0" max="100.00" 
                                         step="0.01" name="qty" value="{{ old('qty') }}" required/>
                                     </div>
                                 </div>
