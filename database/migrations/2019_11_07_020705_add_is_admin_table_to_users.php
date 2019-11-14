@@ -16,6 +16,13 @@ class AddIsAdminTableToUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->boolean('is_admin')->after('email')->default(false);
         });
+
+        DB::table('users')->insert([
+            'name'      =>  'Janrey Maligro',
+            'email'     =>  'admin@admin.com',
+            'is_admin'  =>  true,
+            'password'  =>  bcrypt('12345678'),
+        ]);
     }
 
     /**
