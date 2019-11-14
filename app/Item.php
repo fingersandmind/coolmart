@@ -232,6 +232,5 @@ class Item extends Model
                 $item->details()->create(['name'=>$name, 'description' => $desc]);
             }
         }
-        
     }
 }
