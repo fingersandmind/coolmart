@@ -73,18 +73,6 @@ class AdminController extends Controller
         $url = env('AIRCON_API_LIST');
         $response = json_decode(file_get_contents($url));
         return $response;
-        // $ch = curl_init();
-
-        // curl_setopt($ch, CURLOPT_URL, $url);
-
-        // curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        // $content = curl_exec ($ch);
-
-        // curl_close ($ch);
-
-        // return json_decode($content);
-        // // 
     }
 
     public function loadList()
@@ -93,14 +81,14 @@ class AdminController extends Controller
         foreach($this->responseData() as $data)
         {
             
-            if(!AirconList::where('model', $data->MODEL)->exists())
+            if(!AirconList::where('model', $data->model)->exists())
             {
                 AirconList::create([
-                    'brand_id' => $this->brands[$data->BRAND_NAME],
-                    'type'  => $data->TYPE,
-                    'model' => $data->MODEL,
-                    'description' =>$data->MODEL. ' '. $data->DESCRIPTION.' '.$data->CAP,
-                    'net' => floatval(str_replace(',','',$data->NET_COST)),
+                    'brand_id' => $this->brands[$data->brand],
+                    'type'  => $data->type,
+                    'model' => $data->model,
+                    'description' =>$data->description.' '.$data->cap,
+                    'net' => floatval(str_replace(',','',$data->cost)),
                 ]);
             }
         }
@@ -110,7 +98,7 @@ class AdminController extends Controller
     {
         foreach($this->responseData() as $data)
         {          
-            $name = $data->TYPE == 'WINDOW' || $data->TYPE == 'SPLIT' ? 'INDOOR' : 'OUTDOOR';
+            $name = $data->type == 'WINDOW' || $data->type == 'SPLIT' ? 'INDOOR' : 'OUTDOOR';
             if(!Category::where('name', $name)->exists())
             {
                 Category::create([
@@ -127,9 +115,9 @@ class AdminController extends Controller
         
         foreach($this->responseData() as $data)
         {
-            if(!Brand::where('name',$data->BRAND_NAME)->exists())
+            if(!Brand::where('name',$data->brand)->exists())
             {
-                $name = $data->BRAND_NAME;
+                $name = $data->brand;
                 Brand::create([
                     'name' => $name,
                     'slug' => str_slug($name),
@@ -144,9 +132,9 @@ class AdminController extends Controller
     {
         foreach($this->responseData() as $data)
         {
-            if(!Type::where('name',$data->TYPE)->exists())
+            if(!Type::where('name',$data->type)->exists())
             {
-                $name = $data->TYPE;
+                $name = $data->type;
                 Type::create([
                     'name' => $name,
                     'description' => $name,
@@ -159,17 +147,17 @@ class AdminController extends Controller
     {
         foreach($this->responseData() as $data)
         {
-            if(!Item::where('name',$data->MODEL)->exists())
+            if(!Item::where('name',$data->model)->exists())
             {
                 Item::create([
-                    'brand_id' => $this->brands()[$data->BRAND_NAME],
-                    'type_id' => $this->types()[$data->TYPE],
-                    'category_id' => $data->TYPE == 'SPLIT' ||  $data->TYPE == 'WINDOW' ? 1 : 2,
-                    'name' => $data->MODEL,
-                    'slug' => str_slug($data->MODEL),
-                    'description' => $data->DESCRIPTION,
-                    'srp' => floatval(str_replace(',','',$data->SRP)),
-                    'cost' => floatval(str_replace(',','',$data->NET_COST)),
+                    'brand_id' => $this->brands()[$data->brand],
+                    'type_id' => $this->types()[$data->type],
+                    'category_id' => $data->type == 'SPLIT' ||  $data->type == 'WINDOW' ? 1 : 2,
+                    'name' => $data->model,
+                    'slug' => str_slug($data->model),
+                    'description' => $data->description,
+                    'srp' => floatval(str_replace(',','',$data->srp)),
+                    'cost' => floatval(str_replace(',','',$data->cost)),
                     'qty' => 0
                 ]);
             }
