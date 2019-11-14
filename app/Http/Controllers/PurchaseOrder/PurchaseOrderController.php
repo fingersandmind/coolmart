@@ -58,14 +58,39 @@ class PurchaseOrderController extends Controller
     {
         if($request->action == 'submit')
         {
-            $po = new Purchase();
-            $po->createPurchaseOrder();
-            return redirect()->route('dashboard')->withSuccess('P.O Successfully Created!');
+            $orders = session('orders');
+            if($orders)
+            {
+                if($this->orderQty() > 0)
+                {
+                    $po = new Purchase();
+                    $po->createPurchaseOrder();
+                    return redirect()->route('dashboard')->withSuccess('P.O Successfully Created!');
+                }
+                return redirect()->back()->withError('Please atleast have an item with 1 quantity');
+            }
+
+            return redirect()->back()->withError('Please supply an Item');
         }elseif($request->action == 'cancel')
         {
             session()->forget(['orders', 'details']);
             return redirect()->route('dashboard');
         }
+    }
+
+    public function orderQty()
+    {
+        $orders = session('orders');
+        $total = 0;
+
+        if($orders)
+        {
+            foreach($orders as $order)
+            {
+                $total += $order['qty'];
+            }
+        }
+        return $total;
     }
     /**
      * Store items in session and can update quantity

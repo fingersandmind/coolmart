@@ -125,25 +125,31 @@ class Purchase extends Model
     {
         $details = session('details');
         $orders = session('orders');
-        $po = $this->create([
-            'company'       =>  $this->company(),
-            'ref_no'        =>  $details['ref_no'],
-            'supplier'      =>  $details['supplier'],
-            'term'          =>  $details['term'],
-            'delivery_date' =>  $this->deliveryDate(),
-            'po_valid'      =>  $this->poValidDate(),
-            'ship_to'       =>  $details['ship_to'],
-            'location'      =>  $details['location'],
-            'remarks'       =>  $details['remarks'],
-            'preparedBy'    =>  $details['preparedBy'],
-            'notedBy'       =>  $details['notedBy'],
-            'approvedBy'    =>  $details['approvedBy'],
-            'user_id'       =>  auth()->user()->id
-        ]);
-
-        foreach($orders as $order)
+        if($orders)
         {
-            $po->orders()->create(['item_id' => $order['id'], 'qty' => $order['qty']]);
+            $po = $this->create([
+                'company'       =>  $this->company(),
+                'ref_no'        =>  $details['ref_no'],
+                'supplier'      =>  $details['supplier'],
+                'term'          =>  $details['term'],
+                'delivery_date' =>  $this->deliveryDate(),
+                'po_valid'      =>  $this->poValidDate(),
+                'ship_to'       =>  $details['ship_to'],
+                'location'      =>  $details['location'],
+                'remarks'       =>  $details['remarks'],
+                'preparedBy'    =>  $details['preparedBy'],
+                'notedBy'       =>  $details['notedBy'],
+                'approvedBy'    =>  $details['approvedBy'],
+                'user_id'       =>  auth()->user()->id
+            ]);
+    
+            foreach($orders as $order)
+            {
+                if($order['qty'] > 0)
+                {
+                    $po->orders()->create(['item_id' => $order['id'], 'qty' => $order['qty']]);
+                }
+            }
         }
 
         session()->forget(['orders', 'details']);
