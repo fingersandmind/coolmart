@@ -56,3 +56,5 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::get('download-brand', 'AdminController@loadBrand');
     Route::get('download-item', 'AdminController@loadItem');
     Route::get('download-all', 'AdminController@loadAll');
+
+    Route::get('response', 'AdminController@responseData');
