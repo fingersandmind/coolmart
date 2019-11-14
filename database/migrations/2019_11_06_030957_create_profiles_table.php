@@ -35,6 +35,14 @@ class CreateProfilesTable extends Migration
             "created_at" =>  \Carbon\Carbon::now(),
             "updated_at" => \Carbon\Carbon::now(),
         ]);
+
+        DB::table('profiles')->insert([
+            'user_id'   =>  '2',
+            'title'     =>  'CEO',
+            'about'     =>   'Gwapo Kaayo',
+            "created_at" =>  \Carbon\Carbon::now(),
+            "updated_at" => \Carbon\Carbon::now(),
+        ]);
     }
 
     /**
