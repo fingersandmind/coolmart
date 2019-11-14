@@ -29,10 +29,10 @@ class AdminController extends Controller
     
     public function loadAll()
     {
-        $this->loadList();
-        sleep(2);
         $this->loadBrand();
         sleep(1);
+        $this->loadList();
+        sleep(2);
         $this->loadType();
         sleep(1);
         $this->loadCategory();
@@ -75,6 +75,24 @@ class AdminController extends Controller
         return $response;
     }
 
+    public function loadBrand()
+    {
+        
+        foreach($this->responseData() as $data)
+        {
+            if(!Brand::where('name',$data->brand)->exists())
+            {
+                $name = $data->brand;
+                Brand::create([
+                    'name' => $name,
+                    'slug' => str_slug($name),
+                    'description' => $name,
+                    'logo' => $name.'.jpg',
+                ]);
+            }
+        }
+    }
+
     public function loadList()
     {
 
@@ -105,24 +123,6 @@ class AdminController extends Controller
                     'name' => $name,
                     'slug' => str_slug($name),
                     'description' => strtolower($name)
-                ]);
-            }
-        }
-    }
-
-    public function loadBrand()
-    {
-        
-        foreach($this->responseData() as $data)
-        {
-            if(!Brand::where('name',$data->brand)->exists())
-            {
-                $name = $data->brand;
-                Brand::create([
-                    'name' => $name,
-                    'slug' => str_slug($name),
-                    'description' => $name,
-                    'logo' => $name.'.jpg',
                 ]);
             }
         }
