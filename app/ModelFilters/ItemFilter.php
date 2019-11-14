@@ -55,10 +55,7 @@ class ItemFilter extends ModelFilter
 
     public function name($name)
     {
-        return $this->whereLike('name', $name)
-        ->orWhere('brand_id', $this->brandsArr()[strtoupper($name)] ?? '')
-        ->orWhere('category_id', $this->categoryArr()[strtoupper($name)] ?? '')
-        ->orWhere('type_id', $this->typeArr()[strtoupper($name)] ?? '');
+        return $this->whereLike('name', $name);
     }
 
     public function sort($type)
