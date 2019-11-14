@@ -84,7 +84,7 @@ class AdminController extends Controller
             if(!AirconList::where('model', $data->model)->exists())
             {
                 AirconList::create([
-                    'brand_id' => $this->brands[$data->brand],
+                    'brand_id' => $this->brands()[$data->brand],
                     'type'  => $data->type,
                     'model' => $data->model,
                     'description' =>$data->description.' '.$data->cap,
