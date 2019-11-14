@@ -71,19 +71,20 @@ class AdminController extends Controller
     public function responseData()
     {
         $url = env('AIRCON_API_LIST');
-        // $response = json_decode(file_get_contents($url));
-        $ch = curl_init();
+        $response = json_decode(file_get_contents($url));
+        return $response;
+        // $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $url);
+        // curl_setopt($ch, CURLOPT_URL, $url);
 
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+        // curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        $content = curl_exec ($ch);
+        // $content = curl_exec ($ch);
 
-        curl_close ($ch);
+        // curl_close ($ch);
 
-        return json_decode($content);
-        // return $response;
+        // return json_decode($content);
+        // // 
     }
 
     public function loadList()
