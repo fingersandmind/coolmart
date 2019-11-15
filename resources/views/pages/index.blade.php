@@ -125,26 +125,6 @@
         </div>
         <div class="row row-cards">
             <div class="col-md-12 col-lg-4 col-sm-12">
-                <div class="card  mb-5">
-                    <div class="card-body">
-                        <div class="media mt-0">
-                            <figure class="rounded-circle align-self-start mb-0">
-                                <img src="assets/images/faces/female/1.jpg" alt="Generic placeholder image" class="avatar brround avatar-md mr-3">
-                            </figure>
-                            <div class="media-body">
-                                <h5 class="time-title p-0 mb-0 font-weight-semibold leading-normal">Victoria</h5>
-                                New york, UK
-                            </div>
-                            <button class="btn btn-primary d-none d-sm-block mr-2"><i class="fa fa-comments"></i> </button>
-                            <button class="btn btn-info d-none d-sm-block"><i class="fa fa-phone"></i> </button>
-                        </div>
-                    </div>
-                    <div class="card-footer border-top">
-                        Email: <span class="text-primary">victoriacott@Viboon.com</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-4 col-sm-12">
                 <div class="card mb-5">
                     <div class="card-body">
                         <div class="media mt-0">
@@ -152,7 +132,7 @@
                                 <img src="assets/images/faces/male/18.jpg" alt="Generic placeholder image" class="avatar brround avatar-md mr-3">
                             </figure>
                             <div class="media-body">
-                                <h5 class="time-title p-0 mb-0 font-weight-semibold leading-normal">Thomas Jaim</h5>
+                                <h5 class="time-title p-0 mb-0 font-weight-semibold leading-normal">{{ auth()->user()->name }}</h5>
                                 Spain, UN
                             </div>
                             <button class="btn btn-primary d-none d-sm-block mr-2"><i class="fa fa-comments"></i> </button>
@@ -160,28 +140,7 @@
                         </div>
                     </div>
                     <div class="card-footer border-top">
-                        Email: <span class="text-primary">thomasjaim@Viboon.com</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12 col-lg-4 col-sm-12">
-                <div class="card mb-5">
-                    <div class="card-body">
-                        <div class="media mt-0">
-                            <figure class="rounded-circle align-self-start mb-0">
-                                <img src="assets/images/faces/female/18.jpg" alt="Generic placeholder image" class="avatar brround avatar-md mr-3">
-                            </figure>
-                            <div class="media-body">
-                                <h5 class="time-title p-0 font-weight-semibold leading-normal mb-0">Rebbaca wisely</h5>
-                                Japan, UN
-                            </div>
-                            <button class="btn btn-primary d-none d-sm-block mr-2"><i class="fa fa-comments"></i> </button>
-                            <button class="btn btn-info d-none d-sm-block"><i class="fa fa-phone"></i> </button>
-                        </div>
-                    </div>
-                    <div class="card-footer border-top">
-                        Email: <span class="text-primary">rebbacawisely@Viboon.com</span>
+                        Email: <span class="text-primary">{{ auth()->user()->email }}</span>
                     </div>
                 </div>
             </div>
@@ -195,7 +154,7 @@
                     <div class="">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                <table id="datatable-po" class="table table-striped table-bordered" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th class="wd-10p">Purchase Code</th>
@@ -226,161 +185,41 @@
             </div>
         </div>
         <div class="row row-cards row-deck">
-            <div class="col-lg-8 col-md-12">
+            <div class="col-12 grid-margin">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">Mesages</div>
+                    <div class="card-header ">
+                        <h3 class="card-title ">Supplier's List</h3>
                     </div>
-                    <div class="chat_container">
-                        <div class="job-box">
-                            <div class="job-box-filter">
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-6">
-                                    <label class="mt-2">Show 
-                                    <select name="datatable_length" class="form-control input-sm">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                    </select>
-                                    entries</label>
-                                    </div>
-                                    <div class="col-md-6 col-sm-6">
-                                        <div class="filter-search-box text-right ">
-                                            <label class="mt-2"><input type="search" class="form-control input-sm" placeholder="Search here"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inbox-message">
-                                <ul>
-                                    <li>
-                                        <a href="#">
-                                            <div class="message-avatar">
-                                                <img src="assets/images/faces/female/2.jpg" alt="">
-                                            </div>
-                                            <div class="message-body">
-                                                <div class="message-body-heading">
-                                                    <h5>Ninfa Sluder <span class="unread bg-primary">Unread</span></h5>
-                                                    <span class="text-primary">1 hour ago</span>
-                                                </div>
-                                                <p class="mb-1">Hello, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor....</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="message-avatar">
-                                                <img src="assets/images/faces/male/20.jpg" alt="">
-                                            </div>
-                                            <div class="message-body">
-                                                <div class="message-body-heading">
-                                                    <h5>Johnson Craver <span class="unread bg-primary">Unread</span></h5>
-                                                    <span  class="text-primary">3 hours ago</span>
-                                                </div>
-                                                <p class="mb-1">Hello, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor....</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="message-avatar">
-                                                <img src="assets/images/faces/female/20.jpg" alt="">
-                                            </div>
-                                            <div class="message-body">
-                                                <div class="message-body-heading">
-                                                    <h5>Vida Porter <span class="pending bg-warning">Pending Work</span></h5>
-                                                    <span  class="text-warning">7 hours ago</span>
-                                                </div>
-                                                <p class="mb-1">Hello, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor....</p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    
-                                </ul>
+                    <div class="">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable-lists" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="wd-10p">Item Code</th>
+                                            <th class="wd-10p">Brand</th>
+                                            <th class="wd-10p">Model</th>
+                                            <th class="wd-10p">Description</th>
+                                            <th class="wd-10p">Net</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($lists as $list)
+                                            <tr>
+                                                <td>{{ $list->ListItemCode }}</td>
+                                                <td>{{ ucfirst($list->brand->name) }}</td>
+                                                <td>{{ $list->model }}</td>
+                                                <td>{{ $list->description }}</td>
+                                                <td>{{ $list->net }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer text-center border-top-0">
-                        <a href="#"><i class="fa fa-angle-down"></i> View More</a>
-                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-12">
-                <div class="card ">
-                    <div class="card-header">
-                        <div class="card-title">Friends</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="visitor-list">
-                            <div class="media m-0">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/female/18.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Tonia Rotella</a>
-                                    <p class="text-muted ">Software Designer</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                            <!-- media -->
-                            <div class="media mt-2">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/female/20.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Justin</a>
-                                    <p class="text-muted">Sales Representative</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                            <!-- media -->
-                            <div class="media mt-2">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/male/8.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Leo Amy</a>
-                                    <p class="text-muted">Architect</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                            <!-- media -->
-                            <div class="media mt-2">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/female/22.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Dyan Cullins</a>
-                                    <p class="text-muted">Accountant</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                            <!-- media -->
-                            <div class="media mt-3">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/male/18.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Palmer Hoar</a>
-                                    <p class="text-muted">Marketing Manager</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                            
-                            <div class="media mt-3">
-                                <div class="avatar brround avatar-md mr-3" style="background-image: url(assets/images/faces/male/10.jpg)"></div>
-                                <div class="media-body">
-                                    <a href="#" class="text-default font-weight-medium">Hubert Dowless</a>
-                                    <p class="text-muted m-0">General Manager</p>
-                                </div>
-                                <!-- media-body -->
-                                <a href="#" class="btn btn-outline-primary btn-sm">Add Friend</a>
-                            </div>
-                        </div>
-                        <!-- media-list -->
-                    </div>
-                    <div class="card-footer text-center">
-                        <a href="#"><i class="fa fa-angle-down" ></i> View More</a>
-                    </div>
-                </div>
-            </div>
-            
         </div>
     </div>
 </div>

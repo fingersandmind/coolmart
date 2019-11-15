@@ -24,7 +24,8 @@ class AdminController extends Controller
         $itemCount = Item::count();
         $userCount = User::count();
         $pos = Purchase::get();
-        return view('pages.index', compact('brandCount', 'itemCount', 'userCount', 'pos'));
+        $lists = AirconList::get();
+        return view('pages.index', compact('brandCount', 'itemCount', 'userCount', 'pos', 'lists'));
     }
     
     public function loadAll()

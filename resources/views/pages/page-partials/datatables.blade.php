@@ -6,3 +6,17 @@
         $('#datatable').DataTable();
     } );
 </script>
+<script>
+    $(function(e) {
+        $('#datatable-lists').DataTable();
+    } );
+</script>
+<script>
+    $(function(e) {
+        $('#datatable-po').DataTable({
+            "order" : [[0, 'desc']]
+        });
+    } );
+</script>
+
+{{-- "order": [[ 6, "desc" ]] --}}
