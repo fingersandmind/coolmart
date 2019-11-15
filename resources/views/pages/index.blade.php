@@ -185,8 +185,10 @@
             </div>
             <div class="col-6 grid-margin">
                 <div class="card">
-                    <div class="card-header ">
+                    <div class="card-header justify-content-between">
                         <h3 class="card-title ">Supplier's List</h3>
+                        <a href="{{ route('download.all') }}" class="btn btn-sm btn-info" onclick="return confirm('This process might take a few seconds. Proceed?');">
+                            <i class="fa fa-upload"></i> Update Lists</a>
                     </div>
                     <div class="">
                         <div class="card-body">

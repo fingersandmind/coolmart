@@ -33,14 +33,14 @@ class AdminController extends Controller
         $this->loadBrand();
         sleep(1);
         $this->loadList();
-        sleep(2);
+        sleep(1);
         $this->loadType();
         sleep(1);
         $this->loadCategory();
         sleep(1);
         $this->loadItem();
-
-        return response()->json(['success' => 'Data loaded successfully!'], 200);
+        
+        return redirect()->back()->withSuccess('List successfully updated!');
     }
 
     public function types()
