@@ -146,7 +146,7 @@
             </div>
         </div>
         <div class="row mg-t-20">
-            <div class="col-12 grid-margin">
+            <div class="col-6 grid-margin">
                 <div class="card">
                     <div class="card-header ">
                         <h3 class="card-title ">Purchase Orders</h3>
@@ -183,9 +183,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row row-cards row-deck">
-            <div class="col-12 grid-margin">
+            <div class="col-6 grid-margin">
                 <div class="card">
                     <div class="card-header ">
                         <h3 class="card-title ">Supplier's List</h3>

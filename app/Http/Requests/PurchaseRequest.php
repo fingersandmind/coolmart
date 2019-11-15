@@ -33,7 +33,8 @@ class PurchaseRequest extends FormRequest
             'ship_to'       =>  'required|min:5|max:191',
             'location'      =>  'required|min:5|max:191',
             'preparedBy'    =>  'required|min:2|max:191',
-            'notedBy'       =>  'required|min:2|max:191'
+            'notedBy'       =>  'required|min:2|max:191',
+            'approvedBy'    =>  'required|min:2|max:191'
         ];
     }
 }

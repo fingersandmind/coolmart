@@ -23,20 +23,36 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Company Name</label>
-                                        <input type="text" class="form-control" name="company" value="{{ $data->company() }}" placeholder="Name">
+                                        <input type="text" class="form-control @error('company') is-invalid @enderror" name="company" value="{{ old('company') ?? $data->company() }}" 
+                                        placeholder="Name">
+                                        @error('company')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Ref No</label>
-                                        <input type="text" class="form-control" name="ref_no" placeholder="Text..">
+                                        <input type="text" class="form-control @error('ref_no') is-invalid @enderror" name="ref_no" 
+                                        placeholder="Text.." value="{{ old('ref_no') }}">
+                                        @error('ref_no')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label">Supplier</label>
-                                        <textarea class="form-control" name="supplier" rows="6" placeholder="text here.."></textarea>
+                                        <textarea class="form-control @error('supplier') is-invalid @enderror" name="supplier" rows="6" 
+                                        placeholder="text here..">{{ old('supplier') }}</textarea>
+                                        @error('supplier')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Term</label>
-                                        <input type="text" class="form-control" name="term" placeholder="Text..">
+                                        <input type="text" class="form-control @error('term') is-invalid @enderror" name="term" 
+                                        placeholder="Text.." value="{{ old('term') }}">
+                                        @error('term')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
@@ -52,12 +68,20 @@
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Ship To</label>
-                                        <input type="text" class="form-control" name="ship_to" placeholder="Text..">
+                                        <input type="text" class="form-control @error('ship_to') is-invalid @enderror" name="ship_to" 
+                                        placeholder="Text.." value="{{ old('ship_to') }}">
+                                        @error('ship_to')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label">Location</label>
-                                        <input type="text" class="form-control" name="location" placeholder="Text..">
+                                        <input type="text" class="form-control @error('location') is-invalid @enderror" name="location" 
+                                        placeholder="Text.." value="{{ old('location') }}">
+                                        @error('location')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
@@ -67,16 +91,28 @@
 
                                     <div class="form-group">
                                         <label class="form-label">Prepared By</label>
-                                        <input type="text" class="form-control" name="preparedBy" placeholder="Text..">
+                                        <input type="text" class="form-control @error('preparedBy') is-invalid @enderror" name="preparedBy" 
+                                        placeholder="Text.." value="{{ old('preparedBy') }}">
+                                        @error('preparedBy')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label">Noted By</label>
-                                        <input type="text" class="form-control" name="notedBy" placeholder="Text..">
+                                        <input type="text" class="form-control @error('notedBy') is-invalid @enderror" name="notedBy" 
+                                        placeholder="Text.." value="{{ old('notedBy') }}">
+                                        @error('notedBy')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Approved By</label>
-                                        <input type="text" class="form-control" name="approvedBy" placeholder="Text..">
+                                        <input type="text" class="form-control @error('approvedBy') is-invalid @enderror" name="approvedBy" 
+                                        placeholder="Text.." value="{{ old('approvedBy') }}">
+                                        @error('approvedBy')
+                                            <code class="text-red">{{ $message }}</code>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>

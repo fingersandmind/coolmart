@@ -8,13 +8,16 @@
 </script>
 <script>
     $(function(e) {
-        $('#datatable-lists').DataTable();
+        $('#datatable-lists').DataTable({
+            "pageLength" : 5
+        });
     } );
 </script>
 <script>
     $(function(e) {
         $('#datatable-po').DataTable({
-            "order" : [[0, 'desc']]
+            "order" : [[0, 'desc']],
+            "pageLength" : 5
         });
     } );
 </script>

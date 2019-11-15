@@ -118,9 +118,6 @@
                                         </thead>
                                         <tbody>
                                             @if($orders == null)
-                                               <td>
-                                                No data
-                                               </td>
                                             @else
                                                 @foreach ($orders as $order)
                                                     <tr>
