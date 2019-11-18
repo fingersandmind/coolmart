@@ -150,7 +150,7 @@ class AdminController extends Controller
         {
             if(!Item::where('name',$data->model)->exists())
             {
-                Item::create([
+                $item = Item::create([
                     'brand_id' => $this->brands()[$data->brand],
                     'type_id' => $this->types()[$data->type],
                     'category_id' => $data->type == 'SPLIT' ||  $data->type == 'WINDOW' ? 1 : 2,
@@ -161,6 +161,8 @@ class AdminController extends Controller
                     'cost' => floatval(str_replace(',','',$data->cost)),
                     'qty' => 0
                 ]);
+
+                $item->details()->create(['name' => 'Brand Name', 'description' => $data->brand]);
             }
         }
     }

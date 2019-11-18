@@ -86,7 +86,11 @@ class ItemController extends Controller
      */
     public function update(ItemRequest $request, Item $item)
     {
-        // dd($request->all());
+        if($request->action == 'feature')
+        {
+            $item->featureItem();
+            return redirect()->route('items.show', $item->slug)->withToastSuccess('Item is Featured!');
+        }
         $request->validated();
 
         $item->persists($request);
@@ -122,13 +126,13 @@ class ItemController extends Controller
             ]
         );
 
-        return redirect()->route('items.show', $item->slug)->withSuccess('Discount applied!');
+        return redirect()->route('items.show', $item->slug)->withToastSuccess('Discount applied!');
     }
 
     public function removeDiscount(Item $item)
     {
         $item->discount->delete();
-        return redirect()->route('items.show', $item->slug)->withSuccess('Discount deleted!');
+        return redirect()->route('items.show', $item->slug)->withToastSuccess('Discount deleted!');
     }
     
     /**

@@ -16,8 +16,13 @@
                 <li class="breadcrumb-item"><a href="{{ route('items.index') }}">items</a></li>
                 <li class="breadcrumb-item active" aria-current="page">View</li>
             </ol>
-            <div class="text-right">
-                    <a href="#discount" data-toggle="modal" class="btn btn-outline-warning"><i class="fa fa-tags mr-2"></i>{{ $item->discount ? 'Update New Discount' : 'Apply Discount' }}</a>
+            <div class="text-right justify-content-between">
+                <form action="{{ route('items.update',$item->slug) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button class="btn {{ $item->is_featured ? 'btn-info' : 'btn-outline-info' }}" name="action" value="feature"><i class="fa fa-plane"></i>{{ $item->is_featured ? 'Featured' : 'Feature me' }}</button>
+                </form>
+                <a href="#discount" data-toggle="modal" class="btn btn-outline-warning"><i class="fa fa-tags mr-2"></i>{{ $item->discount ? 'Update New Discount' : 'Apply Discount' }}</a>
                 <a href="{{ route('items.edit',$item->slug) }}" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Update Item</a>
             </div>
         </div>
@@ -106,7 +111,8 @@
                             <h2 class="mb-4 font-weight-semibold">{{ ucfirst($item->name) }}</h2>
                             <h4 class="leading-normal">majority have suffered alteration in some form, by injected humour</h4>
                             {{-- <p class="leading-normal">{{ ucfirst($item->description) }}</p> --}}
-                            <small><strong>Types: </strong></small><span class="tag tag-cyan">{{ $item->type->name }}</span>
+                            <small><strong>Type: </strong></small><span class="tag tag-cyan">{{ $item->type->name }}</span><br><br>
+                            <small><strong>Category: </strong></small><span class="tag tag-teal">{{ $item->category->name }}</span>
                         </div>
                     </div>
                 </div>

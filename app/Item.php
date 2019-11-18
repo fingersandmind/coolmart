@@ -130,6 +130,11 @@ class Item extends Model
     {
         return $this->morphOne(Discount::class, 'discountable');
     }
+
+    public function featureItem()
+    {
+        $this->update(['is_featured' => !$this->is_featured]);
+    }
     
     /**
      * function to persist item to create or update 

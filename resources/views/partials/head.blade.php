@@ -32,7 +32,7 @@
     <link href="{{ asset('assets/plugins/scroll-bar/jquery.mCustomScrollbar.css')}}" rel="stylesheet" />
 
     <!---Font icons-->
-    <link href="{{ asset('assets/plugins/iconfonts/plugin.css" rel="stylesheet')}}" />
+    <link href="{{ asset('assets/plugins/iconfonts/plugin.css')}}" rel="stylesheet" />
     
     @stack('additionalCSS')
 </head>
