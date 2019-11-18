@@ -20,6 +20,10 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController');
 
+    Route::group(['prefix' => 'items'], function(){
+        Route::get('featured', 'Api\ItemsController@isFeatured');
+        Route::get('discounted', 'Api\ItemsController@discount');
+    });
     Route::resource('items', 'Api\ItemsController');
 
     Route::resource('types', 'Api\TypesController');

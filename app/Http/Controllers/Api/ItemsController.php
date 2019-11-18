@@ -23,27 +23,6 @@ class ItemsController extends Controller
 
         return new ItemsResource($items);
     }
-    
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -59,36 +38,24 @@ class ItemsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Display featured Items
      */
-    public function edit($id)
+
+    public function isFeatured()
     {
-        //
+        $items = Item::where('is_featured', true)->paginate(15);
+        
+        return new ItemsResource($items);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Display discounted Items
      */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function discount()
     {
-        //
+        $items = Item::has('discount')->paginate(15);
+
+        return new ItemsResource($items);
     }
 }
