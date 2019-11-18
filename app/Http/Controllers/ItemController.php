@@ -89,7 +89,7 @@ class ItemController extends Controller
         if($request->action == 'feature')
         {
             $item->featureItem();
-            return redirect()->route('items.show', $item->slug)->withToastSuccess('Item is Featured!');
+            return redirect()->route('items.show', $item->slug)->withToastSuccess($item->is_featured ? 'Featured!' : 'Unfeatured!');
         }
         $request->validated();
 

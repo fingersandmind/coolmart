@@ -22,7 +22,7 @@ Route::group(['middleware' => ['cors']], function () {
 
     Route::group(['prefix' => 'items'], function(){
         Route::get('featured', 'Api\ItemsController@isFeatured');
-        Route::get('discounted', 'Api\ItemsController@discount');
+        Route::get('discounted', 'Api\ItemsController@isDiscounted');
     });
     Route::resource('items', 'Api\ItemsController');
 

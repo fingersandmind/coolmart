@@ -52,7 +52,7 @@ class ItemsController extends Controller
      * Display discounted Items
      */
 
-    public function discount()
+    public function isDiscounted()
     {
         $items = Item::has('discount')->paginate(15);
 
