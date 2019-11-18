@@ -20,7 +20,7 @@
                 <form action="{{ route('items.update',$item->slug) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button class="btn {{ $item->is_featured ? 'btn-info' : 'btn-outline-info' }}" name="action" value="feature"><i class="fa fa-plane"></i>{{ $item->is_featured ? 'Featured' : 'Feature me' }}</button>
+                    <button class="btn {{ $item->is_featured ? 'btn-info' : 'btn-outline-info' }}" name="action" value="feature"><i class="fa fa-plane"></i>{{ $item->is_featured ? 'Unfeature' : 'Feature me' }}</button>
                 </form>
                 <a href="#discount" data-toggle="modal" class="btn btn-outline-warning"><i class="fa fa-tags mr-2"></i>{{ $item->discount ? 'Update New Discount' : 'Apply Discount' }}</a>
                 <a href="{{ route('items.edit',$item->slug) }}" class="btn btn-outline-primary"><i class="fa fa-pencil mr-2"></i>Update Item</a>
