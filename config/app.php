@@ -164,6 +164,7 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
         EloquentFilter\ServiceProvider::class,
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
 
 
         /*

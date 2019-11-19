@@ -34,23 +34,22 @@
                                     @csrf
                                     <div class="form-group">
                                         <label class="form-label">Type</label>
-                                        <select name="type" class="form-control custom-select">
-                                            <option value="0" disabled selected>--Select--</option>
+                                        <select name="type[]" class="form-control custom-select">
                                             @foreach ($types as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
+                                                    <option {{ $key == array_first(request()->input('type')) ? 'selected' : '' }} value="{{ $key }}">{{ $value }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Category</label>
-                                        <select name="category" class="form-control custom-select">
-                                            <option value="0" disabled selected>--Select--</option>
+                                        <select name="category[]" class="form-control custom-select">
                                             @foreach ($categories as $key => $value)
-                                                <option value="{{ $key }}">{{ strtolower($value) }}</option>
+                                                <option {{ $key == array_first(request()->input('category')) ? 'selected' : '' }} value="{{ $key }}">{{ strtolower($value) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <button class="btn btn-info" style="float:right">Filter</button>
+                                    <button class="btn btn-warning btn-small" type="submit" name="action" value="cancel" >Clear All</button>
+                                    <button type="submit" class="btn btn-info btn-small" style="float:right">Filter</button>
                                 </form>
                             </div>
                         </div>
@@ -63,8 +62,8 @@
                     <h1>Brand unit models</h1>
                 </div>
                 <div class="row">
-                    @if($brand->items)
-                        @foreach ($brand->items as $item)
+                    @if($items)
+                        @foreach ($items as $item)
                             <div class="col-lg-4">
                                 <div class="card item-card">
                                     <div class="card-body pb-0">
@@ -103,7 +102,7 @@
                         @endforeach
                     @endif
                 </div>
-
+                {{ $items->links() }}
             </div>
         </div>
     </div>

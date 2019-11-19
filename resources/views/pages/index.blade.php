@@ -58,7 +58,7 @@
         </div>
 
         <div class="row row-deck">
-            <div class="col-lg-8 col-sm-12">
+            <div class="col-md-6 col-sm-12">
                 <div class="card ">
                     <div class="card-header">
                         <h3 class="card-title">Company Growth Yearly</h3>
@@ -68,56 +68,34 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-12">
-                <div class="card ">
-                    <div class="card-header">
-                        <div class="card-title">Monthly View</div>
+            <div class="col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-header ">
+                        <h3 class="card-title ">Items needed action</h3>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="chats-wrap">
-                            <div class="chat-details mb-1 p-3">
-                                <h4 class="mb-0">
-                                    <span class="h5 font-weight-normal">Sales</span>
-                                    <span class="float-right p-1 bg-primary btn btn-sm text-white">
-                                    <b>70</b>%</span>
-                                </h4>
-                                <div class="progress progress-md mt-3">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 70%"></div>
-                                </div>
+                    <div class="">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable-item" class="table table-striped table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="wd-10p">Item Code</th>
+                                            <th class="wd-10p">Name</th>
+                                            <th class="wd-10p">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($itemLessThanFive as $item)
+                                            <tr>
+                                                <td>{{ $item->ItemCode }}</td>
+                                                <td><a href="{{ route('items.show', $item->slug) }}" 
+                                                    class="btn btn-sm btn-outline-primary" target="_blank">{{ $item->name }}</a></td>
+                                                <td><span class="badgetext badge {{ $item->qty >=1 ? 'badge-warning' : 'badge-danger'}} badge-pill">{{ $item->qty }}</span></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="chat-details mb-1 p-3">
-                                <h4 class="mb-0">
-                                    <span class="h5 font-weight-normal">Profit</span>
-                                    <span class="float-right p-1 bg-secondary  btn btn-sm text-white">
-                                        <b>60</b>%</span>
-                                </h4>
-                                <div class="progress progress-md mt-3">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width: 60%"></div>
-                                </div>
-                            </div>
-                            <div class="chat-details mb-1 p-3">
-                                <h4 class="mb-0">
-                                    <span class="h5 font-weight-normal">Users</span>
-                                    <span class="float-right p-1 bg-cyan btn btn-sm text-white">
-                                        <b>47%</b>
-                                    </span>
-                                </h4>
-                                <div class="progress progress-md mt-3">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-cyan" style="width: 47%"></div>
-                                </div>
-                            </div>
-                            <div class="chat-details mb-1 p-3">
-                                <h4 class="mb-0">
-                                    <span class="h5 font-weight-normal">Growth</span>
-                                    <span class="float-right p-1 bg-info btn btn-sm text-white">
-                                        <b>25%</b>
-                                    </span>
-                                </h4>
-                                <div class="progress progress-md mt-3">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated  bg-info" style="width: 25%"></div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>

@@ -24,9 +24,15 @@ class Cart extends Model
      * 
      */
 
-    public function validMaxQty($cartQty)
+    public function validMaxQty()
     {
-        return $cartQty > $this->item->qty ? $this->item->qty : $cartQty;
+        return $this->qty > $this->item->qty ? $this->item->qty : $this->qty;
+    }
+
+    public function cartTotal()
+    {
+        $total =  $this->item->accuratePrice() * $this->validMaxQty();
+        return $total;
     }
     
 }

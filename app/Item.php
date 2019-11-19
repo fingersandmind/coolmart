@@ -52,6 +52,30 @@ class Item extends Model
         return str_pad($this->id, 6,'0', STR_PAD_LEFT);
     }
 
+    public function scopeQtyLessThanFive($query)
+    {
+        return $query->where('qty', '<', 5);
+    }
+
+        /**
+     * Can have multiple images using polymorphic relations
+     */
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function discount()
+    {
+        return $this->morphOne(Discount::class, 'discountable');
+    }
+
+    public function featureItem()
+    {
+        $this->update(['is_featured' => !$this->is_featured]);
+    }
+
     /**
      * Function to check if a User can review or comment 
      * to an Item in frontend if the User purchased the item.
@@ -115,25 +139,6 @@ class Item extends Model
         }
 
         return $this->discount ? $price : $this->srp;
-    }
-
-    /**
-     * Can have multiple images using polymorphic relations
-     */
-
-    public function images()
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
-    public function discount()
-    {
-        return $this->morphOne(Discount::class, 'discountable');
-    }
-
-    public function featureItem()
-    {
-        $this->update(['is_featured' => !$this->is_featured]);
     }
     
     /**

@@ -21,5 +21,13 @@
         });
     } );
 </script>
+<script>
+    $(function(e) {
+        $('#datatable-item').DataTable({
+            "order" : [[2, 'desc']],
+            "pageLength" : 5
+        });
+    } );
+</script>
 
 {{-- "order": [[ 6, "desc" ]] --}}

@@ -29,7 +29,7 @@ class CartResource extends JsonResource
                 'item_discountedSrp' => number_format($this->item->accuratePrice(), 2),
                 'discountType' => $this->item->discountType(),
                 'cart_qty'      => $this->qty,
-                'validQty'      => $this->validMaxQty($this->qty),
+                'validQty'      => $this->validMaxQty(),
                 'subtotal_per_item'     => $this->item->accuratePrice() * $this->qty
             ]
         ];

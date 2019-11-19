@@ -7,6 +7,7 @@ use App\Http\Requests\BrandRequest;
 use App\Brand;
 use App\Type;
 use App\Category;
+use App\Item;
 use App\UnitModel;
 
 class BrandsController extends Controller
@@ -65,9 +66,14 @@ class BrandsController extends Controller
      */
     public function show(Request $request, Brand $brand)
     {
+        if($request->get('action') == 'cancel')
+        {
+            return redirect()->route('brands.show', $brand->slug);
+        }
         $types = Type::pluck('name', 'id');
-        $categories = Category::pluck('name', 'slug');
-        return view('pages.brands.show', compact('brand', 'types', 'categories'));
+        $categories = Category::pluck('name', 'id');
+        $items = Item::filter($request->all())->where('brand_id', $brand->id)->paginate(6);
+        return view('pages.brands.show', compact('brand', 'types', 'categories', 'items'));
     }
 
     /**

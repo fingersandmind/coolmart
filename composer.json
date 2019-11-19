@@ -19,6 +19,7 @@
         "laravel/tinker": "^1.0",
         "predis/predis": "^1.1",
         "realrashid/sweet-alert": "^2.0",
+        "srmklive/paypal": "^1.6",
         "tucker-eric/eloquentfilter": "^2.0",
         "tymon/jwt-auth": "^1.0.0"
     },

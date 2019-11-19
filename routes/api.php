@@ -41,6 +41,10 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('logout', 'Api\AuthController@logout');
     
     Route::resource('cart', 'Api\CartController');
+
+    Route::get('payment', 'Api\PayPalController@payment')->name('payment');
+    Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
+    Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
 });
 
 // Route::fallback(function(){
