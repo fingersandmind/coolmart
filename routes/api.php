@@ -47,6 +47,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
 });
 
+Route::fallback('Api\FallBackController@index');
+
 // Route::fallback(function(){
 //     return response()->json([
 //         'message' => 'Page Not Found. If error persists, contact info@coolmart.com'], 404);
