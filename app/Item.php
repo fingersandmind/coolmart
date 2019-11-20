@@ -57,7 +57,7 @@ class Item extends Model
         return $query->where('qty', '<', 5);
     }
 
-        /**
+     /**
      * Can have multiple images using polymorphic relations
      */
 
@@ -90,18 +90,14 @@ class Item extends Model
             if(!$user->carts)
             {
                 return $purchased;
-            }else{
-                foreach($user->carts as $cart)
+            }
+            foreach($user->carts as $cart)
+            {
+                if($cart->item == $this && $cart->is_checkedout == true)
                 {
-                    if($cart->item == $this && $cart->is_checkedout == true)
-                    {
-                        $purchased = 1;
-                    }
+                    $purchased = 1;
                 }
             }
-        }else{
-            // return $purchased;
-            return 'not authenticated!';
         }
         return $purchased;
     }

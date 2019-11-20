@@ -124,10 +124,11 @@
             </div>
         </div>
         <div class="row mg-t-20">
-            <div class="col-6 grid-margin">
+            <div class="col-md-6 grid-margin">
                 <div class="card">
-                    <div class="card-header ">
+                    <div class="card-header justify-content-between">
                         <h3 class="card-title ">Purchase Orders</h3>
+                        <a href="{{ route('orders.create') }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-shopping-cart fa-spin"></i> New Purchase Order</a>
                     </div>
                     <div class="">
                         <div class="card-body">
@@ -161,7 +162,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 grid-margin">
+            <div class="col-md-6 grid-margin">
                 <div class="card">
                     <div class="card-header justify-content-between">
                         <h3 class="card-title ">Supplier's List</h3>
@@ -188,7 +189,7 @@
                                                 <td>{{ ucfirst($list->brand->name) }}</td>
                                                 <td>{{ $list->model }}</td>
                                                 <td>{{ $list->description }}</td>
-                                                <td>{{ $list->net }}</td>
+                                                <td>{{ number_format($list->net,2) }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -66,7 +66,7 @@ class BrandsController extends Controller
      */
     public function show(Request $request, Brand $brand)
     {
-        if($request->get('action') == 'cancel')
+        if($request->get('action') == 'clear')
         {
             return redirect()->route('brands.show', $brand->slug);
         }

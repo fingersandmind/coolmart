@@ -48,7 +48,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <button class="btn btn-warning btn-small" type="submit" name="action" value="cancel" >Clear All</button>
+                                    <button class="btn btn-warning btn-small" type="submit" name="action" value="clear" >Clear All</button>
                                     <button type="submit" class="btn btn-info btn-small" style="float:right">Filter</button>
                                 </form>
                             </div>

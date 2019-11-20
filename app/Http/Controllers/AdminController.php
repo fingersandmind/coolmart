@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\Traits\UpdateListTrait;
 use App\AirconList;
 use App\Brand;
-// use App\Category;
 use App\Item;
-// use App\Type;
 use App\PurchaseOrder\Purchase;
 use App\User;
 
@@ -30,6 +28,12 @@ class AdminController extends Controller
         $lists = AirconList::get();
         return view('pages.index', compact('brandCount', 'itemCount', 'userCount', 'pos', 'lists', 'itemLessThanFive'));
     }
+
+    /**
+     * Update list using api call
+     * 
+     * @return \Illuminate\Http\Response
+     */
     
     public function loadAll()
     {

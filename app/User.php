@@ -4,13 +4,13 @@ namespace App;
 
 use App\PurchaseOrder\Purchase;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use Notifiable, HasApiTokens;
     const ADMIN = 1;
     const USER = 0;
 
@@ -46,11 +46,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->is_admin == self::ADMIN;
     }
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
     public function isPurchased($item)
     {
         $purchased = 0;
@@ -65,16 +60,6 @@ class User extends Authenticatable implements JWTSubject
             }
         }
         return $purchased;
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
     }
 
     public function carts()
