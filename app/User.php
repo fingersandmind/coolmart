@@ -6,6 +6,7 @@ use App\PurchaseOrder\Purchase;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -62,6 +63,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $purchased;
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    /**
+     * Cart function returns carted items
+     */
     public function carts()
     {
         return $this->hasMany(Cart::class);
@@ -77,9 +86,56 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    /**
+     * 
+     ****** [For Purchase Order Only]  *******
+     */
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    /**
+     * function to pluck uncheckedout carts id
+     * to be attach to orders for checkout
+     */
+
+    public function cartsUncheckedoutIds()
+    {
+        return $this->carts->where('is_checkedout', false)->pluck('id');
+    }
+
+    public function totalUncheckedoutCarts()
+    {
+        return count($this->carts->where('is_checkedout', false));
+    }
+
+    public function checkout()
+    {
+        try {
+            DB::beginTransaction();
+
+            if($this->carts)
+            {
+                if($this->totalUncheckedoutCarts() > 0)
+                {
+                    $transaction = $this->transactions()->create(['user_id' => $this->id]);
+                    $transaction->makeTransaction($this->cartsUncheckedoutIds());
+                }
+            }
+
+            // $this->transactions()->makeTransaction($this->cartsUncheckedoutIds());
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'code'  => $e->getCode()
+            ]);
+        }
     }
 
 }

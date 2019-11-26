@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cart extends Model
 {
-    protected $fillable = ['item_id', 'qty', 'user_id'];
+    protected $fillable = ['item_id', 'qty', 'user_id', 'transaction_id'];
+
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
 
     public function user()
     {
@@ -16,6 +21,11 @@ class Cart extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function scopeCheckedout($query)
+    {
+        return $query->where('is_checkedout', true);
     }
 
     /**

@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:api');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -27,11 +23,20 @@ class CartController extends Controller
         $user = User::findOrFail($request->authId);
 
         // $carts = $user->carts;
-        $carts = Cart::where('user_id', $user->id)->with('item')->get();
+        $carts = Cart::where('user_id', $user->id)
+        ->where('is_checkedout',false)
+        ->with('item')->get();
 
         return new CartsResource($carts);
+    }
 
-        return $carts;
+    public function canBeReviewed(Request $request)
+    {
+        $user = User::findOrFail($request->authId);
+        
+        $carts = Cart::where('user_id', $user->id)->checkedout()->with('item')->get();
+
+        return new CartsResource($carts);
     }
 
     public function show($id)

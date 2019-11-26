@@ -19,6 +19,7 @@ class CartResource extends JsonResource
         return [
             'type'  => 'carts',
             'id'    =>  (string)$this->id,
+            'is_checkedout' => $this->is_checkedout,
             'attributes' => [
                 'item_id'       => (string)$this->item_id,
                 'item_slug'     => $this->item->slug,

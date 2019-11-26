@@ -6,6 +6,7 @@ use App\ModelFilters\ItemFilter;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\UploadTrait;
 use EloquentFilter\Filterable;
+use Illuminate\Support\Facades\DB;
 
 class Item extends Model
 {
@@ -144,24 +145,37 @@ class Item extends Model
      */
     public function persists($request)
     {
-        $item = $this->updateOrCreate(
-            ['id' => $this->id],
-            [
-                'brand_id'      => $request->brand,
-                'type_id'       => $request->type,
-                'category_id'   => $request->category,
-                'description'   => $request->description,
-                'name'          => $request->name,
-                'slug'          => $request->slug,
-                'srp'           => $request->srp,
-                'cost'          => $request->cost,
-                'qty'           => $request->qty
-            ],
-        );
-        //calls function to upload images
-        $this->upload($item,$request);
+        try {
+            DB::beginTransaction();
 
-        $this->persistsDetails($item,$request);
+            $item = $this->updateOrCreate(
+                ['id' => $this->id],
+                [
+                    'brand_id'      => $request->brand,
+                    'type_id'       => $request->type,
+                    'category_id'   => $request->category,
+                    'description'   => $request->description,
+                    'name'          => $request->name,
+                    'slug'          => $request->slug,
+                    'srp'           => $request->srp,
+                    'cost'          => $request->cost,
+                    'qty'           => $request->qty
+                ],
+            );
+            //calls function to upload images
+            $this->upload($item,$request);
+    
+            $this->persistsDetails($item,$request);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'code' => $e->getCode()
+            ]);
+        }
     }
     
     public function deleteImage()

@@ -30,8 +30,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('categories', 'Api\CategoriesController');
     Route::get('terms', 'Api\TermsController@index');
     Route::get('faqs', 'Api\FaqsController@index');
+
+    Route::resource('transactions', 'Api\TransactionController');
     
     Route::resource('cart', 'Api\CartController');
+    Route::get('review-item', 'Api\CartController@canBeReviewed');
 
     Route::get('payment', 'Api\PayPalController@payment')->name('payment');
     Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
