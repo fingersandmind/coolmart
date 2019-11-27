@@ -21,8 +21,12 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController');
 
     Route::group(['prefix' => 'items'], function(){
+        Route::get('reviewable', 'Api\ReviewsController@toBeReviewed'); /**[Checkedout Items and available for reviews] */
+        Route::get('review/{item}', 'Api\ReviewsController@show'); /** [Display items that has review] */
+        Route::get('review/{item}/create', 'Api\ReviewsController@create'); /** [Create a review, pass some data] */
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
+        Route::post('reviews', 'Api\ReviewsController@store');
     });
     Route::resource('items', 'Api\ItemsController');
     Route::resource('types', 'Api\TypesController');
@@ -39,6 +43,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('payment', 'Api\PayPalController@payment')->name('payment');
     Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
     Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
+
 
 
     /**

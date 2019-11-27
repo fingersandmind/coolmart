@@ -31,7 +31,8 @@ class CartResource extends JsonResource
                 'discountType' => $this->item->discountType(),
                 'cart_qty'      => $this->qty,
                 'validQty'      => $this->validMaxQty(),
-                'subtotal_per_item'     => $this->item->accuratePrice() * $this->qty
+                'subtotal_per_item'     => $this->item->accuratePrice() * $this->qty,
+                'date_placed' => $this->updated_at->toDayDateTimeString()
             ]
         ];
     }

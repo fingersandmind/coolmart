@@ -4,6 +4,7 @@ namespace App\Http\Resources\ModelsRelationships;
 
 use App\Http\Resources\Brands\BrandResource;
 use App\Http\Resources\Details\DetailResource;
+use App\Http\Resources\Reviews\ReviewResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ItemsRelationship extends JsonResource
@@ -25,6 +26,9 @@ class ItemsRelationship extends JsonResource
             'brand' => [
                 'name' => $this->brand->name,
                 'logo' => $this->brand->logo
+            ],
+            'reviews' => [
+                'data' => ReviewResource::collection($this->reviews)
             ]
         ];
     }

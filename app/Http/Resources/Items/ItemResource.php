@@ -34,6 +34,7 @@ class ItemResource extends JsonResource
                 'type_id'  => (string)$this->type_id,
                 'category_id' => (string)$this->category_id,
                 'isPurchasedByAuth' => $this->isPurchasedByAuth(),
+                'ratings' => (string)$this->ratings()
             ],
             'relationships' => new ItemsRelationship($this),
             'links' => [

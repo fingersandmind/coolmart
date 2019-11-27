@@ -21,7 +21,7 @@ class TransactionController extends Controller
         $user = User::findOrFail($request->authId);
 
         $transactions = Transaction::where('user_id', $user->id)
-        ->with('carts')->get();
+        ->with('carts')->paginate(5);
         
         return new TransactionsResource($transactions);
     }

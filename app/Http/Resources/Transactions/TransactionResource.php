@@ -22,6 +22,7 @@ class TransactionResource extends JsonResource
             'id'    =>  (string)$this->id,
             'attributes' => [
                 'transaction_id' => (string)$this->TransactionCode,
+                'date_placed' => $this->updated_at->toDayDateTimeString(),
             ],
             'relationships' => new TransactionsRelationship($this),
         ];

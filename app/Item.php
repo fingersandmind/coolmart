@@ -43,6 +43,11 @@ class Item extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function reviews()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';   
@@ -75,6 +80,21 @@ class Item extends Model
     public function featureItem()
     {
         $this->update(['is_featured' => !$this->is_featured]);
+    }
+
+    public function ratings()
+    {
+        $total = 0;
+        $count = count($this->reviews) > 0 ? count($this->reviews) : 1;
+        if($this->reviews)
+        {
+            foreach($this->reviews as $reviews)
+            {
+                $total += $reviews->stars;
+            }
+        }
+
+        return $this->reviews ? $total / $count :  5 ;
     }
 
     /**

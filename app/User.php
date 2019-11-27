@@ -124,8 +124,6 @@ class User extends Authenticatable implements MustVerifyEmail
                 }
             }
 
-            // $this->transactions()->makeTransaction($this->cartsUncheckedoutIds());
-
             DB::commit();
 
         } catch (\Exception $e) {

@@ -10,6 +10,7 @@ use App\Http\Resources\Carts\CartsResource;
 use App\User;
 use App\Item;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -48,16 +49,16 @@ class CartController extends Controller
     }
 
     /**
-     * Check if cart exists
+     * Check if cart exists and is not checkedout
      * @param App\Item $item
      * @param App\User $user
      * 
      * @return boolean
      */
 
-    public function checkIfCartExists($item, $user)
+    public function checkIfCartExists($item, $user, $checkedout = false)
     {
-        return Cart::where(['item_id' => $item, 'user_id' => $user])->exists();
+        return Cart::where(['item_id' => $item, 'user_id' => $user, 'is_checkedout' => $checkedout])->exists();
     }
 
     /**
@@ -81,17 +82,29 @@ class CartController extends Controller
         /**
          * When user click the add to cart button several times, update qty.
          */
-        
-        $user->carts()->updateOrCreate(
-            ['item_id' => $item->id, 'user_id' => $user->id],
-            [
-                'item_id'   =>  $item->id,
-                'user_id'   =>  $user->id,
-                'qty'       =>  $qty     
-            ]
-        );
+        try {
+            DB::beginTransaction();
 
-        return response()->json(['success' => 'Item added to Cart'], 200);
+            $user->carts()->updateOrCreate(
+                ['item_id' => $item->id, 'user_id' => $user->id, 'is_checkedout' => false],
+                [
+                    'item_id'   =>  $item->id,
+                    'user_id'   =>  $user->id,
+                    'qty'       =>  $qty     
+                ]
+            );
+
+            DB::commit();
+    
+            return response()->json(['success' => 'Item added to Cart'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'code'  => $e->getCode()
+            ]);
+        }
     }
     
     /**

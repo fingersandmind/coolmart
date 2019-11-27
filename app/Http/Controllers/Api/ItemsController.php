@@ -17,7 +17,7 @@ class ItemsController extends Controller
      */
     public function index(Request $request)
     {
-        $items = Item::filter($request->all())->with('brand','type', 'images')
+        $items = Item::filter($request->all())->with('brand','type', 'images', 'reviews')
         ->orderBy('created_at', 'DESC')
         ->paginate(15);
 

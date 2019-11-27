@@ -25,9 +25,9 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::delete('items/{item}', 'ItemController@removeDiscount')->name('discount.destroy');
 
 
-    // Route::get('orders', 'PurchaseOrder\PurchaseOrderController@index')->name('orders.index');
-    // Route::get('orders/create','PurchaseOrder\PurchaseOrderController@create')->name('orders.create');
-    // Route::post('orders','PurchaseOrder\PurchaseOrderController@store')->name('orders.store');
+    /**
+     ******** [THIS ROUTE IS FOR MAKING PURCHASE_ORDER ONLY YOU MIGHT GET CONFUSE] **********
+     */
     Route::resource('orders','PurchaseOrder\PurchaseOrderController')->only(['index', 'create', 'store']);
     /**
      * Route for adding item template
@@ -45,6 +45,9 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::get('purchase-order/{purchase}', 'PurchaseOrder\PurchaseOrderController@showPurchaseOrder')->name('purchase.order');
 
     Route::get('show-session','PurchaseOrder\PurchaseOrderController@showSession');
+    /**
+     * *********** [ PURCHASE_ORDER ] ***************
+     */
     
 });
 
