@@ -17,7 +17,7 @@ class ReviewsController extends Controller
 
     public function index(Item $item)
     {
-        $reviews = Review::where('reviewable_id', $item->id)->paginate(15);
+        $reviews = Review::where('reviewable_id', $item->id)->paginate(8);
 
         return new ReviewsResource($reviews);
     }
@@ -88,11 +88,55 @@ class ReviewsController extends Controller
     public function toBeReviewed(Request $request)
     {
         $user = User::findOrFail($request->authId);
+        $items = $user->reviews->pluck('reviewable_id');
         $carts = Cart::checkedout()
+            ->whereNotIn('item_id',$items)
             ->where('user_id', $user->id)
             ->where('is_cancelled', false)
-            ->get();
+            ->paginate(5);
 
         return new CartsResource($carts);
+    }
+
+    public function withReview(Request $request)
+    {
+        $userId = User::findOrFail($request->authId)->id;
+        
+        $items = Item::whereHas('reviews')
+        ->with(['reviews' => function($q) use($request){
+            $q->where('user_id',$request->authId);
+        }])
+        ->with(['carts' => function($c) use($userId){
+            $c->where('user_id', $userId);
+        }])
+        ->get();
+
+        return $this->reviewedItemsCollection($items);
+    }
+
+    public function reviewedItemsCollection($items)
+    {
+        $array = [];
+        foreach($items as $item)
+        {
+            $arr['name'] = $item->name;
+            $arr['slug'] = $item->slug;
+            $arr['image'] = $item->images->pluck('thumbnail');
+            foreach($item->carts as $cart)
+            {
+                $arr['date_placed'] = $cart->updated_at->toFormattedDateString();
+            }
+            foreach($item->reviews as $review)
+            {
+                $arr['star'] = $review->stars;
+                $arr['comment'] = $review->comments;
+            }
+
+            array_push($array, $arr);
+        }
+
+        $collection = collect($array);
+
+        return $collection->paginate(5);
     }
 }

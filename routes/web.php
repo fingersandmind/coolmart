@@ -12,7 +12,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::resource('brands', 'BrandsController');
     Route::resource('categories', 'CategoryController');
     Route::resource('types', 'TypeController');
-    Route::resource('transactions', 'TransactionController');
+    Route::resource('transactions', 'TransactionController')->only('create');
     Route::resource('faqs', 'FaqController');
     Route::resource('terms', 'TermController');
     Route::resource('profile', 'ProfileController');
@@ -26,17 +26,20 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
 
 
     /**
-     ******** [THIS ROUTE IS FOR MAKING PURCHASE_ORDER IN SESSION ONLY YOU MIGHT GET CONFUSE] **********
+     * *********** [THIS ROUTE IS FOR MAKING PURCHASE_ORDER IN SESSION ONLY YOU MIGHT GET CONFUSE] **********
      */
     Route::resource('orders','PurchaseOrder\PurchaseOrderController')->only(['index', 'create', 'store']);
+
     /**
      * *********** [ ROUTE FOR CREATE VIEW OF PURCHASE ORDER ITEMS TOSESSION ] ***********
      */
     Route::get('orders/add-item','PurchaseOrder\PurchaseOrderController@addItems')->name('order.add');
+
     /**
      * *********** [ ROUTE FOR STORING PURCHASE ORDER ITEMS IN SESSION ] ***********
      */
     Route::get('order', 'PurchaseOrder\PurchaseOrderController@storeItems')->name('order.item');
+
     /**
      * *********** [ ROUTE FOR STORING PURCHASE ORDER TO DATABASE ] ***********
      */
@@ -46,18 +49,20 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
 
     Route::get('show-session','PurchaseOrder\PurchaseOrderController@showSession');
     /**
-     * *********** [ PURCHASE_ORDER ] ***************
+     * *********** [ PURCHASE_ORDER END ] ***************
      */
-    
-});
 
-    /**
+
+     /**
      * *********** [ ROUTES FOR DOWNLOADING EXCEL DATAS AND STORING TO DATABASE ] ***********
+     * It follows a sequence
      */
-    Route::get('download-list', 'AdminController@loadList');
-    Route::get('download-type', 'AdminController@loadType');
-    Route::get('download-brand', 'AdminController@loadBrand');
-    Route::get('download-item', 'AdminController@loadItem');
-    Route::get('download-all', 'AdminController@loadAll')->name('download.all');
+    Route::get('download-list', 'AdminController@loadList');                        /** Load aircon lists for purchase order */
+    Route::get('download-type', 'AdminController@loadType');                        /** Load first the type */
+    Route::get('download-brand', 'AdminController@loadBrand');                      /** Then the brands */
+    Route::get('download-item', 'AdminController@loadItem');                        /** Followed by the items for the inventory of aircon for the E-commerce */
+    Route::get('download-all', 'AdminController@loadAll')->name('download.all');    /** Or you can download all, already in sequence */
 
     Route::get('response', 'AdminController@responseData');
+    
+});

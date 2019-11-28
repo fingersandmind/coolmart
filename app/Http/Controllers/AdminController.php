@@ -9,6 +9,7 @@ use App\Brand;
 use App\Item;
 use App\PurchaseOrder\Purchase;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -37,15 +38,28 @@ class AdminController extends Controller
     
     public function loadAll()
     {
-        $this->loadBrand();
-        sleep(1);
-        $this->loadList();
-        sleep(1);
-        $this->loadType();
-        sleep(1);
-        $this->loadCategory();
-        sleep(1);
-        $this->loadItem();
+        try {
+            DB::beginTransaction();
+
+            $this->loadBrand();
+
+            $this->loadList();
+
+            $this->loadType();
+
+            $this->loadCategory();
+
+            $this->loadItem();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $e->getMessage(),
+                'code' => $e->getCode()
+            ]);
+        }
         
         return redirect()->back()->withSuccess('List successfully updated!');
     }

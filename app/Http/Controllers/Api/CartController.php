@@ -30,14 +30,14 @@ class CartController extends Controller
         return new CartsResource($carts);
     }
 
-    public function canBeReviewed(Request $request)
-    {
-        $user = User::findOrFail($request->authId);
+    // public function canBeReviewed(Request $request)
+    // {
+    //     $user = User::findOrFail($request->authId);
         
-        $carts = Cart::where('user_id', $user->id)->checkedout()->with('item')->get();
+    //     $carts = Cart::where('user_id', $user->id)->checkedout()->with('item')->get();
 
-        return new CartsResource($carts);
-    }
+    //     return new CartsResource($carts);
+    // }
 
     public function show($id)
     {

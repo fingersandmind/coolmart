@@ -16,34 +16,31 @@ trait UpdateListTrait
         return $response;
     }
 
+    public function pluckedModel($model)
+    {
+        $arr = [];
+        foreach($model as $key => $value)
+        {
+            $arr[$value] = $key;
+        }
+
+        return $arr;
+    }
+
     public function types()
     {
         $types = Type::pluck('name','id');
-
-        $types_arr = [];
-        foreach($types as $key => $value)
-        {
-            $types_arr[$value] = $key;
-        }
-
-        return $types_arr;
+        return $this->pluckedModel($types);
     }
+
     public function brands()
     {
         $brands = Brand::pluck('name','id');
-
-        $brands_arr = [];
-        foreach($brands as $key => $value)
-        {
-            $brands_arr[$value] = $key;
-        }
-
-        return $brands_arr;
+        return $this->pluckedModel($brands);
     }
 
     public function loadBrand()
     {
-        
         foreach($this->responseData() as $data)
         {
             if(!Brand::where('name',$data->brand)->exists())
@@ -61,7 +58,6 @@ trait UpdateListTrait
 
     public function loadList()
     {
-
         foreach($this->responseData() as $data)
         {
             

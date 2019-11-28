@@ -86,6 +86,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphOne(Image::class, 'imageable');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
     /**
      * 
      ****** [For Purchase Order Only]  *******

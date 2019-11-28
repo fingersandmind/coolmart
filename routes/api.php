@@ -18,28 +18,32 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['middleware' => ['cors']], function () {
-    Route::resource('brands', 'Api\BrandsController');
+    Route::resource('brands', 'Api\BrandsController')->only('index','show');
 
     Route::group(['prefix' => 'items'], function(){
-        Route::get('reviewable', 'Api\ReviewsController@toBeReviewed'); /**[Checkedout Items and available for reviews] */
-        Route::get('review/{item}', 'Api\ReviewsController@show'); /** [Display items that has review] */
-        Route::get('review/{item}/create', 'Api\ReviewsController@create'); /** [Passing item information for creating review] */
+        Route::get('reviewable', 'Api\ReviewsController@toBeReviewed');         /**[Checkedout Items and available for reviews] */
+        Route::get('reviewed', 'Api\ReviewsController@withReview');             /**[Checkedout Items that already have a review] */
+        Route::get('review/{item}', 'Api\ReviewsController@show');              /** [Display items that has review] */
+        Route::get('review/{item}/create', 'Api\ReviewsController@create');     /** [Passing item information for creating review] */
+
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
+        
         Route::post('reviews', 'Api\ReviewsController@store');
         Route::get('reviews/{item}', 'Api\ReviewsController@index');
     });
+
     Route::resource('items', 'Api\ItemsController');
     Route::resource('types', 'Api\TypesController');
-    Route::resource('details', 'Api\DetailController');
-    Route::resource('categories', 'Api\CategoriesController');
+    Route::resource('details', 'Api\DetailController')->only('index', 'show');
+    Route::resource('categories', 'Api\CategoriesController')->only('index', 'show');
     Route::get('terms', 'Api\TermsController@index');
     Route::get('faqs', 'Api\FaqsController@index');
 
     Route::resource('transactions', 'Api\TransactionController');
     
     Route::resource('cart', 'Api\CartController');
-    Route::get('review-item', 'Api\CartController@canBeReviewed');
+    // Route::get('review-item', 'Api\CartController@canBeReviewed');
 
     Route::get('payment', 'Api\PayPalController@payment')->name('payment');
     Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');

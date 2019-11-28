@@ -40,7 +40,7 @@
                         <h4 class="font-weight-normal mb-3">Reviews
                             <i class="fa fa-spin fa-thumbs-o-down fs-30 float-right"></i>
                         </h4>
-                        <h2 class="mb-0">0</h2>
+                        <h2 class="mb-0">{{ App\Review::count() }}</h2>
                     </div>
                 </div>
             </div>

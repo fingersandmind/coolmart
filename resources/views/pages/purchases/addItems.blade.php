@@ -61,36 +61,39 @@
                                     <table class="table row table-borderless w-100 m-0 ">
                                         <tbody class="col-lg-6 p-0">
                                             <tr>
-                                                <td><strong>Company :</strong> {{ $details['company'] }}</td>
+                                                <td><strong>Company : </strong> {{ $details['company'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Ref No. :</strong>{{ $details['ref_no'] }}</td>
+                                                <td><strong>Ref No. : </strong>{{ $details['ref_no'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Supplier :</strong>{{ $details['supplier'] }}</td>
+                                                <td><strong>Supplier : </strong>{{ $details['supplier'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Term :</strong>{{ $details['term'] }}</td>
+                                                <td><strong>Term : </strong>{{ $details['term'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Delivery Date :</strong>{{ $details['delivery_date']->toFormattedDateString() }}</td>
+                                                <td><strong>Delivery Date : </strong>{{ $details['delivery_date']->toFormattedDateString() }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>PO Valid Until :</strong>{{ $details['po_valid']->toFormattedDateString() }}</td>
+                                                <td><strong>PO Valid Until : </strong>{{ $details['po_valid']->toFormattedDateString() }}</td>
                                             </tr>
                                         </tbody>
                                         <tbody class="col-lg-6 p-0">
                                             <tr>
-                                                <td><strong>Ship To :</strong>{{ $details['ship_to'] }}</td>
+                                                <td><strong>Ship To : </strong>{{ $details['ship_to'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Location :</strong>{{ $details['location'] }}</td>
+                                                <td><strong>Location : </strong>{{ $details['location'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Prepared By :</strong>{{ $details['preparedBy'] }}</td>
+                                                <td><strong>Prepared By : </strong>{{ $details['preparedBy'] }}</td>
                                             </tr>
                                             <tr>
-                                                <td><strong>Noted By :</strong>{{ $details['notedBy'] }}</td>
+                                                <td><strong>Noted By : </strong>{{ $details['notedBy'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Approved By : </strong>{{ $details['approvedBy'] }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
