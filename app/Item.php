@@ -93,34 +93,19 @@ class Item extends Model
                 $total += $reviews->stars;
             }
         }
+        $rate = count($this->reviews) > 0 ? number_format($total / $count,1) :  number_format(5,1);
 
-        return $this->reviews ? $total / $count :  5 ;
+        return $rate;
     }
-
     /**
-     * Function to check if a User can review or comment 
-     * to an Item in frontend if the User purchased the item.
-     * @return boolean $purchased
+     * Get the percentage of ratings
+     * to display the stars of frontend
+     * because frontend requires percentage.
+     * ****[5.0 = 100%] *****
      */
-    public function isPurchasedByAuth()
+    public function starRatePercent()
     {
-        $user = auth()->user();
-        $purchased = 0;
-        if($user)
-        {
-            if(!$user->carts)
-            {
-                return $purchased;
-            }
-            foreach($user->carts as $cart)
-            {
-                if($cart->item == $this && $cart->is_checkedout == true)
-                {
-                    $purchased = 1;
-                }
-            }
-        }
-        return $purchased;
+        return $this->ratings() * 20; /** [1.0 = 20%] */
     }
 
     /**

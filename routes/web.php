@@ -19,26 +19,26 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
     Route::resource('lists', 'AirconListController');
 
     /**
-     * Route for item discounts
+     * *********** [ ROUTE FOR APPLYING DISCOUNTS ON ITEMS ] ***********
      */
     Route::post('items/{item}', 'ItemController@applyDiscount')->name('item.discount');
     Route::delete('items/{item}', 'ItemController@removeDiscount')->name('discount.destroy');
 
 
     /**
-     ******** [THIS ROUTE IS FOR MAKING PURCHASE_ORDER ONLY YOU MIGHT GET CONFUSE] **********
+     ******** [THIS ROUTE IS FOR MAKING PURCHASE_ORDER IN SESSION ONLY YOU MIGHT GET CONFUSE] **********
      */
     Route::resource('orders','PurchaseOrder\PurchaseOrderController')->only(['index', 'create', 'store']);
     /**
-     * Route for adding item template
+     * *********** [ ROUTE FOR CREATE VIEW OF PURCHASE ORDER ITEMS TOSESSION ] ***********
      */
     Route::get('orders/add-item','PurchaseOrder\PurchaseOrderController@addItems')->name('order.add');
     /**
-     * Route for storing item
+     * *********** [ ROUTE FOR STORING PURCHASE ORDER ITEMS IN SESSION ] ***********
      */
     Route::get('order', 'PurchaseOrder\PurchaseOrderController@storeItems')->name('order.item');
     /**
-     * Route for storing purchase order to database
+     * *********** [ ROUTE FOR STORING PURCHASE ORDER TO DATABASE ] ***********
      */
     Route::post('order', 'PurchaseOrder\PurchaseOrderController@storePurchaseOrder')->name('store.item');
 
@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'is_admin']], function(){
 });
 
     /**
-     * Download List of Aircon Brand and Model
+     * *********** [ ROUTES FOR DOWNLOADING EXCEL DATAS AND STORING TO DATABASE ] ***********
      */
     Route::get('download-list', 'AdminController@loadList');
     Route::get('download-type', 'AdminController@loadType');

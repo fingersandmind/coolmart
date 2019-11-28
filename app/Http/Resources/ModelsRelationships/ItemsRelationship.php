@@ -27,9 +27,9 @@ class ItemsRelationship extends JsonResource
                 'name' => $this->brand->name,
                 'logo' => $this->brand->logo
             ],
-            'reviews' => [
-                'data' => ReviewResource::collection($this->reviews)
-            ]
+            // 'reviews' => [
+            //     'data' => ReviewResource::collection($this->reviews)
+            // ]
         ];
     }
 }

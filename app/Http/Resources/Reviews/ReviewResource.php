@@ -18,9 +18,11 @@ class ReviewResource extends JsonResource
             'type' => 'reviews',
             'id' => (string)$this->id,
             'attributes' => [
-                'stars' => (string)$this->stars,
+                'stars' => number_format($this->stars,1),
+                'star_percent_rate' => (string)$this->starRatePercent(),
                 'comment' => $this->comments,
-                'user' => $this->user->name
+                'user' => $this->user->name,
+                'date' => $this->updated_at->diffForHumans()
             ]
         ];
     }

@@ -9,11 +9,18 @@ use App\Item;
 use App\Review;
 use App\User;
 use App\Cart;
+use App\Http\Resources\Reviews\ReviewsResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ReviewsController extends Controller
 {
+
+    public function index(Item $item)
+    {
+        $reviews = Review::where('reviewable_id', $item->id)->paginate(15);
+
+        return new ReviewsResource($reviews);
+    }
 
     public function show(Request $request, Item $item)
     {
@@ -24,6 +31,10 @@ class ReviewsController extends Controller
         return new ReviewResource($review);
     }
 
+    /**
+     * Function that check if Cart has that Item and 
+     * is checkedout.
+     */
     public function checkIfItemExists($item)
     {
         return Cart::where('item_id', $item->id)
@@ -35,7 +46,7 @@ class ReviewsController extends Controller
     {
         $itemData = [
             'name' => $item->name,
-            'image' => $item->images->pluck('images')
+            'image' => $item->images->pluck('image')
         ];
         return $itemData;
     }
@@ -47,16 +58,16 @@ class ReviewsController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::findOrFail($request->authId);
+        $user = $request->authId;
         $item = Item::findOrFail($request->itemId);
         
         try {
             if($this->checkIfItemExists($item))
             {
                 $item->reviews()->updateOrCreate(
-                    ['user_id' => $user->id, 'reviewable_id' => $item->id],
+                    ['user_id' => $user, 'reviewable_id' => $item->id],
                     [
-                        'user_id' => $user->id,
+                        'user_id' => $user,
                         'stars' => $request->stars > 5 ? 5 : $request->stars,
                         'comments' => $request->comments
                     ]
@@ -64,7 +75,7 @@ class ReviewsController extends Controller
 
                 return response()->json(['message' => 'Thank you for your feedback!']);
             }
-            return response()->json(['message' => 'Letson']);
+            return response()->json(['message' => 'Item you are trying to review is not in the list. Are you a hacker?']);
         } catch (\Exception $e) {
 
             return response()->json([

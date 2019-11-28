@@ -17,4 +17,9 @@ class Review extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function starRatePercent()
+    {
+        return $this->stars * 20;
+    }
 }

@@ -23,10 +23,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::group(['prefix' => 'items'], function(){
         Route::get('reviewable', 'Api\ReviewsController@toBeReviewed'); /**[Checkedout Items and available for reviews] */
         Route::get('review/{item}', 'Api\ReviewsController@show'); /** [Display items that has review] */
-        Route::get('review/{item}/create', 'Api\ReviewsController@create'); /** [Create a review, pass some data] */
+        Route::get('review/{item}/create', 'Api\ReviewsController@create'); /** [Passing item information for creating review] */
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
         Route::post('reviews', 'Api\ReviewsController@store');
+        Route::get('reviews/{item}', 'Api\ReviewsController@index');
     });
     Route::resource('items', 'Api\ItemsController');
     Route::resource('types', 'Api\TypesController');

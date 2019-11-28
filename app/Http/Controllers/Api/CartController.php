@@ -9,7 +9,6 @@ use App\Http\Resources\Carts\CartResource;
 use App\Http\Resources\Carts\CartsResource;
 use App\User;
 use App\Item;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
