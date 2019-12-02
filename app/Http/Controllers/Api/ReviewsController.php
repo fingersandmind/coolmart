@@ -24,11 +24,18 @@ class ReviewsController extends Controller
 
     public function show(Request $request, Item $item)
     {
-        ReviewResource::withoutWrapping();
+        
         $review = Review::where('user_id', $request->authId)
             ->where('reviewable_id', $item->id)
             ->first();
-        return new ReviewResource($review);
+            
+        $data['name'] = $item->name;
+        $data['image'] = $item->images->pluck('thumbnail');
+        $data['item_id'] = $item->id;
+        $data['review_stars'] = $review->stars;
+        $data['review_comment'] = $review->comments;
+
+        return $data;
     }
 
     /**
@@ -119,9 +126,10 @@ class ReviewsController extends Controller
         $array = [];
         foreach($items as $item)
         {
-            $arr['name'] = $item->name;
-            $arr['slug'] = $item->slug;
-            $arr['image'] = $item->images->pluck('thumbnail');
+            $arr['name']    = $item->name;
+            $arr['slug']    = $item->slug;
+            $arr['id']      = $item->id;
+            $arr['image']   = $item->images->pluck('thumbnail');
             foreach($item->carts as $cart)
             {
                 $arr['date_placed'] = $cart->updated_at->toFormattedDateString();

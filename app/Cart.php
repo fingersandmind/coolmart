@@ -28,6 +28,11 @@ class Cart extends Model
         return $query->where('is_checkedout', true);
     }
 
+    public function scopeUnCheckedout($query)
+    {
+        return $query->where('is_checkedout', false);
+    }
+
     /**
      * Maximum cart qty must not exceed item qty
      * If cart qty is over item qty, item qty must return

@@ -25,11 +25,12 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('reviewed', 'Api\ReviewsController@withReview');             /**[Checkedout Items that already have a review] */
         Route::get('review/{item}', 'Api\ReviewsController@show');              /** [Display items that has review] */
         Route::get('review/{item}/create', 'Api\ReviewsController@create');     /** [Passing item information for creating review] */
+        Route::post('reviews', 'Api\ReviewsController@store');                  /** [Store or Update a user's review] */
 
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
-        
-        Route::post('reviews', 'Api\ReviewsController@store');
+
+        /** ******* [ Displays all reviews of a specified Items ] ******* */
         Route::get('reviews/{item}', 'Api\ReviewsController@index');
     });
 
@@ -45,7 +46,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('cart', 'Api\CartController');
     // Route::get('review-item', 'Api\CartController@canBeReviewed');
 
-    Route::get('payment', 'Api\PayPalController@payment')->name('payment');
+    Route::get('payment', 'Api\PayPalController@prepare')->name('payment');
     Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
     Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
 
