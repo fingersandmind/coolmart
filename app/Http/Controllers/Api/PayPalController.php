@@ -12,6 +12,11 @@ class PayPalController extends Controller
 {
     use PaymentPayPalTrait;
 
+    /**
+     * Function to prepare the User's Cart before processing the Paypal Payment.
+     * @param User $id
+     */
+
     public function prepare(Request $request)
     {
         $request->validate([
@@ -32,6 +37,13 @@ class PayPalController extends Controller
 
         return response()->json(['No Items selected']);
     }
+
+
+    /**
+     * Function that gets user uncheckedout Cart
+     * @param UsersUncheckedOutCarts
+     * @return Array $carts
+     */
 
     public function items($user)
     {
@@ -57,6 +69,13 @@ class PayPalController extends Controller
         return $items;
     }
 
+    /**
+     * Function to compute all of the uncheckedout Carts
+     * already compute if it's discounted or not and qty of per cart
+     * @param UsersUncheckedOutCarts
+     * @return $total
+     */
+
     public function totalAmount($user)
     {
         $carts = $user->carts;
@@ -66,7 +85,7 @@ class PayPalController extends Controller
         {
             foreach($carts as $cart)
             {
-                if(!$cart->validMaxQty() == 0)
+                if(!$cart->validMaxQty() == 0)/** This condition checks if the qty of Item that has been added to cart has still have a valid Qty */
                 {
                     $total += $cart->cartTotal();
                 }

@@ -21,8 +21,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController')->only('index','show');
 
     Route::group(['prefix' => 'items'], function(){
-        Route::get('reviewable', 'Api\ReviewsController@toBeReviewed');         /**[Checkedout Items and available for reviews] */
-        Route::get('reviewed', 'Api\ReviewsController@withReview');             /**[Checkedout Items that already have a review] */
+        Route::get('reviewable', 'Api\ReviewsController@toBeReviewed');         /** [Checkedout Items and available for reviews] */
+        Route::get('reviewed', 'Api\ReviewsController@withReview');             /** [Checkedout Items that already have a review] */
         Route::get('review/{item}', 'Api\ReviewsController@show');              /** [Display items that has review] */
         Route::get('review/{item}/create', 'Api\ReviewsController@create');     /** [Passing item information for creating review] */
         Route::post('reviews', 'Api\ReviewsController@store');                  /** [Store or Update a user's review] */
@@ -30,9 +30,16 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
 
-        /** ******* [ Displays all reviews of a specified Items ] ******* */
+    /** ******* [ Displays all reviews of a specified Items ] ******* */
+
         Route::get('reviews/{item}', 'Api\ReviewsController@index');
     });
+
+ /** ******* [ Update Or Create User Billing Address ] ******* */
+    
+    Route::post('billing-address/{user}', 'Api\BillingAddressesController@store');
+
+
 
     Route::resource('items', 'Api\ItemsController');
     Route::resource('types', 'Api\TypesController');
@@ -46,6 +53,11 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('cart', 'Api\CartController');
     // Route::get('review-item', 'Api\CartController@canBeReviewed');
 
+    /**
+     * 
+     * ******* [PAYPAL PAYMENT INTEGRATION] *******
+     * 
+     */
     Route::get('payment', 'Api\PayPalController@prepare')->name('payment');
     Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
     Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
@@ -53,7 +65,7 @@ Route::group(['middleware' => ['cors']], function () {
 
 
     /**
-     ****** [API AUTH] *******
+     * ******* [API AUTH] *******
      */
     Route::post('register', 'Api\AuthController@register');
     Route::post('login', 'Api\AuthController@login');

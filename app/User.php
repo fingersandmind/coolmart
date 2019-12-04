@@ -100,6 +100,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Purchase::class);
     }
 
+    public function billingAddresses()
+    {
+        return $this->hasMany(BillingAddress::class, 'user_id');
+    }
+
     /**
      * function to pluck uncheckedout carts id
      * to be attach to orders for checkout

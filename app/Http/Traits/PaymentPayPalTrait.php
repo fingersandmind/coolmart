@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Srmklive\PayPal\Services\ExpressCheckout;
 
 trait PaymentPayPalTrait
@@ -61,7 +62,7 @@ trait PaymentPayPalTrait
             $user = User::findOrFail($userId[1]);
             $user->checkout();
 
-            return response()->json(['Payment was successful']);
+            return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK'));
         }
   
         dd('Something is wrong.');
