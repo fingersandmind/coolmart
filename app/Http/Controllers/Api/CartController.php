@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Cart;
 use App\Http\Resources\Carts\CartResource;
 use App\Http\Resources\Carts\CartsResource;
-use App\User;
 use App\Item;
 use Illuminate\Support\Facades\DB;
 
@@ -18,26 +17,16 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $user = User::findOrFail($request->authId);
-
-        // $carts = $user->carts;
-        $carts = Cart::where('user_id', $user->id)
-        ->where('is_checkedout',false)
-        ->with('item')->get();
+        $user = auth('api')->user();
+        $carts = $user->carts()
+            ->where('is_checkedout', false)
+            ->with('item')
+            ->get();
 
         return new CartsResource($carts);
     }
-
-    // public function canBeReviewed(Request $request)
-    // {
-    //     $user = User::findOrFail($request->authId);
-        
-    //     $carts = Cart::where('user_id', $user->id)->checkedout()->with('item')->get();
-
-    //     return new CartsResource($carts);
-    // }
 
     public function show($id)
     {
@@ -68,10 +57,15 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth('api')->user();
+
         $qty = $request->qty;
         $item = Item::findOrFail($request->itemId);
-        $user = User::findOrFail($request->authId);
-        $cart = Cart::where(['item_id' => $item->id, 'user_id' => $user->id])->first();
+        
+        $cart = $user->carts()
+            ->where('item_id', $item->id)
+            ->first();
+            
         
         if($this->checkIfCartExists($item->id, $user->id))
         {

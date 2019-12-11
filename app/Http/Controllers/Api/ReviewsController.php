@@ -22,10 +22,10 @@ class ReviewsController extends Controller
         return new ReviewsResource($reviews);
     }
 
-    public function show(Request $request, Item $item)
+    public function show(Item $item)
     {
-        
-        $review = Review::where('user_id', $request->authId)
+        $user = auth('api')->user();   
+        $review = $user->reviews()
             ->where('reviewable_id', $item->id)
             ->first();
             
@@ -65,16 +65,16 @@ class ReviewsController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->authId;
+        $user = auth('api')->user();
         $item = Item::findOrFail($request->itemId);
         
         try {
             if($this->checkIfItemExists($item))
             {
                 $item->reviews()->updateOrCreate(
-                    ['user_id' => $user, 'reviewable_id' => $item->id],
+                    ['user_id' => $user->id, 'reviewable_id' => $item->id],
                     [
-                        'user_id' => $user,
+                        'user_id' => $user->id,
                         'stars' => $request->stars > 5 ? 5 : $request->stars,
                         'comments' => $request->comments
                     ]
@@ -92,26 +92,25 @@ class ReviewsController extends Controller
         }
     }
 
-    public function toBeReviewed(Request $request)
+    public function toBeReviewed()
     {
-        $user = User::findOrFail($request->authId);
-        $items = $user->reviews->pluck('reviewable_id');
-        $carts = Cart::checkedout()
-            ->whereNotIn('item_id',$items)
-            ->where('user_id', $user->id)
-            ->where('is_cancelled', false)
-            ->paginate(5);
+        $user = auth('api')->user();
+        $itemIds = $user->reviews->pluck('reviewable_id');
 
-        return new CartsResource($carts);
+        $carts = $user->carts()->checkedout()
+            ->whereNotIn('item_id',$itemIds)
+            ->get();
+
+        return new CartsResource($carts->unique('item_id')->paginate(5));
     }
 
     public function withReview(Request $request)
     {
-        $userId = User::findOrFail($request->authId)->id;
+        $userId = auth('api')->user()->id;
         
         $items = Item::whereHas('reviews')
-        ->with(['reviews' => function($q) use($request){
-            $q->where('user_id',$request->authId);
+        ->with(['reviews' => function($q) use($userId){
+            $q->where('user_id',$userId);
         }])
         ->with(['carts' => function($c) use($userId){
             $c->where('user_id', $userId);

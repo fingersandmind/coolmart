@@ -13,10 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController')->only('index','show');
 
@@ -30,14 +26,25 @@ Route::group(['middleware' => ['cors']], function () {
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
 
-    /** ******* [ Displays all reviews of a specified Items ] ******* */
+    /** 
+     * ******* [ Displays all reviews of a specified Items ] ******* 
+     */
 
         Route::get('reviews/{item}', 'Api\ReviewsController@index');
     });
 
- /** ******* [ Update Or Create User Billing Address ] ******* */
+    /** 
+     * ******* [ Update Or Create User Billing Address ] ******* 
+     */
     
-    Route::post('billing-address/{user}', 'Api\BillingAddressesController@store');
+    Route::post('billing-address', 'Api\BillingAddressesController@store');
+    Route::put('billing-address', 'Api\BillingAddressesController@update');
+    Route::get('user-address', 'Api\BillingAddressesController@index');
+    Route::get('user-address/{address}/edit','Api\BillingAddressesController@edit');
+    Route::put('default-address/{address}', 'Api\BillingAddressesController@defaultAddress');
+    Route::delete('user-address/{address}','Api\BillingAddressesController@destroooooooy');
+
+    Route::get('checkout-address', 'Api\BillingAddressesController@displayDefaultAddress');
 
 
 
@@ -51,7 +58,13 @@ Route::group(['middleware' => ['cors']], function () {
     Route::resource('transactions', 'Api\TransactionController');
     
     Route::resource('cart', 'Api\CartController');
-    // Route::get('review-item', 'Api\CartController@canBeReviewed');
+
+    /**
+     * ******* [ITEM CANCELLATIONS] *******
+     */
+    Route::put('cart-cancellation/{cart}', 'Api\CancellationsController@cancel');
+    Route::get('cancellations', 'Api\CancellationsController@index');
+    Route::get('cancellations/{cart}', 'Api\CancellationsController@show');
 
     /**
      * 
@@ -72,6 +85,9 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('logout', 'Api\AuthController@logout');
     Route::get('email/resend','Api\VerificationController@resend')->name('verification.resend');
     Route::get('email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
+
+
+    Route::get('testest', 'Api\ItemsController@topRated');
 });
 
 Route::fallback('Api\FallBackController@index');

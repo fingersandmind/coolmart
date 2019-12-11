@@ -25,7 +25,10 @@ class CreateBillingAddressesTable extends Migration
             $table->string('city');
             $table->string('brgy');
 
-            $table->enum('type',['House', 'Office']);
+            $table->enum('type',['Home', 'Office']);
+
+            $table->boolean('is_shipping')->default(0);
+            $table->boolean('is_billing')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

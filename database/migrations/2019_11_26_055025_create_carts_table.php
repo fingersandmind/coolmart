@@ -20,6 +20,7 @@ class CreateCartsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->integer('qty');
             $table->boolean('is_checkedout')->default(false);
+            $table->enum('status',['Processing', 'Shipped', 'Delivered', 'Pending', 'Cancelled', 'Refunded', 'Returned', 'Replaced']);
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

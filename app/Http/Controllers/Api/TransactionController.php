@@ -3,11 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Transactions\TransactionResource;
 use App\Http\Resources\Transactions\TransactionsResource;
 use App\Transaction;
-use App\User;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -16,81 +13,51 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $user = User::findOrFail($request->authId);
+        $user = auth('api')->user();
 
-        $transactions = Transaction::where('user_id', $user->id)
-        ->with('carts')->paginate(5);
+        $transactions = $user->transactions()->with('carts')->paginate(5);
         
         return new TransactionsResource($transactions);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Transaction $transaction)
     {
-        TransactionResource::withoutWrapping();
-
-        // return new TransactionResource($transaction);
+        return response()->json([
+            'transaction_id' => $transaction->id,
+            'order_id' => $transaction->TransactionCode,
+            'item_count' => $transaction->countCartByQty(),
+            'sub_total' => number_format($transaction->subTotal(),2),
+            'ship_post_code' => explode('--',$transaction->ship_post_code),
+            'bill_post_code' => explode('--',$transaction->bill_post_code),
+            'date_placed' => $transaction->created_at->toDayDateTimeString(),
+            'items' => $this->items($transaction->carts->unique('item_id')),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function items($carts)
     {
-        //
+        $items = array();
+        foreach($carts as $cart)
+        {
+            $item['cart_id'] = $cart->id;
+            $item['name'] = $cart->item->name;
+            $item['slug'] = $cart->item->slug;
+            $item['images'] = $cart->item->images->pluck('thumbnail');
+            $item['price'] = number_format($cart->item->accuratePrice(),2);
+            $item['qty'] = $cart->validMaxQty();
+            $item['status'] = $cart->status;
+            $item['cancellable'] = $cart->cancellable();
+            array_push($items, $item);
+        }
+        return $items;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function store()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $user = auth('api')->user();
+        
+        return $user->makeTransaction(); 
     }
 }

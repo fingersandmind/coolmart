@@ -52,7 +52,7 @@ class AdminController extends Controller
             $this->loadItem();
 
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
 
             return response()->json([

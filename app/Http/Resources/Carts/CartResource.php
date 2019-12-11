@@ -32,7 +32,9 @@ class CartResource extends JsonResource
                 'cart_qty'      => $this->qty,
                 'validQty'      => $this->validMaxQty(),
                 'subtotal_per_item'     => $this->item->accuratePrice() * $this->qty,
-                'date_placed' => $this->updated_at->toDayDateTimeString()
+                'date_placed' => $this->created_at->toDayDateTimeString(),
+                'status' => $this->status,
+                'cancellable' => $this->cancellable()
             ]
         ];
     }

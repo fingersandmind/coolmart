@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
-
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id','ship_post_code', 'bill_post_code'];
 
     public function getTransactionCodeAttribute()
     {
@@ -25,24 +24,23 @@ class Transaction extends Model
         return $this->hasMany(Cart::class);
     }
 
-    public function makeTransaction($ids)
+    public function subTotal()
     {
-        try {
-            DB::beginTransaction();
-
-            Cart::whereIn('id',$ids)->update([
-                'is_checkedout' => true,
-                'transaction_id' => $this->id
-                ]);
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'error' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]);
+        $total = 0;
+        foreach($this->carts as $cart)
+        {
+            $total += $cart->cartTotal();
         }
+        return $total;
+    }
+
+    public function countCartByQty()
+    {
+        $total_count = 0;
+        foreach($this->carts as $cart)
+        {
+            $total_count += $cart->validMaxQty();
+        }
+        return $total_count;
     }
 }

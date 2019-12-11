@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Cart;
+use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -14,14 +16,13 @@ trait PaymentPayPalTrait
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment($items, $total, $user)
+    public function payment($items, $total, $invoice)
     {
         $data = [];
         $data['items'] = $items;
   
-        $data['invoice_id'] = rand(10000,99999).'-'.$user;
-        $id = explode('-',$data['invoice_id']);
-        $data['invoice_description'] = "Order #{$id[0]} Invoice";
+        $data['invoice_id'] = $invoice;
+        $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
         $data['return_url'] = route('payment.success');
         $data['cancel_url'] = route('payment.cancel');
         $data['total'] = $total;
@@ -32,7 +33,7 @@ trait PaymentPayPalTrait
   
         $response = $provider->setExpressCheckout($data, true);
         
-        return redirect($response['paypal_link']);
+        return $response;
 
     }
    
@@ -58,11 +59,11 @@ trait PaymentPayPalTrait
         $response = $provider->getExpressCheckoutDetails($request->token);
   
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
-            $userId = explode('-',$response['INVNUM']);
-            $user = User::findOrFail($userId[1]);
-            $user->checkout();
+            $tran_id = explode('--', $response['INVNUM']);
+            $transaction = Transaction::findOrFail($tran_id[1]);
+            $transaction->carts()->update(['status' => Cart::PROCESSING]);
 
-            return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK'));
+            return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK').'/'.$transaction->id);
         }
   
         dd('Something is wrong.');

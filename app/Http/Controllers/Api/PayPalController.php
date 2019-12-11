@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Item;
 use App\Traits\PaymentPayPalTrait;
+use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -17,22 +18,21 @@ class PayPalController extends Controller
      * @param User $id
      */
 
-    public function prepare(Request $request)
+    public function prepare()
     {
-        $request->validate([
-            'user' => 'required'
-        ]);
-        $user = User::with(['carts' => function($q){
-            $q->where('is_checkedout', false);
-        }])
-        ->findOrFail($request->user);
+        $user = auth('api')->user();
+        $transaction = $user->transactions()
+            ->where('id', request()->transaction_id)
+            ->with('carts')->first();
 
-        $items = $this->items($user);
-        $total = $this->totalAmount($user);
+        $invoice = $transaction->TransactionCode.'--'.$transaction->id;
+
+        $items = $this->items($transaction->carts);
+        $total = $this->totalAmount($transaction->carts);
 
         if(count($items) > 0)
         {
-            return $this->payment($items,$total, $user->id);
+            return $this->payment($items,$total, $invoice);
         }
 
         return response()->json(['No Items selected']);
@@ -45,10 +45,8 @@ class PayPalController extends Controller
      * @return Array $carts
      */
 
-    public function items($user)
+    public function items($carts)
     {
-        $carts = $user->carts;
-        
         $items = [];
         if($carts)
         {
@@ -76,12 +74,10 @@ class PayPalController extends Controller
      * @return $total
      */
 
-    public function totalAmount($user)
+    public function totalAmount($carts)
     {
-        $carts = $user->carts;
-
         $total = 0;
-        if($user->carts)
+        if($carts)
         {
             foreach($carts as $cart)
             {

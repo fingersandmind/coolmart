@@ -12,7 +12,9 @@ trait UpdateListTrait
     public function responseData()
     {
         $url = env('AIRCON_API_LIST');
+        
         $response = json_decode(file_get_contents($url));
+        
         return $response;
     }
 

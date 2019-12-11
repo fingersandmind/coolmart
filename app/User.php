@@ -93,55 +93,72 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * 
-     ****** [For Purchase Order Only]  *******
+     ****** [For Purchase Order Only(backend)]  *******
      */
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
     }
+    /**
+     * 
+     ****** [For Purchase Order Only(backend)]  *******
+     */
+
 
     public function billingAddresses()
     {
         return $this->hasMany(BillingAddress::class, 'user_id');
     }
 
-    /**
-     * function to pluck uncheckedout carts id
-     * to be attach to orders for checkout
-     */
-
-    public function cartsUncheckedoutIds()
+    public function cancellations()
     {
-        return $this->carts->where('is_checkedout', false)->pluck('id');
+        return $this->hasMany(Cancellation::class);
     }
 
-    public function totalUncheckedoutCarts()
+
+
+
+
+
+    public function defaultShippingAddress()
     {
-        return count($this->carts->where('is_checkedout', false));
+        return $this->billingAddresses()->where('is_shipping', true)->first();
     }
 
-    public function checkout()
+    public function defaultBillingAddress()
+    {
+        return $this->billingAddresses()->where('is_billing', true)->first();
+    }
+
+    public function makeTransaction()
     {
         try {
             DB::beginTransaction();
 
-            if($this->carts)
+            if(count($this->carts()->unCheckedOut()->get()) > 0)
             {
-                if($this->totalUncheckedoutCarts() > 0)
-                {
-                    $transaction = $this->transactions()->create(['user_id' => $this->id]);
-                    $transaction->makeTransaction($this->cartsUncheckedoutIds());
-                }
+                $transaction = $this->transactions()->create([
+                    'ship_post_code' => $this->defaultShippingAddress()->defaultShippingPostCode(),
+                    'bill_post_code' => $this->defaultBillingAddress()->defaultBillingPostCode(),
+                ]);
+        
+                $this->carts()->where('is_checkedout', false)
+                    ->update([
+                        'transaction_id' => $transaction->id, 
+                        'is_checkedout' => true,
+                        'status' => Cart::PENDING
+                        ]);
             }
-
             DB::commit();
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-
             return response()->json([
-                'error' => $e->getMessage(),
-                'code'  => $e->getCode()
+                'transaction_id' => $transaction->id,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'error' => $th->getMessage(),
+                'code' => $th->getCode()
             ]);
         }
     }

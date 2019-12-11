@@ -37,6 +37,19 @@ class ItemsController extends Controller
         return new ItemResource($item);
     }
 
+    public function topRated()
+    {
+        $items = Item::whereHas('reviews')
+            ->get()
+            ->sortByDesc(function($q){
+                return $q->reviews->average('stars');
+            })
+            ->filter(function($q) {
+                return $q->reviews->average('stars') > 3;
+            });
+        return new ItemsResource($items);
+    }
+
     /**
      * Display featured Items
      */
