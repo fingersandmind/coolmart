@@ -47,7 +47,7 @@ class ItemsController extends Controller
             ->filter(function($q) {
                 return $q->reviews->average('stars') > 3;
             });
-        return new ItemsResource($items);
+        return new ItemsResource($items->paginate(5));
     }
 
     /**

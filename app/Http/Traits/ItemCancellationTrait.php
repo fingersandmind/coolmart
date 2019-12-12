@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Traits;
 
 use App\Cart;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Carts\CartResource;
-use App\Http\Resources\Carts\CartsResource;
+use App\Http\Resources\Transactions\TransactionsResource;
+use App\Transaction;
 use Illuminate\Support\Facades\DB;
 
-class CancellationsController extends Controller
+trait ItemCancellationTrait
 {
-    public function index()
+    public function cancellations()
     {
         $user = auth('api')->user();
-        $carts = $user->carts()->where('status', Cart::CANCELLED)->get();
+        $transactions = Transaction::where('user_id', $user->id)
+            ->with(['carts' => function($q){
+                $q->whereStatus(Cart::CANCELLED);
+            }])
+            ->orderBy('updated_at', 'DESC')
+            ->get()
+            ->filter(function($q){
+                return $q->carts()->where('status', Cart::CANCELLED)->count() > 0;
+            });
 
-        return new CartsResource($carts);
-    }
-
-    public function show(Cart $cart)
-    {
-        CartResource::withoutWrapping();
-        return new CartResource($cart);
+        return new TransactionsResource($transactions->paginate(5));
     }
     
     public function cancel(Cart $cart)
@@ -53,5 +54,4 @@ class CancellationsController extends Controller
 
         return response()->json(['message' => 'Item cancelled successfully!']);
     }
-
 }

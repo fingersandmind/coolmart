@@ -115,11 +115,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Cancellation::class);
     }
 
-
-
-
-
-
     public function defaultShippingAddress()
     {
         return $this->billingAddresses()->where('is_shipping', true)->first();

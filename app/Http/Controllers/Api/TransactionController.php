@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Transactions\TransactionsResource;
+use App\Http\Resources\Carts\CartResource;
+use App\Http\Traits\ItemCancellationTrait;
+use App\Http\Traits\ItemReturnedTrait;
+use App\Http\Traits\TransactionTrait;
+use App\Cart;
 use App\Transaction;
 
 class TransactionController extends Controller
 {
+    use ItemCancellationTrait, TransactionTrait, ItemReturnedTrait;
     /**
      * Display a listing of the resource.
      *
@@ -17,41 +23,34 @@ class TransactionController extends Controller
     {
         $user = auth('api')->user();
 
-        $transactions = $user->transactions()->with('carts')->paginate(5);
+        $transactions = $user->transactions()
+        ->with('carts')
+        ->orderBy('created_at', 'DESC')
+        ->paginate(5);
         
         return new TransactionsResource($transactions);
     }
 
+    /**
+     * Show cart preview before checking out an item.
+     */
     public function show(Transaction $transaction)
     {
+        $carts = $transaction->carts;
         return response()->json([
-            'transaction_id' => $transaction->id,
-            'order_id' => $transaction->TransactionCode,
             'item_count' => $transaction->countCartByQty(),
-            'sub_total' => number_format($transaction->subTotal(),2),
-            'ship_post_code' => explode('--',$transaction->ship_post_code),
-            'bill_post_code' => explode('--',$transaction->bill_post_code),
-            'date_placed' => $transaction->created_at->toDayDateTimeString(),
-            'items' => $this->items($transaction->carts->unique('item_id')),
+            'sub_total' => number_format($transaction->subTotal()),
+            'address' => $this->addresses($transaction),
+            'items' => $this->items($carts->unique('item_id')),
         ]);
     }
-
-    public function items($carts)
+    /**
+     * Display or view Cart wether cancelled, refunded, returned etc..
+     */
+    public function display(Cart $cart)
     {
-        $items = array();
-        foreach($carts as $cart)
-        {
-            $item['cart_id'] = $cart->id;
-            $item['name'] = $cart->item->name;
-            $item['slug'] = $cart->item->slug;
-            $item['images'] = $cart->item->images->pluck('thumbnail');
-            $item['price'] = number_format($cart->item->accuratePrice(),2);
-            $item['qty'] = $cart->validMaxQty();
-            $item['status'] = $cart->status;
-            $item['cancellable'] = $cart->cancellable();
-            array_push($items, $item);
-        }
-        return $items;
+        CartResource::withoutWrapping();
+        return new CartResource($cart);
     }
 
     public function store()

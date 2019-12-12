@@ -115,7 +115,10 @@ class ReviewsController extends Controller
         ->with(['carts' => function($c) use($userId){
             $c->where('user_id', $userId);
         }])
-        ->get();
+        ->get()
+        ->sortByDesc(function($q){
+            return $q->reviews()->orderBy('reviews.updated_at');
+        });
 
         return $this->reviewedItemsCollection($items);
     }

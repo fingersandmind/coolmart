@@ -31,7 +31,7 @@ class CartResource extends JsonResource
                 'discountType' => $this->item->discountType(),
                 'cart_qty'      => $this->qty,
                 'validQty'      => $this->validMaxQty(),
-                'subtotal_per_item'     => $this->item->accuratePrice() * $this->qty,
+                'subtotal_per_item'     => number_format($this->cartTotal(),2),
                 'date_placed' => $this->created_at->toDayDateTimeString(),
                 'status' => $this->status,
                 'cancellable' => $this->cancellable()

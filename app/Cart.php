@@ -20,7 +20,7 @@ class Cart extends Model
     protected $statusArr = [
         'Processing' => self::PROCESSING, 'Shipped' => self::SHIPPED, 'Delivered' => self::DELIVERED,
         'Pending' => self::PENDING, 'Cancelled' => self::CANCELLED, 'Refunded' => self::REFUNDED,
-        'Returned' => self::RETURNED,'Refunded' => self::REFUNDED
+        'Returned' => self::RETURNED,'Replaced' => self::REFUNDED
     ];
 
     public function transaction()
@@ -56,8 +56,8 @@ class Cart extends Model
     public function cancellable()
     {
         $date_placed = Carbon::parse($this->created_at);
-        $is_cancellable =  $this->created_at < $date_placed->addDay() ? true : false;
-        $is_cancellable = $this->statusArr[$this->status] == self::CANCELLED ? false : true;
+        $is_cancellable = in_array($this->statusArr[$this->status], [self::PENDING, self::PROCESSING]);
+        $is_cancellable =  $this->created_at > $date_placed->addDay() ? true : false;
         
         return $is_cancellable;
     }

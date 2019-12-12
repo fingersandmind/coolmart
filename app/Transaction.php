@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
@@ -19,14 +18,27 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function status()
+    {
+        $data = $this->carts()->whereIn('status', [Cart::PENDING])->count();
+
+        return $data > 0 ? true : false;
+    }
+
     public function carts()
     {
         return $this->hasMany(Cart::class);
     }
 
-    public function subTotal()
+    public function subTotal($status = 0)
     {
         $total = 0;
+        if($status){
+            foreach($this->carts()->whereStatus($status)->get() as $cart){
+                $total += $cart->cartTotal();
+            }
+            return $total;
+        }
         foreach($this->carts as $cart)
         {
             $total += $cart->cartTotal();
@@ -34,9 +46,15 @@ class Transaction extends Model
         return $total;
     }
 
-    public function countCartByQty()
+    public function countCartByQty($status = 0)
     {
         $total_count = 0;
+        if($status){
+            foreach($this->carts()->whereStatus($status)->get() as $cart){
+                $total_count += $cart->validMaxQty();
+            }
+            return $total_count;
+        }
         foreach($this->carts as $cart)
         {
             $total_count += $cart->validMaxQty();

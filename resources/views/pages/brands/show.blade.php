@@ -9,6 +9,14 @@
                 <li class="breadcrumb-item"><a href="{{ route('brands.index') }}">Brands</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ ucfirst($brand->name) }}</li>
             </ol>
+            <div class="text-right justify-content-between">
+                <form action="{{ route('brands.update', $brand->slug) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    
+                    <button class="btn {{ $brand->is_featured ? 'btn-info' : 'btn-outline-info' }}" name="action" value="feature"><i class="fa fa-plane"></i>{{ $brand->is_featured ? 'Unfeature' : 'Feature me' }}</button>
+                </form>
+            </div>
         </div>
         <div class="row row-cards">
             <div class="col-md-12">

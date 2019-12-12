@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Cart;
 use App\Transaction;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Srmklive\PayPal\Services\ExpressCheckout;

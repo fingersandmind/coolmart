@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Cart;
 use App\Http\Controllers\Controller;
 use App\Item;
 use App\Traits\PaymentPayPalTrait;
@@ -23,7 +24,10 @@ class PayPalController extends Controller
         $user = auth('api')->user();
         $transaction = $user->transactions()
             ->where('id', request()->transaction_id)
-            ->with('carts')->first();
+            ->with(['carts' => function($q){
+                $q->whereStatus(Cart::PENDING);
+            }])
+            ->first();
 
         $invoice = $transaction->TransactionCode.'--'.$transaction->id;
 

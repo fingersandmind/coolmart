@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Transactions;
 
+use App\Cart;
 use App\Http\Resources\ModelsRelationships\TransactionsRelationship;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,7 @@ class TransactionResource extends JsonResource
             'attributes' => [
                 'transaction_id' => (string)$this->TransactionCode,
                 'date_placed' => $this->created_at->toDayDateTimeString(),
+                'date_updated' => $this->updated_at->toDayDateTimeString(),
             ],
             'relationships' => new TransactionsRelationship($this),
         ];

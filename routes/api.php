@@ -25,6 +25,7 @@ Route::group(['middleware' => ['cors']], function () {
 
         Route::get('featured', 'Api\ItemsController@isFeatured');
         Route::get('discounted', 'Api\ItemsController@isDiscounted');
+        Route::get('top-rated', 'Api\ItemsController@topRated');
 
     /** 
      * ******* [ Displays all reviews of a specified Items ] ******* 
@@ -49,22 +50,29 @@ Route::group(['middleware' => ['cors']], function () {
 
 
     Route::resource('items', 'Api\ItemsController');
+
     Route::resource('types', 'Api\TypesController');
     Route::resource('details', 'Api\DetailController')->only('index', 'show');
     Route::resource('categories', 'Api\CategoriesController')->only('index', 'show');
     Route::get('terms', 'Api\TermsController@index');
     Route::get('faqs', 'Api\FaqsController@index');
-
-    Route::resource('transactions', 'Api\TransactionController');
     
     Route::resource('cart', 'Api\CartController');
 
     /**
-     * ******* [ITEM CANCELLATIONS] *******
+     * ******* [ITEM TRANSACTIONS] *******
      */
-    Route::put('cart-cancellation/{cart}', 'Api\CancellationsController@cancel');
-    Route::get('cancellations', 'Api\CancellationsController@index');
-    Route::get('cancellations/{cart}', 'Api\CancellationsController@show');
+    Route::resource('transactions', 'Api\TransactionController')->only(['index', 'show', 'store']);
+    Route::get('transactions/{transaction}/cancelled', 'Api\TransactionController@cancelled');
+    Route::get('transactions/{transaction}/pending', 'Api\TransactionController@pending');
+    Route::get('transactions/{transaction}/returned', 'Api\TransactionController@returned');
+
+    Route::get('cancellations', 'Api\TransactionController@cancellations');
+    Route::put('cart-cancellation/{cart}', 'Api\TransactionController@cancel');
+
+    Route::get('myreturns', 'Api\TransactionController@myreturns');
+
+    Route::get('transaction-item/{cart}', 'Api\TransactionController@display');
 
     /**
      * 
@@ -85,9 +93,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::post('logout', 'Api\AuthController@logout');
     Route::get('email/resend','Api\VerificationController@resend')->name('verification.resend');
     Route::get('email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
-
-
-    Route::get('testest', 'Api\ItemsController@topRated');
+    
 });
 
 Route::fallback('Api\FallBackController@index');

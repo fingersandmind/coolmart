@@ -96,8 +96,13 @@ class BrandsController extends Controller
      */
     public function update(BrandRequest $request, Brand $brand)
     {
-        $request->validated();
+        if($request->action == 'feature')
+        {
+            $brand->featureBrand();
+            return redirect()->route('brands.show', $brand->slug)->withToastSuccess($brand->is_featured ? 'Featured!' : 'Unfeatured!');
+        }
 
+        $request->validated();
         $brand->persists($request);
 
         return redirect()->route('brands.index')->withSuccess('Succesfully added!');

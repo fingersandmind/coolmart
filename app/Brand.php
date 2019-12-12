@@ -8,7 +8,7 @@ use App\Traits\UploadTrait;
 class Brand extends Model
 {
     use UploadTrait;
-    protected $fillable = ['name', 'slug', 'description', 'logo'];
+    protected $fillable = ['name', 'slug', 'description', 'logo', 'is_featured'];
 
     public function items()
     {
@@ -23,6 +23,12 @@ class Brand extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function featureBrand()
+    {
+        Brand::whereNotIn('id', [$this->id])->update(['is_featured' => false]);
+        $this->update(['is_featured' => !$this->is_featured]);
     }
 
 
