@@ -57,9 +57,26 @@ class Cart extends Model
     {
         $date_placed = Carbon::parse($this->created_at);
         $is_cancellable = in_array($this->statusArr[$this->status], [self::PENDING, self::PROCESSING]);
-        $is_cancellable =  $this->created_at > $date_placed->addDay() ? true : false;
-        
-        return $is_cancellable;
+        $is_over =  $this->created_at < $date_placed->addDay() ? true : false;
+
+        if($is_cancellable AND $is_over)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public function returnable()
+    {
+        $date_placed = Carbon::parse($this->updated_at);
+        $is_returnable = $this->statusArr[$this->status] == self::DELIVERED ? true : false;
+        $is_over =  $this->updated_at < $date_placed->addWeek() ? true : false;
+
+        if($is_returnable AND $is_over)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -77,6 +94,11 @@ class Cart extends Model
     {
         $total =  $this->item->accuratePrice() * $this->validMaxQty();
         return $total;
+    }
+
+    public function checkedoutSubTotal()
+    {
+        return $this->item->accuratePrice() * $this->qty;
     }
     
 }

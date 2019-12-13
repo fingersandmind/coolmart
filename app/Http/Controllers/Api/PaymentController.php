@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Cart;
 use App\Http\Controllers\Controller;
-use App\Item;
+use App\Http\Traits\PaymentMethodTrait;
 use App\Traits\PaymentPayPalTrait;
-use App\Transaction;
 use App\User;
-use Illuminate\Http\Request;
 
-class PayPalController extends Controller
+class PaymentController extends Controller
 {
-    use PaymentPayPalTrait;
+    use PaymentPayPalTrait, PaymentMethodTrait;
 
     /**
      * Function to prepare the User's Cart before processing the Paypal Payment.
@@ -36,7 +34,14 @@ class PayPalController extends Controller
 
         if(count($items) > 0)
         {
-            return $this->payment($items,$total, $invoice);
+            if(request()->option == 'paypal')
+            {
+                return $this->paymentPaypal($items,$total, $invoice);
+            }
+            if(request()->option == 'cod')
+            {
+                return $this->paymentCod($transaction);
+            }
         }
 
         return response()->json(['No Items selected']);

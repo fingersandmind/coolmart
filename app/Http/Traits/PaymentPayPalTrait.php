@@ -15,7 +15,7 @@ trait PaymentPayPalTrait
      *
      * @return \Illuminate\Http\Response
      */
-    public function payment($items, $total, $invoice)
+    public function paymentPaypal($items, $total, $invoice)
     {
         $data = [];
         $data['items'] = $items;
@@ -60,7 +60,7 @@ trait PaymentPayPalTrait
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
             $tran_id = explode('--', $response['INVNUM']);
             $transaction = Transaction::findOrFail($tran_id[1]);
-            $transaction->carts()->update(['status' => Cart::PROCESSING]);
+            $transaction->successfullyCheckedout();
 
             return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK').'/'.$transaction->id);
         }

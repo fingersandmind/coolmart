@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => ['cors']], function () {
     Route::resource('brands', 'Api\BrandsController')->only('index','show');
 
+    Route::get('featured-brand', 'Api\BrandsController@featured');
+
     Route::group(['prefix' => 'items'], function(){
         Route::get('reviewable', 'Api\ReviewsController@toBeReviewed');         /** [Checkedout Items and available for reviews] */
         Route::get('reviewed', 'Api\ReviewsController@withReview');             /** [Checkedout Items that already have a review] */
@@ -63,25 +65,29 @@ Route::group(['middleware' => ['cors']], function () {
      * ******* [ITEM TRANSACTIONS] *******
      */
     Route::resource('transactions', 'Api\TransactionController')->only(['index', 'show', 'store']);
+
+    /**
+     * Returns Collection of Items by Transaction {transaction}
+     */
     Route::get('transactions/{transaction}/cancelled', 'Api\TransactionController@cancelled');
     Route::get('transactions/{transaction}/pending', 'Api\TransactionController@pending');
     Route::get('transactions/{transaction}/returned', 'Api\TransactionController@returned');
 
-    Route::get('cancellations', 'Api\TransactionController@cancellations');
+    Route::get('cancellations', 'Api\TransactionController@cancellations');  /** Returns Collection of transactions with its items that has been cancelled*/
     Route::put('cart-cancellation/{cart}', 'Api\TransactionController@cancel');
 
-    Route::get('myreturns', 'Api\TransactionController@myreturns');
+    Route::get('returns', 'Api\TransactionController@myreturns'); /** Returns Collection of transactions with its items that has been returned, replaced or refunded*/
 
-    Route::get('transaction-item/{cart}', 'Api\TransactionController@display');
+    Route::get('transaction-item/{cart}', 'Api\TransactionController@display'); /** Get the Cart Details that returns specific datas */
 
     /**
      * 
-     * ******* [PAYPAL PAYMENT INTEGRATION] *******
+     * ******* [PAYMENT INTEGRATION "PAYPAL && COD"] *******
      * 
      */
-    Route::get('payment', 'Api\PayPalController@prepare')->name('payment');
-    Route::get('cancel', 'Api\PayPalController@cancel')->name('payment.cancel');
-    Route::get('payment/success', 'Api\PayPalController@success')->name('payment.success');
+    Route::get('payment', 'Api\PaymentController@prepare')->name('payment');
+    Route::get('cancel', 'Api\PaymentController@cancel')->name('payment.cancel');
+    Route::get('payment/success', 'Api\PaymentController@success')->name('payment.success');
 
 
 

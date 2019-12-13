@@ -31,6 +31,11 @@ class Brand extends Model
         $this->update(['is_featured' => !$this->is_featured]);
     }
 
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
 
     public function persists($request)
     {

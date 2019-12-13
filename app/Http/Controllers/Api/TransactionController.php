@@ -38,14 +38,15 @@ class TransactionController extends Controller
     {
         $carts = $transaction->carts;
         return response()->json([
-            'item_count' => $transaction->countCartByQty(),
+            'item_count' => $transaction->countCartByQty(Cart::PROCESSING),
             'sub_total' => number_format($transaction->subTotal()),
             'address' => $this->addresses($transaction),
             'items' => $this->items($carts->unique('item_id')),
         ]);
     }
+
     /**
-     * Display or view Cart wether cancelled, refunded, returned etc..
+     * Display or view Cart whether cancelled, refunded, returned etc..
      */
     public function display(Cart $cart)
     {

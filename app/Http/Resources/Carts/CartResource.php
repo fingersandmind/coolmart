@@ -31,10 +31,12 @@ class CartResource extends JsonResource
                 'discountType' => $this->item->discountType(),
                 'cart_qty'      => $this->qty,
                 'validQty'      => $this->validMaxQty(),
-                'subtotal_per_item'     => number_format($this->cartTotal(),2),
+                'subtotal_per_item'     => $this->cartTotal(),
                 'date_placed' => $this->created_at->toDayDateTimeString(),
                 'status' => $this->status,
-                'cancellable' => $this->cancellable()
+                'cancellable' => $this->cancellable(),
+                'returnable' => $this->returnable(),
+                'checkedout_subtotal' => number_format($this->checkedoutSubTotal(),2)
             ]
         ];
     }

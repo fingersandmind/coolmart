@@ -99,6 +99,7 @@ class ReviewsController extends Controller
 
         $carts = $user->carts()->checkedout()
             ->whereNotIn('item_id',$itemIds)
+            ->where('status', Cart::DELIVERED)
             ->get();
 
         return new CartsResource($carts->unique('item_id')->paginate(5));

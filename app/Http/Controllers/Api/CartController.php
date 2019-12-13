@@ -83,7 +83,7 @@ class CartController extends Controller
                 [
                     'item_id'   =>  $item->id,
                     'user_id'   =>  $user->id,
-                    'qty'       =>  $qty     
+                    'qty'       =>  $qty > $item->qty ? $item->qty : $qty
                 ]
             );
 

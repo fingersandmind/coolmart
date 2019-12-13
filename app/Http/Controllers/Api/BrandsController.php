@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Resources\Brands\BrandsResource;
 use App\Http\Resources\Brands\BrandResource;
 use App\Brand;
@@ -31,6 +30,13 @@ class BrandsController extends Controller
     public function show(Brand $brand)
     {
         BrandResource::withoutWrapping();
+
+        return new BrandResource($brand);
+    }
+
+    public function featured()
+    {
+        $brand = Brand::featured()->with('items')->latest()->first();
 
         return new BrandResource($brand);
     }

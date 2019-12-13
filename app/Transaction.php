@@ -30,6 +30,17 @@ class Transaction extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function successfullyCheckedout()
+    {
+        $this->carts()->update(['status' => Cart::PROCESSING]);
+
+        foreach($this->carts as $cart)
+        {
+            $qty = $cart->item->qty - $cart->validMaxQty();
+            $cart->item()->update(['qty' => $qty]);
+        }
+    }
+
     public function subTotal($status = 0)
     {
         $total = 0;
@@ -51,7 +62,7 @@ class Transaction extends Model
         $total_count = 0;
         if($status){
             foreach($this->carts()->whereStatus($status)->get() as $cart){
-                $total_count += $cart->validMaxQty();
+                $total_count += $cart->qty;
             }
             return $total_count;
         }
