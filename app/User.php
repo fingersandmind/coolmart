@@ -47,22 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->is_admin == self::ADMIN;
     }
 
-    public function isPurchased($item)
-    {
-        $purchased = 0;
-        if($this->carts)
-        {
-            foreach($this->carts as $cart)
-            {
-                if($cart->item->slug == $item && $cart->is_checkedout == true)
-                {
-                    $purchased = 1;
-                }
-            }
-        }
-        return $purchased;
-    }
-
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
@@ -104,7 +88,6 @@ class User extends Authenticatable implements MustVerifyEmail
      ****** [For Purchase Order Only(backend)]  *******
      */
 
-
     public function billingAddresses()
     {
         return $this->hasMany(BillingAddress::class, 'user_id');
@@ -135,6 +118,8 @@ class User extends Authenticatable implements MustVerifyEmail
                 $transaction = $this->transactions()->create([
                     'ship_post_code' => $this->defaultShippingAddress()->defaultShippingPostCode(),
                     'bill_post_code' => $this->defaultBillingAddress()->defaultBillingPostCode(),
+                    'subTotal' => 0,
+                    'item_count' => count($this->carts()->unCheckedOut()->get())
                 ]);
         
                 $this->carts()->where('is_checkedout', false)

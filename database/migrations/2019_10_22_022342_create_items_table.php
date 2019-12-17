@@ -21,6 +21,9 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->float('cap_hp');
+            $table->float('cap_tr');
+            $table->string('standard_install_fee')->nullable();
             $table->float('srp',8,2);
             $table->float('cost',8,2);
             $table->integer('qty');

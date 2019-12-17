@@ -110,8 +110,8 @@ class ItemController extends Controller
         $request->validate([
             'name' => 'required|min:2|max:20',
             'type' => 'required',
-            'percent_off' => 'sometimes:required:numeric|between:1,100',
-            'amount' => 'sometimes:required:numeric',
+            'percent_off' => 'sometimes|required|numeric|between:1,100',
+            'amount' => 'sometimes|required|numeric',
         ]);
         $amount = $request->type == 'cash_off' ? $request->amount : 0;
         $percentage = $request->type == 'percentage' ? $request->percent_off : 0;

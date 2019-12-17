@@ -16,7 +16,10 @@ class Item extends Model
     {
         return $this->provideFilter(ItemFilter::class);
     }
-    protected $fillable = ['brand_id', 'type_id', 'category_id', 'name', 'slug', 'description', 'srp', 'cost', 'qty', 'is_featured'];
+    protected $fillable = [
+            'brand_id', 'type_id', 'category_id', 'name', 'slug', 'description', 
+            'srp', 'cost', 'qty', 'is_featured', 'cap_hp', 'cap_tr', 'standard_install_fee'
+        ];
 
     public function brand()
     {

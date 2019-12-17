@@ -48,4 +48,14 @@ class ItemFilter extends ModelFilter
     {
         return $this->where('srp', '>=', $price);
     }
+
+    public function hp($cap_hp)
+    {
+        return $this->where('cap_hp', '>=', $cap_hp);
+    }
+
+    public function tr($cap_tr)
+    {
+        return $this->where('cap_tr', '>=', $cap_tr);
+    }
 }

@@ -28,6 +28,8 @@ class ItemResource extends JsonResource
                 'thumbnails' => $this->images->pluck('thumbnail'),
                 'discountedSrp'   => number_format($this->accuratePrice()),
                 'srp'   => number_format($this->srp),
+                'cap_hp' => number_format($this->cap_hp,2),
+                'cap_tr' => number_format($this->cap_tr,2),
                 'discountType' => $this->discountType(),
                 'qty'   => (string)$this->qty,
                 'brand_id'  => (string)$this->brand_id,

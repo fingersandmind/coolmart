@@ -8,6 +8,8 @@ trait PaymentMethodTrait
     {
         $transaction->successfullyCheckedout();
 
-        return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK').'/'.$transaction->id);
+        return response()->json([
+            'transaction_id' => $transaction->id,
+        ]);
     }
 }

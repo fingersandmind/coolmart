@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Transaction extends Model
 {
-    protected $fillable = ['user_id','ship_post_code', 'bill_post_code'];
+    protected $fillable = ['user_id','ship_post_code', 'bill_post_code', 'subTotal', 'item_count'];
 
     public function getTransactionCodeAttribute()
     {
@@ -30,14 +31,40 @@ class Transaction extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function subTotalUncheckedoutCarts()
+    {
+        $total = 0;
+        $carts = $this->carts()->whereStatus(Cart::PENDING)->get();
+        if((count($carts) > 0))
+        {
+            foreach($carts as $cart)
+            {
+                $total += $cart->cartTotal();
+            }
+        }
+        return $total;
+    }
+
     public function successfullyCheckedout()
     {
-        $this->carts()->update(['status' => Cart::PROCESSING]);
+        try {
+            DB::beginTransaction();
+            $this->update(['subTotal' => $this->subTotalUncheckedoutCarts()]);
+            $this->carts()->update(['status' => Cart::PROCESSING]);
 
-        foreach($this->carts as $cart)
-        {
-            $qty = $cart->item->qty - $cart->validMaxQty();
-            $cart->item()->update(['qty' => $qty]);
+            foreach($this->carts as $cart)
+            {
+                $qty = $cart->item->qty - $cart->validMaxQty();
+                $cart->item()->update(['qty' => $qty]);
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $th->getMessage(),
+                'code' => $th->getCode()
+            ]);
         }
     }
 
@@ -46,7 +73,7 @@ class Transaction extends Model
         $total = 0;
         if($status){
             foreach($this->carts()->whereStatus($status)->get() as $cart){
-                $total += $cart->cartTotal();
+                $total += $cart->checkedoutSubTotal();
             }
             return $total;
         }

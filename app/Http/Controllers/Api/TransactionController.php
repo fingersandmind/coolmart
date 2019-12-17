@@ -39,7 +39,7 @@ class TransactionController extends Controller
         $carts = $transaction->carts;
         return response()->json([
             'item_count' => $transaction->countCartByQty(Cart::PROCESSING),
-            'sub_total' => number_format($transaction->subTotal()),
+            'sub_total' => number_format($transaction->subTotal,2),
             'address' => $this->addresses($transaction),
             'items' => $this->items($carts->unique('item_id')),
         ]);

@@ -18,6 +18,8 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('ship_post_code');
             $table->text('bill_post_code');
+            $table->float('subTotal',8,2);
+            $table->string('item_count');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

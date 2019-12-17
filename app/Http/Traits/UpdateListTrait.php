@@ -45,16 +45,16 @@ trait UpdateListTrait
     {
         foreach($this->responseData() as $data)
         {
-            if(!Brand::where('name',$data->brand)->exists())
-            {
-                $name = $data->brand;
-                Brand::create([
+            $name = $data->brand;
+            Brand::updateOrCreate(
+                ['name' => $name],
+                [
                     'name' => $name,
                     'slug' => str_slug($name),
                     'description' => $name,
                     'logo' => $name.'.jpg',
-                ]);
-            }
+                ]
+            );
         }
     }
 
@@ -106,27 +106,90 @@ trait UpdateListTrait
             }
         }
     }
+    
+    /**
+     * Function that returns Standard Installation Fee for Items based on type and cooling capacity [TR]
+     */
+    public function standardInstallFeeTR($tr, $type)
+    {
+        if(in_array($tr , range(1,2, 1)) AND strpos($type,'CEILING') !== false)
+        {
+            return 14000;
+        }
+        if(in_array($tr , range(3,4, 1)) AND strpos($type,'CEILING') !== false)
+        {
+            return 16000;
+        }
+        if($tr >=5 AND strpos($type, 'CEILING') !== false)
+        {
+            return 18000;
+        }
+    }
+
+    /**
+     * Function that returns Standard Installation Fee for Items based on type and cooling capacity [HP]
+     */
+    public function standardInstallFeeHP($hp, $type)
+    {
+        if(in_array($hp , range(1,1.5, 0.10)) AND strpos($type,'WALL') !== false)
+        {
+            return 7500;
+        }
+        if(in_array($hp , range(2,2.5, 0.10)) AND strpos($type,'WALL') !== false)
+        {
+            return 9500;
+        }
+        if(in_array($hp , range(3,4, 0.10)) AND strpos($type,'FLOOR') !== false)
+        {
+            return 14000;
+        }
+    }
 
     public function loadItem()
     {
         foreach($this->responseData() as $data)
         {
-            if(!Item::where('name',$data->model)->exists())
-            {
-                $item = Item::create([
+            $name = $data->brand . ' ' . $data->model;
+
+            $data1 = floatval(str_replace(['HP', 'TR'], '' ,$data->cap)); //removes TR or HP in capacity e,g 1.5HP becomes 1.5
+            $hp_capacity = strpos($data->cap,'TR') ? 0 : number_format($data1,2);
+            $tr_capacity = strpos($data->cap,'TR') ? number_format($data1,2) : 0;
+
+            $standard_installation_fee = strpos($data->cap,'TR') ? $this->standardInstallFeeTR($data1, $data->type) : $this->standardInstallFeeHP($data1, $data->type);
+
+
+            $item = Item::updateOrCreate(
+                ['name' => $name],
+                [
                     'brand_id' => $this->brands()[$data->brand],
                     'type_id' => $this->types()[$data->type],
                     'category_id' => $data->type == 'SPLIT' ||  $data->type == 'WINDOW' ? 1 : 2,
-                    'name' => $data->model,
+                    'name' => $name,
                     'slug' => str_slug($data->model),
                     'description' => $data->description,
+                    'cap_hp' => $hp_capacity,
+                    'cap_tr' => $tr_capacity,
+                    'standard_install_fee' => $standard_installation_fee,
                     'srp' => floatval(str_replace(',','',$data->srp)),
                     'cost' => floatval(str_replace(',','',$data->cost)),
-                    'qty' => 0
+                    'qty' => env('APP_ENV') == 'production' ? 0 : 5,
                 ]);
+            
+            $this->itemDetails($item, $data);
+        }
+    }
 
-                $item->details()->create(['name' => 'Brand Name', 'description' => $data->brand]);
-            }
+    public function itemDetails($item,$data)
+    {
+        $nameArr = [1 => 'Brand Name', 2 => 'Capacity', 3 => 'Type', 4 => 'Description'];
+        $descArr = [1 => $data->brand, 2 => $data->cap, 3 => $data->type, 4 => $data->description];
+
+        for($i = 1; $i <= 4; $i++)
+        {
+            $item->details()->updateOrCreate(
+                ['name' => $nameArr[$i], 'description' => $descArr[$i]],
+                ['name' => $nameArr[$i], 'description' => $descArr[$i]]
+            );
         }
     }
 }

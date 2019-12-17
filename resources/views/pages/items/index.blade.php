@@ -28,6 +28,7 @@
                                         <th class="wd-10p">Type</th>
                                         <th class="wd-10p">Srp</th>
                                         <th class="wd-10p">Cost</th>
+                                        <th class="wd-10p">S_I_F</th>
                                         <th class="wd-5p">Qty</th>
                                         <th class="wd-20p">Action</th>
                                     </tr>
@@ -52,6 +53,7 @@
                                                 @endif
                                             </td>
                                             <td>&#8369; {{ number_format($item->cost,2) }}</td>
+                                            <td>&#8369; {{ number_format($item->standard_install_fee,2) }}</td>
                                             <td>{{ $item->qty }}</td>
                                             <td>
                                                 <div class="dropdown">

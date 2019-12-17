@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Traits\UpdateListTrait;
 use App\AirconList;
 use App\Brand;
