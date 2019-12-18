@@ -22,7 +22,7 @@ class CartController extends Controller
         $user = auth('api')->user();
         $carts = $user->carts()
             ->where('is_checkedout', false)
-            ->with('item')
+            ->with(['item', 'service'])
             ->get();
 
         return new CartsResource($carts);
@@ -36,17 +36,9 @@ class CartController extends Controller
         return new CartResource($cart);
     }
 
-    /**
-     * Check if cart exists and is not checkedout
-     * @param App\Item $item
-     * @param App\User $user
-     * 
-     * @return boolean
-     */
-
-    public function checkIfCartExists($item, $user, $checkedout = false)
+    public function getValidQty($qty, $validQty)
     {
-        return Cart::where(['item_id' => $item, 'user_id' => $user, 'is_checkedout' => $checkedout])->exists();
+        return $qty > $validQty ? $validQty : $qty;
     }
 
     /**
@@ -58,46 +50,39 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $user = auth('api')->user();
-
-        $qty = $request->qty;
         $item = Item::findOrFail($request->itemId);
-        
-        $cart = $user->carts()
-            ->where('item_id', $item->id)
-            ->first();
-            
-        
-        if($this->checkIfCartExists($item->id, $user->id))
+        $cart = $user->carts()->where('item_id', $item->id)->first();
+        $qty = $request->qty;
+        if($cart)
         {
-            $qty += $cart->qty;
+            if($request->service_name)
+            {
+                $cart->update(['qty' => $qty]);
+                $cart->addCartService($cart, $request);
+                return response()->json(['success' => 'Item Cart updated!'], 200);
+            }
+            $cart->update(['qty' => $qty]);
+            $cart->service()->delete();
+            return response()->json(['success' => 'Item Cart updated!'], 200);
         }
+        $qty += $cart->qty ?? 0;
+        
+        $user->addCart($request, $this->getValidQty($qty, $item->qty));
 
-        /**
-         * When user click the add to cart button several times, update qty.
-         */
-        try {
-            DB::beginTransaction();
+        return response()->json(['success' => 'Item added to Cart'], 200);
+    }
 
-            $user->carts()->updateOrCreate(
-                ['item_id' => $item->id, 'user_id' => $user->id, 'is_checkedout' => false],
-                [
-                    'item_id'   =>  $item->id,
-                    'user_id'   =>  $user->id,
-                    'qty'       =>  $qty > $item->qty ? $item->qty : $qty
-                ]
-            );
+    /**
+     * Display the specified resource.
+     *
+     * @param  Cart $cart
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Cart $cart)
+    {
+        CartResource::withoutWrapping();
 
-            DB::commit();
-    
-            return response()->json(['success' => 'Item added to Cart'], 200);
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return response()->json([
-                'error' => $e->getMessage(),
-                'code'  => $e->getCode()
-            ]);
-        }
+        return new CartResource($cart);
     }
     
     /**
@@ -112,7 +97,7 @@ class CartController extends Controller
         /**
          * Qty will be based on available stock of an item.
          */
-        $cartQty = $cart->validMaxQty($cart->qty);
+        $cartQty = $cart->validMaxQty();
 
         if($request->get('action') == 'addQty')
         {
@@ -125,6 +110,12 @@ class CartController extends Controller
             $cart->update(['qty' => $cartQty]);
             return response()->json(['success' => 'Cart updated!'], 200);
         }
+    }
+
+    public function removeService(Cart $cart)
+    {
+        $cart->service()->delete();
+        return response()->json(['message' => 'Successfully removed']);
     }
 
     /**

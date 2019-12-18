@@ -66,6 +66,7 @@ trait TransactionTrait
             $item['status'] = $cart->status;
             $item['cancellable'] = $cart->cancellable();
             $item['returnable'] = $cart->returnable();
+            $item['services'] = $cart->getServiceDetails();
             array_push($items, $item);
         }
         return $items;

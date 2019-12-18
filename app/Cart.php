@@ -4,6 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
@@ -46,6 +47,11 @@ class Cart extends Model
     public function scopeCheckedout($query)
     {
         return $query->where('is_checkedout', true);
+    }
+
+    public function service()
+    {
+        return $this->hasOne(Service::class);
     }
 
     public function scopeUnCheckedout($query)
@@ -100,5 +106,125 @@ class Cart extends Model
     {
         return $this->item->accuratePrice() * $this->qty;
     }
+
+    public function getSubtotalWithServiceTotal()
+    {
+        return $this->getServiceTotal() + $this->cartTotal();
+    }
+
+    public function getServiceDetails()
+    {
+        if($this->service)
+        {
+            $data['item_standard_installation_fee'] = $this->item->standard_install_fee;
+            $data['standard_feet'] = 10;
+            $data['excess_charge_per_feet'] = (string)300;
+            $data['total_feet'] = $this->service->value;
+            $data['service_id'] = $this->service->id;
+            $data['name'] = $this->service->name;
+            $data['total'] = $this->getServiceTotal();
+            return $data;
+        }
+        return null;
+    }
+
+    public function getServiceTotal()
+    {
+        $total = 0;
+        if($this->service)
+        {
+            $installation_fee = $this->item->standard_install_fee;
+            $feet = $this->service->value;
+            $excessFeet = $feet - 10;
+            $feePerExcess = $excessFeet * 300;
+            $total = $installation_fee + $feePerExcess;
+        }
+        return $total;
+    }
+
+
+    public function addCartService($cart, $request)
+    {
+        $cart->service()->updateOrCreate(
+            ['cart_id' => $cart->id],
+            [
+                'name' => $request->service_name,
+                'value' => $request->value
+            ]
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    // public function persists($request, $qty)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+    //         $cart = $this->updateOrCreate(
+    //             ['item_id' => $request->itemId, 'user_id' => $this->user->id, 'is_checkedout' => false],
+    //             [
+    //                 'item_id'   =>  $request->itemId,
+    //                 'user_id'   =>  $this->user->id,
+    //                 'qty'       =>  $qty,
+    //                 'status' => self::PENDING
+    //             ]
+    //         );
+
+    //         if(!$request->service_name == null)
+    //         {
+    //             $this->addCartService($cart,$request);
+    //         }
+    //         DB::commit();
+    //     } catch (\Throwable $th) {
+    //         DB::rollBack();
+
+    //         return response()->json([
+    //             'error' => $th->getMessage(),
+    //             'code'  => $th->getCode()
+    //         ]);
+    //     }
+        
+    // }
     
 }

@@ -60,6 +60,7 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('faqs', 'Api\FaqsController@index');
     
     Route::resource('cart', 'Api\CartController');
+    Route::delete('cart/{cart}/remove-service', 'Api\CartController@removeService');
 
     /**
      * ******* [ITEM TRANSACTIONS] *******

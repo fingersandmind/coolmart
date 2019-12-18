@@ -39,7 +39,7 @@ class Transaction extends Model
         {
             foreach($carts as $cart)
             {
-                $total += $cart->cartTotal();
+                $total += $cart->cartTotal() + $cart->getServiceTotal();
             }
         }
         return $total;
@@ -73,7 +73,7 @@ class Transaction extends Model
         $total = 0;
         if($status){
             foreach($this->carts()->whereStatus($status)->get() as $cart){
-                $total += $cart->checkedoutSubTotal();
+                $total += $cart->checkedoutSubTotal() + $cart->getServiceTotal();
             }
             return $total;
         }

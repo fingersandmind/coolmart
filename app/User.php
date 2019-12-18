@@ -143,4 +143,44 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+
+
+    public function addCart($request,$qty)
+    {
+        try {
+            DB::beginTransaction();
+            $cart = $this->carts()->updateOrCreate(
+                ['item_id' => $request->itemId, 'user_id' => $this->id, 'is_checkedout' => false],
+                [
+                    'item_id'   =>  $request->itemId,
+                    'qty'       =>  $qty,
+                    'status' => Cart::PENDING
+                ]
+            );
+    
+            if(!$request->service_name == null)
+            {
+                $this->addCartService($cart,$request);
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => $th->getMessage(),
+                'code'  => $th->getCode()
+            ]);
+        }
+    }
+
+    public function addCartService($cart, $request)
+    {
+        $cart->service()->updateOrCreate(
+            ['cart_id' => $cart->id],
+            [
+                'name' => $request->service_name,
+                'value' => $request->value
+            ]
+        );
+    }
 }

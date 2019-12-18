@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Carts;
 
+use App\Http\Resources\Items\ItemResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CartResource extends JsonResource
@@ -36,8 +37,11 @@ class CartResource extends JsonResource
                 'status' => $this->status,
                 'cancellable' => $this->cancellable(),
                 'returnable' => $this->returnable(),
+                'services' => $this->getServiceDetails(),
+                'subtotal_with_service_total' => $this->getSubtotalWithServiceTotal(),
                 'checkedout_subtotal' => number_format($this->checkedoutSubTotal(),2)
-            ]
+            ],
+            'item' => new ItemResource($this->item)
         ];
     }
 }

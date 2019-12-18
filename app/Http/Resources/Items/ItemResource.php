@@ -37,7 +37,8 @@ class ItemResource extends JsonResource
                 'category_id' => (string)$this->category_id,
                 'ratings' => (string)$this->ratings(),
                 'star_percent_rate' => (string)$this->starRatePercent(),
-                'total_reviewer' => (string)count($this->reviews)
+                'total_reviewer' => (string)count($this->reviews),
+                'standard_installation_fee' => $this->standard_install_fee,
             ],
             'relationships' => new ItemsRelationship($this), //This is the related model resource
             'links' => [

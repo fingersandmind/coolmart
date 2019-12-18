@@ -74,7 +74,7 @@
                                     <div class="col-md-6 col-sm-6 col-lg-6 col-6">
                                         <div class="form-group">
                                             <label class="form-label">Retail Price &#8369;</label>
-                                            <input type="number" class="form-control" min="0.00" max="100000.00" 
+                                            <input type="number" class="form-control" min="0.00" max="1000000.00" 
                                             step="0.01" name="srp" value="{{ old('srp') }}" required/>
                                         </div>
                                     </div>

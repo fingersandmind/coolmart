@@ -16,10 +16,8 @@ class CartsResource extends ResourceCollection
      */
     public function toArray($request)
     {
-        $datas =  CartResource::collection($this->collection);
-        
         return [
-            'data' => $datas
+            'data' => CartResource::collection($this->collection)
         ];
     }
 

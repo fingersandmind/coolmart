@@ -88,18 +88,6 @@ class Item extends Model
     public function ratings()
     {
         return $this->reviews->average('stars') ?? 5;
-        // $total = 0;
-        // $count = count($this->reviews) > 0 ? count($this->reviews) : 1;
-        // if($this->reviews)
-        // {
-        //     foreach($this->reviews as $reviews)
-        //     {
-        //         $total += $reviews->stars;
-        //     }
-        // }
-        // $rate = count($this->reviews) > 0 ? number_format($total / $count,1) :  number_format(5,1);
-
-        // return $rate;
     }
     /**
      * Get the percentage of ratings
