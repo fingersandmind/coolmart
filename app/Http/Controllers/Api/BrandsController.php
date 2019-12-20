@@ -37,7 +37,10 @@ class BrandsController extends Controller
     public function featured()
     {
         $brand = Brand::featured()->with('items')->latest()->first();
-
-        return new BrandResource($brand);
+        if($brand)
+        {
+            return new BrandResource($brand);
+        }
+        return null;
     }
 }

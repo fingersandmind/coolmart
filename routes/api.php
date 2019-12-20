@@ -95,11 +95,21 @@ Route::group(['middleware' => ['cors']], function () {
     /**
      * ******* [API AUTH] *******
      */
-    Route::post('register', 'Api\AuthController@register');
-    Route::post('login', 'Api\AuthController@login');
-    Route::post('logout', 'Api\AuthController@logout');
-    Route::get('email/resend','Api\VerificationController@resend')->name('verification.resend');
-    Route::get('email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
+    Route::group(['namespace' => 'Api'], function () {
+        Route::post('register', 'AuthController@register');
+        Route::post('login', 'AuthController@login');
+        Route::post('logout', 'AuthController@logout');
+        Route::post('password/change', 'AuthController@changePassword');
+        
+        Route::get('email/resend','VerificationController@resend')->name('verification.resend');
+        Route::get('email/verify/{id}/{hash}','VerificationController@verify')->name('verification.verify');
+    });
+    
+    Route::group(['prefix' => 'password', 'namespace' => 'Api'], function () {
+        Route::post('create', 'PasswordResetController@create');
+        Route::get('find/{token}', 'PasswordResetController@find');
+        Route::post('reset', 'PasswordResetController@reset');
+    });
     
 });
 

@@ -17,6 +17,10 @@ class PaymentController extends Controller
      * @param User $id
      */
 
+     protected $paymentMethods = [
+        'paypal' => 'paymentPaypal', 'cod' => 'paymentCod'
+     ];
+
     public function prepare()
     {
         $user = auth('api')->user();
@@ -34,13 +38,16 @@ class PaymentController extends Controller
 
         if(count($items) > 0)
         {
-            if(request()->option == 'paypal')
+            foreach($this->paymentMethods as $index => $paymentMethod)
             {
-                return $this->paymentPaypal($items,$total, $invoice);
-            }
-            if(request()->option == 'cod')
-            {
-                return $this->paymentCod($transaction);
+                if(request()->option == $index)
+                {
+                    if($index == 'cod')
+                    {
+                        return $this->$paymentMethod($transaction, request()->option);
+                    }
+                    return $this->$paymentMethod($items, $total, $invoice, request()->option);
+                }
             }
         }
 
@@ -61,7 +68,7 @@ class PaymentController extends Controller
         {
             foreach($carts as $cart)
             {
-                if(!$cart->validMaxQty() == 0)
+                if(!$cart->qty == 0)
                 {
                     $item['name'] = $cart->item->name;
                     $item['price'] = $cart->item->accuratePrice();

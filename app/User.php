@@ -128,6 +128,8 @@ class User extends Authenticatable implements MustVerifyEmail
                         'is_checkedout' => true,
                         'status' => Cart::PENDING
                         ]);
+
+                $transaction->update(['subTotal' => $transaction->subTotalUncheckedoutCarts()]);
             }
             DB::commit();
 

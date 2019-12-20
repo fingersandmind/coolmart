@@ -13,6 +13,7 @@ trait TransactionTrait
         return response()->json([
             'item_count' => $transaction->countCartByQty(Cart::CANCELLED),
             'sub_total' => number_format($transaction->subTotal(Cart::CANCELLED),2),
+            'method' => $transaction->paymentMethod(),
             'address' => $this->addresses($transaction),
             'items' => $this->items($carts->unique('item_id')),
         ]);
@@ -35,6 +36,7 @@ trait TransactionTrait
         return response()->json([
             'item_count' => $transaction->countCartByQty(Cart::RETURNED),
             'sub_total' => number_format($transaction->subTotal(Cart::RETURNED),2),
+            'method' => $transaction->paymentMethod(),
             'address' => $this->addresses($transaction),
             'items' => $this->items($carts->unique('item_id')),
         ]);

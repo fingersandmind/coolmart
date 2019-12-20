@@ -51,7 +51,7 @@ class CartController extends Controller
     {
         $user = auth('api')->user();
         $item = Item::findOrFail($request->itemId);
-        $cart = $user->carts()->where('item_id', $item->id)->first();
+        $cart = $user->carts()->where('item_id', $item->id)->unCheckedout()->first();
         $qty = $request->qty;
         if($cart)
         {

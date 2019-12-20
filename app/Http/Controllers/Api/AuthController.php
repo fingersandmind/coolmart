@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\User;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Request;
 
 class AuthController extends Controller
 {
@@ -79,6 +81,21 @@ class AuthController extends Controller
         ];
         
         return $response;
+    }
+
+    public function changePassword(Request $request)
+    {
+        $user = auth('api')->user();
+        $password = $request->password;
+
+        if(Hash::check($password, $user->password))
+        {
+            $user->update(['password' => bcrypt($request->new_password)]);
+
+            return response()->json(['message' => 'Password successfully updated!']);
+        }
+
+        return response()->json(['error' => 'Password did not match']);
     }
 
     /**

@@ -60,7 +60,7 @@ trait PaymentPayPalTrait
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
             $tran_id = explode('--', $response['INVNUM']);
             $transaction = Transaction::findOrFail($tran_id[1]);
-            $transaction->successfullyCheckedout();
+            $transaction->successfullyCheckedout('paypal');
 
             return redirect(env('PAYMENT_SUCCESS_REDIRECT_LINK').'/'.$transaction->id);
         }

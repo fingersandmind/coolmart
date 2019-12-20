@@ -20,6 +20,7 @@ class CreateTransactionsTable extends Migration
             $table->text('bill_post_code');
             $table->float('subTotal',8,2);
             $table->string('item_count');
+            $table->string('payment_method')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

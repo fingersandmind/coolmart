@@ -59,6 +59,9 @@ class Cart extends Model
         return $query->where('is_checkedout', false);
     }
 
+    /**
+     * Check if a cart which status is PENDING or PROCESSING is valid for cancel.
+     */
     public function cancellable()
     {
         $date_placed = Carbon::parse($this->created_at);
@@ -72,6 +75,9 @@ class Cart extends Model
         return false;
     }
 
+    /**
+     * Check if a cart which status is DELIVERED is valid for return.
+     */
     public function returnable()
     {
         $date_placed = Carbon::parse($this->updated_at);
@@ -90,28 +96,39 @@ class Cart extends Model
      * If cart qty is over item qty, item qty must return
      * 
      */
-
     public function validMaxQty()
     {
         return $this->qty > $this->item->qty ? $this->item->qty : $this->qty;
     }
 
+    /**
+     * Return cart subtotal of PENDING carts
+     */
     public function cartTotal()
     {
         $total =  $this->item->accuratePrice() * $this->validMaxQty();
         return $total;
     }
 
+    /**
+     * Return subtotal of carts that are already checkedout.
+     */
     public function checkedoutSubTotal()
     {
         return $this->item->accuratePrice() * $this->qty;
     }
 
+    /**
+     * Return cart subtotal plus cart that has service fee
+     */
     public function getSubtotalWithServiceTotal()
     {
         return $this->getServiceTotal() + $this->cartTotal();
     }
 
+    /**
+     * Get the additional services details of a cart;
+     */
     public function getServiceDetails()
     {
         if($this->service)
@@ -128,6 +145,9 @@ class Cart extends Model
         return null;
     }
 
+    /**
+     * Return total of service of particular cart that has a service.
+     */
     public function getServiceTotal()
     {
         $total = 0;
@@ -142,7 +162,9 @@ class Cart extends Model
         return $total;
     }
 
-
+    /**
+     * Add a service to the cart.
+     */
     public function addCartService($cart, $request)
     {
         $cart->service()->updateOrCreate(

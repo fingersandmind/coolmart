@@ -4,11 +4,19 @@ namespace App\Http\Traits;
 
 use App\Cart;
 use App\Http\Resources\Transactions\TransactionsResource;
+use App\Notifications\OrderCancelled;
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 trait ItemCancellationTrait
 {
+    protected $notification_delay;
+
+    public function __construct()
+    {
+        $this->notification_delay = Carbon::now()->addSeconds(5);
+    }
     public function cancellations()
     {
         $user = auth('api')->user();
@@ -39,7 +47,12 @@ trait ItemCancellationTrait
                     'reason' => request()->reason,
                     'optional' => request()->optional ?? ''
                 ]);
+                $cart->item()->update(['qty' => $cart->item->qty + $cart->qty]);
                 DB::commit();
+
+                $itemPrice = number_format($cart->item->accuratePrice(),2);
+                $user->notify((new OrderCancelled($user->name, $cart->transaction->TransactionCode, $cart, $itemPrice))->delay($this->notification_delay));
+
                 return response()->json(['message' => 'Item successfully cancelled. Thank you!']);
             }
             return response()->json(['message' => 'Sorry! Item is no longer valid for cancellations!']);
