@@ -24,7 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "angular": "^1.7.8",
+        "angular": "^1.8.0",
         "angular-ui-router": "^1.0.23",
         "satellizer": "^0.15.5"
     }
